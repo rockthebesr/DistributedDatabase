@@ -1,13 +1,13 @@
 package main
 
 import (
+	"./serverAPI"
+	"./util"
 	"fmt"
-	"os"
 	"net"
 	"net/rpc"
+	"os"
 	"time"
-	"./util"
-	"./serverAPI"
 )
 
 var (
@@ -63,7 +63,7 @@ func main() {
 
 func sendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 	var err error
-	for range time.Tick(time.Second * time.Duration(heartbeatInterval)) {
+	for range time.Tick(time.Second * time.Duration(serverAPI.HeartbeatInterval)) {
 		err = conn.Call("ServerConn.ServerHeartbeatProtocol", &localIP, &ignored)
 		util.CheckErr(err)
 	}

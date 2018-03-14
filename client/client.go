@@ -52,11 +52,10 @@ func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 		var succ bool
 		conn.Call("ServerConn.ClientConnect", &localAddr, &succ)
 
-		// TODO
-		// heartbeat? or monitor them in txn manager
 		if succ {
 			fmt.Printf("Established bi-directional RPC to server %s\n", sAddr)
 			result[t] = conn
+			go sendHeartbeats(conn, localAddr, false)
 		}
 	}
 	return result
@@ -70,7 +69,6 @@ func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 	loadBalancer, err := rpc.Dial("tcp", lbsIPAddr)
 	util.CheckErr(err)
 	lbs = loadBalancer
-	localAddr = localIP + ":0"
 	localIPAndPort, err := net.ResolveTCPAddr("tcp", localAddr+":0")
 	util.CheckErr(err)
 	localAddr = localIPAndPort.String()
@@ -84,14 +82,11 @@ func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 // Can return DisconnectedError if client is disconnected
 func NewTransaction(txn dbStructs.Transaction) (bool, error) {
 	tableNames := GetNeededTables(txn)
-	args := shared.TableNamesArg{tableNames}
-	reply := shared.TableNameToServersReply{map[string]string{}}
-	err := lbs.Call("lbs.GetServers", args, &reply)
-	if err != nil {
-		return false, err
-	}
+	args := shared.TableNamesArg{TableNames: tableNames}
+	reply := shared.TableNameToServersReply{}
+	err := lbs.Call("LBS.GetServers", args, &reply)
+	util.CheckErr(err)
 	tablesToServerConns := ConnectToServers(reply.TableNameToServers)
-	//TODO call clientTxnManager to send transaction
 	result, err := ExecuteTransaction(txn, tablesToServerConns)
 	return result, err
 }

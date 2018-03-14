@@ -1,12 +1,12 @@
 package serverAPI
 
 import (
-	"sync"
+	"../util"
 	"errors"
-	"time"
 	"fmt"
 	"net/rpc"
-	"../util"
+	"sync"
+	"time"
 )
 
 type ServerConn int
@@ -22,9 +22,9 @@ type AllConnection struct {
 }
 
 var (
-	allClients 		  = AllConnection{all: make(map[string]*Connection)}
+	allClients        = AllConnection{all: make(map[string]*Connection)}
 	allServers        = AllConnection{all: make(map[string]*Connection)}
-	heartbeatInterval = 2
+	HeartbeatInterval = 2
 )
 
 /*
@@ -35,7 +35,7 @@ var (
  @Param addr -> a pointer to a string representation of the ip sending a heartbeat
  @Param ignored -> a pointer to a boolean representing whether the heartbeat was received
  @Return error
- */
+*/
 func (s *ServerConn) ServerHeartbeatProtocol(addr *string, ignored *bool) error {
 	allServers.Lock()
 	defer allServers.Unlock()
@@ -57,7 +57,7 @@ func (s *ServerConn) ServerHeartbeatProtocol(addr *string, ignored *bool) error 
  @Param ip -> a pointer to a string representation of the ip sending a heartbeat
  @Param success -> a pointer to a boolean representing whether connection succeeded
  @Return error
- */
+*/
 func (s *ServerConn) ConnectToPeer(ip *string, success *bool) error {
 	allServers.Lock()
 	defer allServers.Unlock()
@@ -72,7 +72,7 @@ func (s *ServerConn) ConnectToPeer(ip *string, success *bool) error {
 		time.Now().UnixNano(),
 	}
 
-	go monitorPeers(toRegister, time.Duration(heartbeatInterval)*time.Second*2)
+	go monitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
 
 	fmt.Printf("Got Register from %s\n", toRegister)
 
@@ -95,7 +95,7 @@ func (s *ServerConn) ConnectToPeer(ip *string, success *bool) error {
  @Param ip -> a pointer to a string representation of the ip sending a heartbeat
  @Param success -> a pointer to a boolean representing whether connection succeeded
  @Return error
- */
+*/
 func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 	allClients.Lock()
 	defer allClients.Unlock()
@@ -110,7 +110,7 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 		time.Now().UnixNano(),
 	}
 
-	go monitorClients(toRegister, time.Duration(heartbeatInterval)*time.Second*2)
+	go monitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
 
 	fmt.Printf("Got Register from %s\n", toRegister)
 
@@ -130,12 +130,12 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
  deletes it from its list of connected servers.
 
  @Param k -> ip address to monitor
- @Param heartBeatInterval -> time between heartbeats, before a peer is considered disconnected
- */
-func monitorPeers(k string, heartBeatInterval time.Duration) {
+ @Param HeartbeatInterval -> time between heartbeats, before a peer is considered disconnected
+*/
+func monitorPeers(k string, HeartbeatInterval time.Duration) {
 	for {
 		allServers.Lock()
-		if time.Now().UnixNano()-allServers.all[k].RecentHeartbeat > int64(heartBeatInterval) {
+		if time.Now().UnixNano()-allServers.all[k].RecentHeartbeat > int64(HeartbeatInterval) {
 			fmt.Printf("%s timed out\n", k)
 			delete(allServers.all, k)
 			allServers.Unlock()
@@ -143,7 +143,7 @@ func monitorPeers(k string, heartBeatInterval time.Duration) {
 		}
 		fmt.Printf("%s is alive\n", k)
 		allServers.Unlock()
-		time.Sleep(heartBeatInterval)
+		time.Sleep(HeartbeatInterval)
 	}
 }
 
@@ -152,12 +152,12 @@ func monitorPeers(k string, heartBeatInterval time.Duration) {
  deletes it from its list of connected clients.
 
  @Param k -> ip address to monitor
- @Param heartBeatInterval -> time between heartbeats, before a peer is considered disconnected
- */
-func monitorClients(k string, heartBeatInterval time.Duration) {
+ @Param HeartbeatInterval -> time between heartbeats, before a peer is considered disconnected
+*/
+func monitorClients(k string, HeartbeatInterval time.Duration) {
 	for {
 		allClients.Lock()
-		if time.Now().UnixNano()-allClients.all[k].RecentHeartbeat > int64(heartBeatInterval) {
+		if time.Now().UnixNano()-allClients.all[k].RecentHeartbeat > int64(HeartbeatInterval) {
 			fmt.Printf("%s timed out\n", k)
 			delete(allClients.all, k)
 			allClients.Unlock()
@@ -165,6 +165,6 @@ func monitorClients(k string, heartBeatInterval time.Duration) {
 		}
 		fmt.Printf("%s is alive\n", k)
 		allClients.Unlock()
-		time.Sleep(heartBeatInterval)
+		time.Sleep(HeartbeatInterval)
 	}
 }
