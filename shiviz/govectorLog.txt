@@ -1,0 +1,68 @@
+(?<host>\w+) (?<clock>\{.*\})\n(?<event>.*)
+
+LBS {"LBS":1}
+Initialization Complete
+LBS {"LBS":2, "testLBS":2}
+Received AddMappings()
+LBS {"LBS":3, "testLBS":2}
+Sending AddMappings()
+LBS {"testLBS":4, "LBS":4}
+Received AddMappings()
+LBS {"testLBS":4, "LBS":5}
+Sending AddMappings()
+LBS {"testLBS":6, "LBS":6}
+Received GetPeers()
+LBS {"testLBS":6, "LBS":7}
+Sending GetPeers()
+LBS {"testLBS":8, "LBS":8}
+Received GetServers()
+LBS {"LBS":9, "testLBS":8}
+Sending GetServers()
+LBS {"LBS":10, "testLBS":10}
+Received RemoveMappings()
+LBS {"testLBS":10, "LBS":11}
+Sending RemoveMappings()
+LBS {"LBS":12, "testLBS":12}
+Received GetPeers()
+LBS {"LBS":13, "testLBS":12}
+Sending GetPeers()
+LBS {"LBS":14, "testLBS":14}
+Received GetServers()
+LBS {"LBS":15, "testLBS":14}
+Sending GetServers()
+LBS {"LBS":16, "testLBS":16}
+Received GetServers()
+testLBS {"testLBS":1}
+Initialization Complete
+testLBS {"testLBS":2}
+Sending LBS.AddMappings
+testLBS {"testLBS":3, "LBS":3}
+Received LBS.AddMappings
+testLBS {"testLBS":4, "LBS":3}
+Sending LBS.AddMappings
+testLBS {"testLBS":5, "LBS":5}
+Received LBS.AddMappings
+testLBS {"LBS":5, "testLBS":6}
+Sending LBS.GetPeers
+testLBS {"testLBS":7, "LBS":7}
+Received LBS.GetPeers
+testLBS {"LBS":7, "testLBS":8}
+Sending LBS.GetServers
+testLBS {"testLBS":9, "LBS":9}
+Received LBS.GetServers
+testLBS {"LBS":9, "testLBS":10}
+Sending LBS.RemoveMappings
+testLBS {"LBS":11, "testLBS":11}
+Received LBS.RemoveMappings
+testLBS {"LBS":11, "testLBS":12}
+Sending LBS.GetPeers
+testLBS {"testLBS":13, "LBS":13}
+Received LBS.GetPeers
+testLBS {"testLBS":14, "LBS":13}
+Sending LBS.GetServers
+testLBS {"LBS":15, "testLBS":15}
+Received LBS.GetServers
+testLBS {"testLBS":16, "LBS":15}
+Sending LBS.GetServers
+testLBS {"testLBS":17, "LBS":15}
+Not received LBS.GetServers
