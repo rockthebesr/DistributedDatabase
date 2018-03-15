@@ -12,7 +12,7 @@ type TableNamesReply struct {
 }
 
 type ServerPeers struct {
-	Servers map[string]map[string]bool
+	Servers map[string][]string
 	GoVector []byte
 }
 

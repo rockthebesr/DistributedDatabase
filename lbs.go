@@ -10,6 +10,7 @@ import (
 	"log"
 	"errors"
 	"github.com/DistributedClocks/GoVector/govec"
+
 )
 
 type AllMappings struct {
@@ -94,7 +95,7 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 		tables[tableName] = true
 	}
 
-	peers := make(map[string]map[string]bool)
+	peers := make(map[string][]string)
 
 	for tableName, listOfIps := range allMappings.all {
 
@@ -107,7 +108,7 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 		}
 
 		if _, ok := peers[tableName]; !ok {
-			peers[tableName] = make(map[string]bool)
+			peers[tableName] = []string{}
 		}
 
 		for ip, active := range listOfIps {
@@ -116,7 +117,7 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 			}
 
 			if active == true {
-				peers[tableName][ip] = true
+				peers[tableName] = append(peers[tableName], ip)
 			}
 
 			if debugMode == true {
@@ -129,6 +130,7 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 	var msg string
 	Logger.UnpackReceive("Received GetPeers()", args.GoVector, &msg)
 	buf = Logger.PrepareSend("Sending GetPeers()", "msg")
+
 
 	*reply = shared.ServerPeers{Servers: peers, GoVector: buf}
 

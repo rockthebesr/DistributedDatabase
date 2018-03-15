@@ -51,9 +51,7 @@ func main() {
 	Logger.UnpackReceive("Received LBS.GetPeers", servers.GoVector, &msg)
 
 	for tableName, listOfIps := range servers.Servers {
-		err, ips := util.KeysToArray(listOfIps)
-		util.CheckError(err)
-		fmt.Println("LBS.GetPeers table=", tableName, "ips=", ips)
+		fmt.Println("LBS.GetPeers table=", tableName, "ips=", listOfIps)
 	}
 
 	buf = Logger.PrepareSend("Sending LBS.GetServers", "msg")
@@ -92,9 +90,7 @@ func main() {
 	Logger.UnpackReceive("Received LBS.GetPeers", servers2.GoVector, &msg)
 
 	for tableName, listOfIps := range servers2.Servers {
-		err, ips := util.KeysToArray(listOfIps)
-		util.CheckError(err)
-		fmt.Println("LBS.GetPeers table=", tableName, "ips=", ips)
+		fmt.Println("LBS.GetPeers table=", tableName, "ips=", listOfIps)
 	}
 
 	var reply2 shared.TableNamesReply
