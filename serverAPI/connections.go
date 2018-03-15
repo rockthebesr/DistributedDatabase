@@ -7,6 +7,7 @@ import (
 	"net/rpc"
 	"sync"
 	"time"
+	"github.com/DistributedClocks/GoVector/govec"
 )
 
 type ServerConn int
@@ -14,6 +15,12 @@ type ServerConn int
 type Connection struct {
 	Address         string
 	RecentHeartbeat int64
+	TableMappings	map[string]bool	// key:value = tableName:ownsLock
+}
+
+type AllTableLocks struct {
+	sync.RWMutex
+	all map[string]bool	// key:value = tableName:isLocked
 }
 
 type AllConnection struct {
@@ -23,9 +30,18 @@ type AllConnection struct {
 
 var (
 	allClients        = AllConnection{all: make(map[string]*Connection)}
-	allServers        = AllConnection{all: make(map[string]*Connection)}
+	//allServers        = AllConnection{all: make(map[string]*Connection)}
 	HeartbeatInterval = 2
+	//allTableLocks	  = AllTableLocks{all: make(map[string]bool)}
+
+	//TEMPORARY, REMOVE LATER
+	allServers        = AllConnection{all: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
+	allTableLocks AllTableLocks = AllTableLocks{all: map[string]bool{"A": false, "B": false, "C": false}}
+
 )
+var GoLogger *govec.GoLog
+var SelfIP string
+
 
 /*
  RPC call for receiving heartbeats from a client or server. Sets the reply value with
@@ -68,8 +84,8 @@ func (s *ServerConn) ConnectToPeer(ip *string, success *bool) error {
 	}
 
 	allServers.all[toRegister] = &Connection{
-		toRegister,
-		time.Now().UnixNano(),
+		Address: toRegister,
+		RecentHeartbeat: time.Now().UnixNano(),
 	}
 
 	go monitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
@@ -106,8 +122,8 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 	}
 
 	allClients.all[toRegister] = &Connection{
-		toRegister,
-		time.Now().UnixNano(),
+		Address: toRegister,
+		RecentHeartbeat: time.Now().UnixNano(),
 	}
 
 	go monitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)

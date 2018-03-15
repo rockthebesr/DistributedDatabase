@@ -19,7 +19,7 @@ type AllMappings struct {
 
 type LBS int
 
-func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNameToServersReply) error {
+func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNamesReply) error {
 	allMappings.Lock()
 	defer allMappings.Unlock()
 
@@ -48,12 +48,12 @@ func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNameToS
 	var msg string
 	Logger.UnpackReceive("Received AddMappings()", args.GoVector, &msg)
 	buf = Logger.PrepareSend("Sending AddMappings()", "msg")
-	*reply = shared.TableNameToServersReply{GoVector: buf}
+	*reply = shared.TableNamesReply{GoVector: buf}
 
 	return nil
 }
 
-func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableNameToServersReply) error {
+func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableNamesReply) error {
 	allMappings.Lock()
 	defer allMappings.Unlock()
 
@@ -76,7 +76,7 @@ func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableName
 	var msg string
 	Logger.UnpackReceive("Received RemoveMappings()", args.GoVector, &msg)
 	buf = Logger.PrepareSend("Sending RemoveMappings()", "msg")
-	*reply = shared.TableNameToServersReply{GoVector: buf}
+	*reply = shared.TableNamesReply{GoVector: buf}
 
 	return nil
 }
@@ -135,7 +135,7 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 	return nil
 }
 
-func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNameToServersReply) error {
+func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesReply) error {
 	allMappings.Lock()
 	defer allMappings.Unlock()
 
@@ -183,7 +183,7 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNameToSe
 
 	buf = Logger.PrepareSend("Sending GetServers()", "msg")
 
-	*reply = shared.TableNameToServersReply{TableNameToServers: servers, GoVector: buf}
+	*reply = shared.TableNamesReply{TableNameToServers: servers, GoVector: buf}
 
 
 	return nil

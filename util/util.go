@@ -25,3 +25,22 @@ func CheckErr(err error) {
 		panic(err)
 	}
 }
+
+//Check error without fail stop
+func CheckError(err error) error {
+	if err != nil {
+		fmt.Println("Error ", err.Error())
+		return err
+	}
+	return nil
+}
+
+func KeysToArray(keysMap map[string]bool) (error, []string) {
+
+	keys := []string{}
+	for key := range keysMap {
+		keys = append(keys, key)
+	}
+
+	return nil, keys
+}

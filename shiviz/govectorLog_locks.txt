@@ -1,0 +1,54 @@
+(?<host>\w+) (?<clock>\{.*\})\n(?<event>.*)
+
+testLock {"testLock":1}
+Initialization Complete
+testLock {"testLock":2}
+Sending ServerConn.TableLock A
+testLock {"testLock":3, "serverA":3}
+Received ServerConn.TableLock A
+testLock {"serverA":3, "testLock":4}
+Sending ServerConn.TableLock A
+testLock {"testLock":5, "serverA":3}
+Not received ServerConn.TableLock A
+testLock {"testLock":6, "serverA":3}
+Sending ServerConn.TableLock B
+testLock {"testLock":7, "serverA":7}
+Received ServerConn.TableLock B
+testLock {"serverA":7, "testLock":8}
+Sending ServerConn.TableUnlock A
+testLock {"testLock":9, "serverA":9}
+Received ServerConn.TableUnlock A
+testLock {"testLock":10, "serverA":9}
+Sending ServerConn.TableLock A
+testLock {"testLock":11, "serverA":11}
+Received ServerConn.TableLock A
+testLock {"serverA":11, "testLock":12}
+Sending ServerConn.TableUnlock B
+testLock {"serverA":13, "testLock":13}
+Received ServerConn.TableUnlock B
+serverA {"serverA":1}
+Initialization Complete
+serverA {"serverA":2, "testLock":2}
+Received TableLock() A
+serverA {"serverA":3, "testLock":2}
+Sending TableLock()A
+serverA {"serverA":4, "testLock":4}
+Received TableLock() A
+serverA {"serverA":5, "testLock":4}
+Error TableLock() table not available A
+serverA {"testLock":6, "serverA":6}
+Received TableLock() B
+serverA {"testLock":6, "serverA":7}
+Sending TableLock()B
+serverA {"testLock":8, "serverA":8}
+Received TableUnlock()
+serverA {"testLock":8, "serverA":9}
+Sending TableUnlock()
+serverA {"testLock":10, "serverA":10}
+Received TableLock() A
+serverA {"serverA":11, "testLock":10}
+Sending TableLock()A
+serverA {"testLock":12, "serverA":12}
+Received TableUnlock()
+serverA {"testLock":12, "serverA":13}
+Sending TableUnlock()
