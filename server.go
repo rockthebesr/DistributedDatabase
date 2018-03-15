@@ -8,6 +8,7 @@ import (
 	"net/rpc"
 	"os"
 	"time"
+	"github.com/DistributedClocks/GoVector/govec"
 )
 
 var (
@@ -16,6 +17,8 @@ var (
 
 func main() {
 
+	fmt.Println("Starting server")
+
 	defer util.HandlePanic()
 
 	if len(os.Args[1:]) < 2 {
@@ -23,7 +26,10 @@ func main() {
 	}
 
 	localIP := os.Args[1]
-	lbsIP := os.Args[2]
+	//lbsIP := os.Args[2]
+
+	serverAPI.SelfIP = localIP
+	serverAPI.GoLogger = govec.InitGoVector("server"+localIP, "ddbsServer"+localIP)
 
 	//Would connect to DNS server to retrieve neighbors
 
