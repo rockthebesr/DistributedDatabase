@@ -9,6 +9,7 @@ import (
 	"sync"
 	"log"
 	"errors"
+	"github.com/DistributedClocks/GoVector/govec"
 )
 
 type AllMappings struct {
@@ -43,6 +44,12 @@ func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNameToS
 		}
 	}
 
+	var buf []byte
+	var msg string
+	Logger.UnpackReceive("Received AddMappings()", args.GoVector, &msg)
+	buf = Logger.PrepareSend("Sending AddMappings()", "msg")
+	*reply = shared.TableNameToServersReply{GoVector: buf}
+
 	return nil
 }
 
@@ -64,6 +71,12 @@ func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableName
 
 		}
 	}
+
+	var buf []byte
+	var msg string
+	Logger.UnpackReceive("Received RemoveMappings()", args.GoVector, &msg)
+	buf = Logger.PrepareSend("Sending RemoveMappings()", "msg")
+	*reply = shared.TableNameToServersReply{GoVector: buf}
 
 	return nil
 }
@@ -112,7 +125,12 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 		}
 	}
 
-	*reply = shared.ServerPeers{Servers: peers}
+	var buf []byte
+	var msg string
+	Logger.UnpackReceive("Received GetPeers()", args.GoVector, &msg)
+	buf = Logger.PrepareSend("Sending GetPeers()", "msg")
+
+	*reply = shared.ServerPeers{Servers: peers, GoVector: buf}
 
 	return nil
 }
@@ -152,7 +170,9 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNameToSe
 		}
 	}
 
-	*reply = shared.TableNameToServersReply{TableNameToServers: servers}
+	var buf []byte
+	var msg string
+	Logger.UnpackReceive("Received GetServers()", args.GoVector, &msg)
 
 	for table, server := range servers {
 		if server == "" {
@@ -161,6 +181,11 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNameToSe
 
 	}
 
+	buf = Logger.PrepareSend("Sending GetServers()", "msg")
+
+	*reply = shared.TableNameToServersReply{TableNameToServers: servers, GoVector: buf}
+
+
 	return nil
 }
 
@@ -168,8 +193,10 @@ var (
 	errLog      *log.Logger = log.New(os.Stderr, "[lbs] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
 	outLog      *log.Logger = log.New(os.Stderr, "[lbs] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
 	allMappings AllMappings = AllMappings{all: make(map[string]map[string]bool)}
-	debugMode = shared.DEGUGMODE
+	debugMode bool = shared.DEGUGMODE
+	Logger *govec.GoLog = govec.InitGoVector("LBS", "ddbsLBS")
 )
+
 
 func main() {
 	fmt.Println("Starting LBS")
