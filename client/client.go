@@ -74,11 +74,11 @@ func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 	localAddr = addr.String()
 	listener, err := net.Listen("tcp", localAddr)
 	util.CheckErr(err)
-	client := new(Client)
-	client.IPAddress = localAddr
-	client.LocalDirectory = ""
-	client.OtherClients = []string{}
-	rpc.RegisterName("Client", client)
+	// client := new(Client)
+	// client.IPAddress = localAddr
+	// client.LocalDirectory = ""
+	// client.OtherClients = []string{}
+	// rpc.RegisterName("Client", client)
 	go rpc.Accept(listener)
 	return true, nil
 }
@@ -91,7 +91,7 @@ func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 func NewTransaction(txn dbStructs.Transaction) (bool, error) {
 	tableNames := GetNeededTables(txn)
 	args := shared.TableNamesArg{TableNames: tableNames}
-	reply := shared.TableNameToServersReply{}
+	reply := shared.TableNamesReply{}
 	err := lbs.Call("LBS.GetServers", args, &reply)
 	util.CheckErr(err)
 	tablesToServerConns := ConnectToServers(reply.TableNameToServers)

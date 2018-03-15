@@ -21,9 +21,9 @@ import "fmt"
 import "os"
 
 func main() {
-	lbsAddr := "0.0.0.0:9990"
+	lbsAddr := "0.0.0.0:9991"
 	localIP := "0.0.0.0:9999"
-	localPath := "/tmp/dfs-dev/"
+	// localPath := "/tmp/dfs-dev/"
 
 	_, err := client.StartClient(lbsAddr, localIP)
 	if checkError(err) != nil {
