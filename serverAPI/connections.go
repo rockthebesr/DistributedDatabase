@@ -28,7 +28,7 @@ var (
 )
 
 /*
- RPC call for receiving heartbeats from a client or server. Sets the reply value with
+ RPC call for receiving heartbeats from a server. Sets the reply value with
  true or false, depending on if the heatbeat was received. Returns an error if an
  un-registered address was given.
 
@@ -41,10 +41,32 @@ func (s *ServerConn) ServerHeartbeatProtocol(addr *string, ignored *bool) error 
 	defer allServers.Unlock()
 
 	if _, ok := allServers.all[*addr]; !ok {
-		return errors.New("Unknown address -> " + *addr)
+		return errors.New("Unknown server address -> " + *addr)
 	}
 
 	allServers.all[*addr].RecentHeartbeat = time.Now().UnixNano()
+
+	return nil
+}
+
+/*
+ RPC call for receiving heartbeats from a client . Sets the reply value with
+ true or false, depending on if the heatbeat was received. Returns an error if an
+ un-registered address was given.
+
+ @Param addr -> a pointer to a string representation of the ip sending a heartbeat
+ @Param ignored -> a pointer to a boolean representing whether the heartbeat was received
+ @Return error
+*/
+func (s *ServerConn) ClientHeartbeatProtocol(addr *string, ignored *bool) error {
+	allClients.Lock()
+	defer allClients.Unlock()
+
+	if _, ok := allClients.all[*addr]; !ok {
+		return errors.New("Unknown client address -> " + *addr)
+	}
+
+	allClients.all[*addr].RecentHeartbeat = time.Now().UnixNano()
 
 	return nil
 }
