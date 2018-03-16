@@ -30,9 +30,12 @@ type AllTableLocks struct {
 }
 
 var (
+	SelfIP				string
+	GoLogger 			*govec.GoLog
+
 	allClients        = AllConnection{All: make(map[string]*Connection)}
 	//AllServers        = AllConnection{All: make(map[string]*Connection)}
-	HeartbeatInterval = 20
+	HeartbeatInterval = 2
 	//allTableLocks	  = AllTableLocks{All: make(map[string]bool)}
 
 	//TEMPORARY, REMOVE LATER
@@ -40,8 +43,6 @@ var (
 	allTableLocks = AllTableLocks{all: map[string]bool{"A": false, "B": false, "C": false}}
 
 )
-var GoLogger *govec.GoLog
-var SelfIP string
 
 
 type DisconnectedError string
@@ -64,6 +65,7 @@ func (s *ServerConn) ServerHeartbeatProtocol(addr *string, ignored *bool) error 
 	defer AllServers.Unlock()
 
 	if _, ok := AllServers.All[*addr]; !ok {
+		fmt.Println("hello", AllServers.All)
 		return errors.New("Unknown server address -> " + *addr)
 	}
 
@@ -118,17 +120,17 @@ func (s *ServerConn) ConnectToPeer(ip *string, success *bool) (err error) {
 		nil,
 	}
 
-	go MonitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Millisecond*2)
-
 	fmt.Printf("Got Register from %s\n", toRegister)
 
-	conn, err := rpc.Dial("tcp", *ip)
+	go MonitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
+
+	conn, err := rpc.Dial("tcp", toRegister)
 	util.CheckErr(err)
 
-	var ignored bool
-	go SendHeartbeats(conn, *ip, ignored)
-
 	fmt.Printf("Established bi-directional RPC to server %s\n", toRegister)
+
+	var ignored bool
+	go SendHeartbeats(conn, SelfIP, ignored)
 
 	*success = true
 
@@ -159,7 +161,7 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 		nil,
 	}
 
-	go monitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Millisecond*2)
+	go monitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
 
 	fmt.Printf("Got Register from %s\n", toRegister)
 
@@ -176,8 +178,7 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 
 func SendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 	var err error
-	time.Sleep(time.Second)
-	for range time.Tick(time.Millisecond * time.Duration(HeartbeatInterval)) {
+	for range time.Tick(time.Second * time.Duration(HeartbeatInterval)) {
 		err = conn.Call("ServerConn.ServerHeartbeatProtocol", &localIP, &ignored)
 		util.CheckErr(err)
 	}

@@ -10,9 +10,9 @@ To run testLock.go
 
 To test heartbeats between servers
     go run lbs.go "127.0.0.1:8080"
-    go run server.go "127.0.0.1:1234" "127.0.0.1:8080"
-    go run server.go "127.0.0.1:17500" "127.0.0.1:8080"
-    go run server.go "127.0.0.1:17603" "127.0.0.1:8080"
+    go run server.go "127.0.0.1:8080"
+    go run server.go "127.0.0.1:8080"
+    go run server.go "127.0.0.1:8080"
 
 To use GoVector, download it, follow instructions on the project GitHub
 

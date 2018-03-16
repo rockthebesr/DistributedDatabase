@@ -22,15 +22,19 @@ func main() {
 
 	fmt.Println("Starting server")
 
-	if len(os.Args[1:]) < 2 {
+	if len(os.Args[1:]) < 1 {
 		panic("Incorrect number of arguments given")
 	}
 
-	localIP := os.Args[1]
-	lbsIP := os.Args[2]
+	lbsIP := os.Args[1]
 
-	serverAPI.SelfIP = localIP
-	serverAPI.GoLogger = govec.InitGoVector("server"+localIP, "ddbsServer"+localIP)
+	//Open listener
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	util.CheckErr(err)
+	defer listener.Close()
+
+	serverAPI.SelfIP = listener.Addr().String()
+	serverAPI.GoLogger = govec.InitGoVector("server"+serverAPI.SelfIP, "ddbsServer"+serverAPI.SelfIP)
 
 	//Connect to the load balancer
 	lbsConn, err := rpc.Dial("tcp", lbsIP)
@@ -41,7 +45,7 @@ func main() {
 	// Register the server & tables with the LBS
 	var reply shared.TableNamesReply
 	args := shared.TableNamesArg{
-		ServerIpAddress: localIP,
+		ServerIpAddress: serverAPI.SelfIP,
 		TableNames: []string{"A", "B", "C"},
 	}
 	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
@@ -51,7 +55,7 @@ func main() {
 	//Retrieve neighbors
 	var servers shared.ServerPeers
 	args3 := shared.TableNamesArg{
-		ServerIpAddress: localIP,
+		ServerIpAddress: serverAPI.SelfIP,
 		TableNames: []string{"A", "B", "C"},
 	}
 	err = lbsConn.Call("LBS.GetPeers", &args3, &servers)
@@ -71,13 +75,13 @@ func main() {
 		var success bool
 		conn, err := rpc.Dial("tcp", neighbour)
 		util.CheckErr(err)
-		err = conn.Call("ServerConn.ConnectToPeer", &localIP, &success)
+		err = conn.Call("ServerConn.ConnectToPeer", &serverAPI.SelfIP, &success)
 		util.CheckErr(err)
 
 		if success {
 			// Sends heartbeats between connections
 			ignored := false
-			go serverAPI.SendHeartbeats(conn, localIP, ignored)
+			go serverAPI.SendHeartbeats(conn, serverAPI.SelfIP, ignored)
 		}
 		fmt.Println("Connected to neighbour: ", neighbour)
 
@@ -93,7 +97,7 @@ func main() {
 			nil,
 		}
 
-		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Millisecond*2)
+		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Second*2)
 
 		serverAPI.AllServers.Unlock()
 	}
@@ -106,14 +110,9 @@ func main() {
 	rpcServer.RegisterName("ServerConn", serverConn)
 	rpcServer.RegisterName("TableCommands", tableCommands)
 
-	listener, err := net.Listen("tcp", localIP)
-	util.CheckErr(err)
-	defer listener.Close()
-
 	for {
 		accept, err := listener.Accept()
 		util.CheckErr(err)
 		go rpcServer.ServeConn(accept)
-		fmt.Println("listening")
 	}
 }
