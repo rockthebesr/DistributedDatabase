@@ -9,6 +9,7 @@ import (
 	"os"
 	"github.com/DistributedClocks/GoVector/govec"
 	"./shared"
+	"time"
 )
 
 var (
@@ -34,6 +35,7 @@ func main() {
 	//Connect to the load balancer
 	lbsConn, err := rpc.Dial("tcp", lbsIP)
 	util.CheckErr(err)
+	defer lbsConn.Close()
 	fmt.Println("Connected to load balancer")
 
 	// Register the server & tables with the LBS
@@ -45,7 +47,6 @@ func main() {
 	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
 	util.CheckErr(err)
 	fmt.Println("Registered server and tables to load balancer")
-
 
 	//Retrieve neighbors
 	var servers shared.ServerPeers
@@ -70,7 +71,6 @@ func main() {
 		var success bool
 		conn, err := rpc.Dial("tcp", neighbour)
 		util.CheckErr(err)
-		defer conn.Close()
 		err = conn.Call("ServerConn.ConnectToPeer", &localIP, &success)
 		util.CheckErr(err)
 
@@ -80,6 +80,22 @@ func main() {
 			go serverAPI.SendHeartbeats(conn, localIP, ignored)
 		}
 		fmt.Println("Connected to neighbour: ", neighbour)
+
+		serverAPI.AllServers.Lock()
+
+		if _, exists := serverAPI.AllServers.All[neighbour]; exists {
+			panic("IP already registered")
+		}
+
+		serverAPI.AllServers.All[neighbour] = &serverAPI.Connection{
+			neighbour,
+			time.Now().UnixNano(),
+			nil,
+		}
+
+		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Millisecond*2)
+
+		serverAPI.AllServers.Unlock()
 	}
 
 	// Listens for other connections

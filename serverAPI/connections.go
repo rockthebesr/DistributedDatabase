@@ -20,7 +20,7 @@ type Connection struct {
 
 type AllConnection struct {
 	sync.RWMutex
-	all map[string]*Connection
+	All map[string]*Connection
 }
 
 type AllTableLocks struct {
@@ -30,14 +30,14 @@ type AllTableLocks struct {
 }
 
 var (
-	allClients        = AllConnection{all: make(map[string]*Connection)}
-	//allServers        = AllConnection{all: make(map[string]*Connection)}
-	HeartbeatInterval = 2
-	//allTableLocks	  = AllTableLocks{all: make(map[string]bool)}
+	allClients        = AllConnection{All: make(map[string]*Connection)}
+	//AllServers        = AllConnection{All: make(map[string]*Connection)}
+	HeartbeatInterval = 20
+	//allTableLocks	  = AllTableLocks{All: make(map[string]bool)}
 
 	//TEMPORARY, REMOVE LATER
-	allServers        = AllConnection{all: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
-	allTableLocks  	  = AllTableLocks{all: map[string]bool{"A": false, "B": false, "C": false}}
+	AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
+	allTableLocks = AllTableLocks{all: map[string]bool{"A": false, "B": false, "C": false}}
 
 )
 var GoLogger *govec.GoLog
@@ -60,14 +60,14 @@ func (e DisconnectedError) Error() string {
  @Return error
 */
 func (s *ServerConn) ServerHeartbeatProtocol(addr *string, ignored *bool) error {
-	allServers.Lock()
-	defer allServers.Unlock()
+	AllServers.Lock()
+	defer AllServers.Unlock()
 
-	if _, ok := allServers.all[*addr]; !ok {
+	if _, ok := AllServers.All[*addr]; !ok {
 		return errors.New("Unknown server address -> " + *addr)
 	}
 
-	allServers.all[*addr].RecentHeartbeat = time.Now().UnixNano()
+	AllServers.All[*addr].RecentHeartbeat = time.Now().UnixNano()
 
 	return nil
 }
@@ -85,11 +85,11 @@ func (s *ServerConn) ClientHeartbeatProtocol(addr *string, ignored *bool) error 
 	allClients.Lock()
 	defer allClients.Unlock()
 
-	if _, ok := allClients.all[*addr]; !ok {
+	if _, ok := allClients.All[*addr]; !ok {
 		return errors.New("Unknown client address -> " + *addr)
 	}
 
-	allClients.all[*addr].RecentHeartbeat = time.Now().UnixNano()
+	allClients.All[*addr].RecentHeartbeat = time.Now().UnixNano()
 
 	return nil
 }
@@ -104,27 +104,29 @@ func (s *ServerConn) ClientHeartbeatProtocol(addr *string, ignored *bool) error 
  @Return error
 */
 func (s *ServerConn) ConnectToPeer(ip *string, success *bool) (err error) {
-	allServers.Lock()
-	defer allServers.Unlock()
+	AllServers.Lock()
+	defer AllServers.Unlock()
 
 	toRegister := *ip
-	if _, exists := allServers.all[toRegister]; exists {
+	if _, exists := AllServers.All[toRegister]; exists {
 		return errors.New("IP already registered")
 	}
 
-	allServers.all[toRegister] = &Connection{
+	AllServers.All[toRegister] = &Connection{
 		toRegister,
 		time.Now().UnixNano(),
 		nil,
 	}
 
-	go monitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
+	go MonitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Millisecond*2)
 
 	fmt.Printf("Got Register from %s\n", toRegister)
 
 	conn, err := rpc.Dial("tcp", *ip)
 	util.CheckErr(err)
-	defer conn.Close()
+
+	var ignored bool
+	go SendHeartbeats(conn, *ip, ignored)
 
 	fmt.Printf("Established bi-directional RPC to server %s\n", toRegister)
 
@@ -147,17 +149,17 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 	defer allClients.Unlock()
 
 	toRegister := *ip
-	if _, exists := allClients.all[toRegister]; exists {
+	if _, exists := allClients.All[toRegister]; exists {
 		return errors.New("IP already registered")
 	}
 
-	allClients.all[toRegister] = &Connection{
+	allClients.All[toRegister] = &Connection{
 		toRegister,
 		time.Now().UnixNano(),
 		nil,
 	}
 
-	go monitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
+	go monitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Millisecond*2)
 
 	fmt.Printf("Got Register from %s\n", toRegister)
 
@@ -174,7 +176,8 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 
 func SendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 	var err error
-	for range time.Tick(time.Second * time.Duration(HeartbeatInterval)) {
+	time.Sleep(time.Second)
+	for range time.Tick(time.Millisecond * time.Duration(HeartbeatInterval)) {
 		err = conn.Call("ServerConn.ServerHeartbeatProtocol", &localIP, &ignored)
 		util.CheckErr(err)
 	}
@@ -188,17 +191,17 @@ func SendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
  @Param k -> ip address to monitor
  @Param HeartbeatInterval -> time between heartbeats, before a peer is considered disconnected
 */
-func monitorPeers(k string, HeartbeatInterval time.Duration) {
+func MonitorPeers(k string, HeartbeatInterval time.Duration) {
 	for {
-		allServers.Lock()
-		if time.Now().UnixNano()-allServers.all[k].RecentHeartbeat > int64(HeartbeatInterval) {
+		AllServers.Lock()
+		if time.Now().UnixNano()-AllServers.All[k].RecentHeartbeat > int64(HeartbeatInterval) {
 			fmt.Printf("%s timed out\n", k)
-			delete(allServers.all, k)
-			allServers.Unlock()
+			delete(AllServers.All, k)
+			AllServers.Unlock()
 			return
 		}
 		fmt.Printf("%s is alive\n", k)
-		allServers.Unlock()
+		AllServers.Unlock()
 		time.Sleep(HeartbeatInterval)
 	}
 }
@@ -213,9 +216,9 @@ func monitorPeers(k string, HeartbeatInterval time.Duration) {
 func monitorClients(k string, HeartbeatInterval time.Duration) {
 	for {
 		allClients.Lock()
-		if time.Now().UnixNano()-allClients.all[k].RecentHeartbeat > int64(HeartbeatInterval) {
+		if time.Now().UnixNano()-allClients.All[k].RecentHeartbeat > int64(HeartbeatInterval) {
 			fmt.Printf("%s timed out\n", k)
-			delete(allClients.all, k)
+			delete(allClients.All, k)
 			allClients.Unlock()
 			return
 		}

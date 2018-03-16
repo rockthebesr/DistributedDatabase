@@ -23,15 +23,15 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 		return errors.New("Table not available")
 	}
 
-	allServers.Lock()
-	defer allServers.Unlock()
+	AllServers.Lock()
+	defer AllServers.Unlock()
 
 	allTableLocks.all[args.TableName] = true	// sets table to locked
 
 	// Call TableUnavailable
 	// if error is returned, cannot lock table, undo locking and return error
 	// else
-	allServers.all[SelfIP].TableMappings[args.TableName] = true	// sets the owner of the lock to self
+	AllServers.All[SelfIP].TableMappings[args.TableName] = true // sets the owner of the lock to self
 
 
 	buf = GoLogger.PrepareSend("Sending TableLock()"+args.TableName, "msg")
@@ -54,18 +54,18 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 		return errors.New("Table does not exist")
 	}
 
-	if allServers.all[SelfIP].TableMappings[args.TableName] == false {
+	if AllServers.All[SelfIP].TableMappings[args.TableName] == false {
 		buf = GoLogger.PrepareSend("Error TableLock() not lock owner", "msg")
 		return errors.New("Table not lock owner")
 	}
 
-	allServers.Lock()
-	defer allServers.Unlock()
+	AllServers.Lock()
+	defer AllServers.Unlock()
 
 	// Call TableAvailable
 	// if error is returned, cannot unlock table, return error
 	// else
-	allServers.all[SelfIP].TableMappings[args.TableName] = false	// unsets the owner of the lock
+	AllServers.All[SelfIP].TableMappings[args.TableName] = false // unsets the owner of the lock
 
 	allTableLocks.all[args.TableName] = false	// sets table to unlocked
 
