@@ -1,20 +1,31 @@
 package dbStructs
 
+import "sync"
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //Db structures
 
 //Table - A table in the db
 type Table struct {
-	//TOOD
+	sync.RWMutex
+	Name string
+	Rows map[string]Row
 }
 
 //Row -  A row in a db table
 type Row struct {
-	//TODO
+	Key string
+	Data map[string]string
+}
+
+type TableAccessArgs struct {
+	TableName string
+	Key string
+	TableRow Row
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-//Transacion structures
+//Transaction structures
 
 //Transaction -  A transaction, which consists of multiple Operations
 type Transaction struct {

@@ -18,14 +18,15 @@ type Connection struct {
 	TableMappings	map[string]bool	// key:value = tableName:ownsLock
 }
 
-type AllTableLocks struct {
-	sync.RWMutex
-	all map[string]bool	// key:value = tableName:isLocked
-}
-
 type AllConnection struct {
 	sync.RWMutex
 	all map[string]*Connection
+}
+
+type AllTableLocks struct {
+	sync.RWMutex
+	all map[string]bool	// key:value = tableName:isLocked
+	TableNames	[]string
 }
 
 var (
@@ -36,12 +37,18 @@ var (
 
 	//TEMPORARY, REMOVE LATER
 	allServers        = AllConnection{all: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
-	allTableLocks AllTableLocks = AllTableLocks{all: map[string]bool{"A": false, "B": false, "C": false}}
+	allTableLocks  	  = AllTableLocks{all: map[string]bool{"A": false, "B": false, "C": false}}
 
 )
 var GoLogger *govec.GoLog
 var SelfIP string
 
+
+type DisconnectedError string
+
+func (e DisconnectedError) Error() string {
+	return fmt.Sprintf("Not connnected to server [%s]", string(e))
+}
 
 /*
  RPC call for receiving heartbeats from a server. Sets the reply value with
@@ -96,7 +103,7 @@ func (s *ServerConn) ClientHeartbeatProtocol(addr *string, ignored *bool) error 
  @Param success -> a pointer to a boolean representing whether connection succeeded
  @Return error
 */
-func (s *ServerConn) ConnectToPeer(ip *string, success *bool) error {
+func (s *ServerConn) ConnectToPeer(ip *string, success *bool) (err error) {
 	allServers.Lock()
 	defer allServers.Unlock()
 
@@ -106,8 +113,9 @@ func (s *ServerConn) ConnectToPeer(ip *string, success *bool) error {
 	}
 
 	allServers.all[toRegister] = &Connection{
-		Address: toRegister,
-		RecentHeartbeat: time.Now().UnixNano(),
+		toRegister,
+		time.Now().UnixNano(),
+		nil,
 	}
 
 	go monitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
@@ -144,8 +152,9 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 	}
 
 	allClients.all[toRegister] = &Connection{
-		Address: toRegister,
-		RecentHeartbeat: time.Now().UnixNano(),
+		toRegister,
+		time.Now().UnixNano(),
+		nil,
 	}
 
 	go monitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
@@ -161,6 +170,15 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 	*success = true
 
 	return nil
+}
+
+func SendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
+	var err error
+	for range time.Tick(time.Second * time.Duration(HeartbeatInterval)) {
+		err = conn.Call("ServerConn.ServerHeartbeatProtocol", &localIP, &ignored)
+		util.CheckErr(err)
+	}
+	return err
 }
 
 /*

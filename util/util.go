@@ -35,12 +35,21 @@ func CheckError(err error) error {
 	return nil
 }
 
-func KeysToArray(keysMap map[string]bool) (error, []string) {
-
-	keys := []string{}
-	for key := range keysMap {
-		keys = append(keys, key)
+func KeysToArray(keysMap map[string]bool) []string {
+	var keys []string
+	for key, _ := range keysMap {
+		if !InArray(key, keys) {
+			keys = append(keys, key)
+		}
 	}
+	return keys
+}
 
-	return nil, keys
+func InArray(value string, array []string) bool {
+	for _, k := range array {
+		if k == value {
+			return true
+		}
+	}
+	return false
 }
