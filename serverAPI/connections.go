@@ -169,9 +169,8 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 	util.CheckErr(err)
 
 	fmt.Printf("Established bi-directional RPC to server %s\n", toRegister)
-
 	var ignored bool
-	go SendServerHeartbeats(conn, SelfIP, ignored)
+	go SendClientHeartbeats(conn, SelfIP, ignored)
 
 	*success = true
 
@@ -234,7 +233,7 @@ func SendServerHeartbeats(conn *rpc.Client, localIP string, ignored bool) error 
 func SendClientHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 	var err error
 	for range time.Tick(time.Second * time.Duration(HeartbeatInterval)) {
-		err = conn.Call("ServerConn.ClientHeartbeatProtocol", &localIP, &ignored)
+		err = conn.Call("ClientConn.ReceiveServerIP", &localIP, &ignored)
 		util.CheckErr(err)
 	}
 	return err

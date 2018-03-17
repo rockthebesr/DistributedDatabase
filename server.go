@@ -1,15 +1,16 @@
 package main
 
 import (
-	"./serverAPI"
-	"./util"
 	"fmt"
 	"net"
 	"net/rpc"
 	"os"
-	"github.com/DistributedClocks/GoVector/govec"
-	"./shared"
 	"time"
+
+	"./serverAPI"
+	"./shared"
+	"./util"
+	"github.com/DistributedClocks/GoVector/govec"
 )
 
 var (
@@ -32,7 +33,7 @@ func main() {
 	serverAPI.CreateTable("B")
 
 	//Open listener
-	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	listener, err := net.Listen("tcp", "127.0.0.1:54345")
 	util.CheckErr(err)
 	defer listener.Close()
 
@@ -52,7 +53,7 @@ func main() {
 	var reply shared.TableNamesReply
 	args := shared.TableNamesArg{
 		ServerIpAddress: serverAPI.SelfIP,
-		TableNames: tableNames,
+		TableNames:      tableNames,
 	}
 	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
 	util.CheckErr(err)
@@ -62,7 +63,7 @@ func main() {
 	var servers shared.ServerPeers
 	args3 := shared.TableNamesArg{
 		ServerIpAddress: serverAPI.SelfIP,
-		TableNames: tableNames,
+		TableNames:      tableNames,
 	}
 	err = lbsConn.Call("LBS.GetPeers", &args3, &servers)
 	util.CheckErr(err)

@@ -1,8 +1,10 @@
 package serverAPI
 
 import (
-	"../shared"
 	"errors"
+	"fmt"
+
+	"../shared"
 )
 
 func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.TableLockingReply) error {
@@ -26,18 +28,17 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 	AllServers.Lock()
 	defer AllServers.Unlock()
 
-	allTableLocks.all[args.TableName] = true	// sets table to locked
+	allTableLocks.all[args.TableName] = true // sets table to locked
 
 	// Call TableUnavailable
 	// if error is returned, cannot lock table, undo locking and return error
 	// else
 	AllServers.All[SelfIP].TableMappings[args.TableName] = true // sets the owner of the lock to self
 
-
 	buf = GoLogger.PrepareSend("Sending TableLock()"+args.TableName, "msg")
 
 	*reply = shared.TableLockingReply{GoVector: buf}
-
+	fmt.Println("Table locked: " + args.TableName)
 	return nil
 }
 
@@ -67,7 +68,7 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 	// else
 	AllServers.All[SelfIP].TableMappings[args.TableName] = false // unsets the owner of the lock
 
-	allTableLocks.all[args.TableName] = false	// sets table to unlocked
+	allTableLocks.all[args.TableName] = false // sets table to unlocked
 
 	buf = GoLogger.PrepareSend("Sending TableUnlock()", "msg")
 
