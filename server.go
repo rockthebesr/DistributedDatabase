@@ -43,10 +43,12 @@ func main() {
 	fmt.Println("Connected to load balancer")
 
 	// Register the server & tables with the LBS
+	tableNames := serverAPI.GetTableNames()
+
 	var reply shared.TableNamesReply
 	args := shared.TableNamesArg{
 		ServerIpAddress: serverAPI.SelfIP,
-		TableNames: []string{"A", "B", "C"},
+		TableNames: tableNames,
 	}
 	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
 	util.CheckErr(err)
@@ -56,7 +58,7 @@ func main() {
 	var servers shared.ServerPeers
 	args3 := shared.TableNamesArg{
 		ServerIpAddress: serverAPI.SelfIP,
-		TableNames: []string{"A", "B", "C"},
+		TableNames: tableNames,
 	}
 	err = lbsConn.Call("LBS.GetPeers", &args3, &servers)
 	util.CheckErr(err)
@@ -81,7 +83,7 @@ func main() {
 		if success {
 			// Sends heartbeats between connections
 			ignored := false
-			go serverAPI.SendHeartbeats(conn, serverAPI.SelfIP, ignored)
+			go serverAPI.SendServerHeartbeats(conn, serverAPI.SelfIP, ignored)
 		}
 		fmt.Println("Connected to neighbour: ", neighbour)
 

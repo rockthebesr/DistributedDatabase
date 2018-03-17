@@ -113,3 +113,10 @@ func UpdateTable() (err error) {
 func CommitTable() (err error) {
 	return nil
 }
+
+func GetTableNames() (names []string) {
+	for key, _ := range Tables {
+		names = append(names, key)
+	}
+	return names
+}
