@@ -13,5 +13,15 @@ To test heartbeats between servers
     go run server.go "127.0.0.1:8080" "127.0.0.1:54321"
     go run server.go "127.0.0.1:1234" "127.0.0.1:54321"
 
+To test app.go (connections between server, lbs and clients)
+    In another terminal:
+    go run lbs.go 0.0.0.0:9990
+
+    In another terminal:
+    go run server.go 0.0.0.0:9991 0.0.0.0:9990
+
+    In another terminal
+    go run app.go
+
 To use GoVector, download it, follow instructions on the project GitHub
 

@@ -19,9 +19,10 @@ import "./client"
 
 import "fmt"
 import "os"
+import "./dbStructs"
 
 func main() {
-	lbsAddr := "0.0.0.0:9991"
+	lbsAddr := "0.0.0.0:9990"
 	localIP := "0.0.0.0:9999"
 	// localPath := "/tmp/dfs-dev/"
 
@@ -30,6 +31,12 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	opType := dbStructs.Select
+	opTableName := "A"
+	opKey := "test"
+	op := dbStructs.Operation{Type: opType, TableName: opTableName, Key: opKey}
+	txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op}}
+	client.NewTransaction(txn)
 }
 
 // If error is non-nil, print it out and return it.

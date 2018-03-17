@@ -92,7 +92,7 @@ func NewTransaction(txn dbStructs.Transaction) (bool, error) {
 	tableNames := GetNeededTables(txn)
 	args := shared.TableNamesArg{TableNames: tableNames}
 	reply := shared.TableNamesReply{}
-	err := lbs.Call("LBS.GetServers", args, &reply)
+	err := lbs.Call("LBS.GetServers", &args, &reply)
 	util.CheckErr(err)
 	tablesToServerConns := ConnectToServers(reply.TableNameToServers)
 	result, err := ExecuteTransaction(txn, tablesToServerConns)
