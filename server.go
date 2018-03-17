@@ -23,11 +23,12 @@ func main() {
 
 	fmt.Println("Starting server")
 
-	if len(os.Args[1:]) < 1 {
-		panic("Incorrect number of arguments given. Provide the LBS ip:port")
+	if len(os.Args[1:]) < 2 {
+		panic("Incorrect number of arguments given")
 	}
 
 	lbsIP := os.Args[1]
+	serverIP := os.Args[2]
 
 	// TODO provide as cmd arguments
 	serverAPI.CreateTable("A")
@@ -35,7 +36,7 @@ func main() {
 	serverAPI.CreateTable("C")
 
 	//Open listener
-	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	listener, err := net.Listen("tcp", serverIP)
 	util.CheckErr(err)
 	defer listener.Close()
 
