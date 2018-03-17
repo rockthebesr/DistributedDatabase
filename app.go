@@ -22,8 +22,8 @@ import "os"
 import "./dbStructs"
 
 func main() {
-	lbsAddr := "0.0.0.0:9990"
-	localIP := "0.0.0.0:9999"
+	lbsAddr := "127.0.0.1:54321"
+	localIP := "127.0.0.1:9999"
 	// localPath := "/tmp/dfs-dev/"
 
 	_, err := client.StartClient(lbsAddr, localIP)

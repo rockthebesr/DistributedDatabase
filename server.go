@@ -23,18 +23,20 @@ func main() {
 
 	fmt.Println("Starting server")
 
-	if len(os.Args[1:]) < 1 {
+	if len(os.Args[1:]) < 2 {
 		panic("Incorrect number of arguments given")
 	}
 
 	lbsIP := os.Args[1]
+	serverIP := os.Args[2]
 
+	// TODO provide as cmd arguments
 	serverAPI.CreateTable("A")
 	serverAPI.CreateTable("B")
 	serverAPI.CreateTable("C")
 
 	//Open listener
-	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	listener, err := net.Listen("tcp", serverIP)
 	util.CheckErr(err)
 	defer listener.Close()
 
@@ -64,24 +66,32 @@ func main() {
 	}
 	serverAPI.AllServers.Unlock()
 
+	var buf []byte
+	var msg string
+	buf = serverAPI.GoLogger.PrepareSend("Sending AddMappings to LBS", "msg")
 	var reply shared.TableNamesReply
 	args := shared.TableNamesArg{
 		ServerIpAddress: serverAPI.SelfIP,
 		TableNames:      tableNames,
+		GoVector:		 buf,
 	}
 	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
 	util.CheckErr(err)
 	fmt.Println("Registered server and tables to load balancer")
+	serverAPI.GoLogger.UnpackReceive("Received AddMappings from LBS", args.GoVector, &msg)
 
 	//Retrieve neighbors
+	buf = serverAPI.GoLogger.PrepareSend("Sending GetPeers to LBS", "msg")
 	var servers shared.ServerPeers
 	args3 := shared.TableNamesArg{
 		ServerIpAddress: serverAPI.SelfIP,
 		TableNames:      tableNames,
+		GoVector:		 buf,
 	}
 	err = lbsConn.Call("LBS.GetPeers", &args3, &servers)
 	util.CheckErr(err)
 	fmt.Println("Neighbours retrieved")
+	serverAPI.GoLogger.UnpackReceive("Received GetPeers from LBS", args.GoVector, &msg)
 
 	for _, listOfIps := range servers.Servers {
 		for _, ip := range listOfIps {
@@ -97,9 +107,11 @@ func main() {
 		conn, err := rpc.Dial("tcp", neighbour)
 		util.CheckErr(err)
 
+		buf = serverAPI.GoLogger.PrepareSend("Sending ConnectToPeer to Server", "msg")
 		connArgs := serverAPI.ConnectionArgs{serverAPI.SelfIP, tableNames}
 		err = conn.Call("ServerConn.ConnectToPeer", &connArgs, &success)
 		util.CheckErr(err)
+		serverAPI.GoLogger.UnpackReceive("Received ConnectToPeer from Server", args.GoVector, &msg)
 
 		if success {
 			// Sends heartbeats between connections
