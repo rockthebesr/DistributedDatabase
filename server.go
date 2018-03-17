@@ -9,6 +9,7 @@ import (
 	"os"
 	"github.com/DistributedClocks/GoVector/govec"
 	"./shared"
+	"time"
 )
 
 var (
@@ -21,37 +22,47 @@ func main() {
 
 	fmt.Println("Starting server")
 
-	if len(os.Args[1:]) < 2 {
+	if len(os.Args[1:]) < 1 {
 		panic("Incorrect number of arguments given")
 	}
 
-	localIP := os.Args[1]
-	lbsIP := os.Args[2]
+	lbsIP := os.Args[1]
 
-	serverAPI.SelfIP = localIP
-	serverAPI.GoLogger = govec.InitGoVector("server"+localIP, "ddbsServer"+localIP)
+	serverAPI.CreateTable("A")
+	serverAPI.CreateTable("B")
+
+	//Open listener
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	util.CheckErr(err)
+	defer listener.Close()
+
+	serverAPI.SelfIP = listener.Addr().String()
+	serverAPI.GoLogger = govec.InitGoVector("server"+serverAPI.SelfIP, "ddbsServer"+serverAPI.SelfIP)
 
 	//Connect to the load balancer
 	lbsConn, err := rpc.Dial("tcp", lbsIP)
 	util.CheckErr(err)
+	defer lbsConn.Close()
 	fmt.Println("Connected to load balancer")
 
 	// Register the server & tables with the LBS
+	tableNames := serverAPI.GetTableNames()
+	fmt.Println("Server has tables: ", tableNames)
+
 	var reply shared.TableNamesReply
 	args := shared.TableNamesArg{
-		ServerIpAddress: localIP,
-		TableNames: []string{"A", "B", "C"},
+		ServerIpAddress: serverAPI.SelfIP,
+		TableNames: tableNames,
 	}
 	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
 	util.CheckErr(err)
 	fmt.Println("Registered server and tables to load balancer")
 
-
 	//Retrieve neighbors
 	var servers shared.ServerPeers
 	args3 := shared.TableNamesArg{
-		ServerIpAddress: localIP,
-		TableNames: []string{"A", "B", "C"},
+		ServerIpAddress: serverAPI.SelfIP,
+		TableNames: tableNames,
 	}
 	err = lbsConn.Call("LBS.GetPeers", &args3, &servers)
 	util.CheckErr(err)
@@ -70,16 +81,31 @@ func main() {
 		var success bool
 		conn, err := rpc.Dial("tcp", neighbour)
 		util.CheckErr(err)
-		defer conn.Close()
-		err = conn.Call("ServerConn.ConnectToPeer", &localIP, &success)
+		err = conn.Call("ServerConn.ConnectToPeer", &serverAPI.SelfIP, &success)
 		util.CheckErr(err)
 
 		if success {
 			// Sends heartbeats between connections
 			ignored := false
-			go serverAPI.SendHeartbeats(conn, localIP, ignored)
+			go serverAPI.SendServerHeartbeats(conn, serverAPI.SelfIP, ignored)
 		}
 		fmt.Println("Connected to neighbour: ", neighbour)
+
+		serverAPI.AllServers.Lock()
+
+		if _, exists := serverAPI.AllServers.All[neighbour]; exists {
+			panic("IP already registered")
+		}
+
+		serverAPI.AllServers.All[neighbour] = &serverAPI.Connection{
+			neighbour,
+			time.Now().UnixNano(),
+			nil,
+		}
+
+		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Second*2)
+
+		serverAPI.AllServers.Unlock()
 	}
 
 	// Listens for other connections
@@ -90,14 +116,9 @@ func main() {
 	rpcServer.RegisterName("ServerConn", serverConn)
 	rpcServer.RegisterName("TableCommands", tableCommands)
 
-	listener, err := net.Listen("tcp", localIP)
-	util.CheckErr(err)
-	defer listener.Close()
-
 	for {
 		accept, err := listener.Accept()
 		util.CheckErr(err)
 		go rpcServer.ServeConn(accept)
-		fmt.Println("listening")
 	}
 }

@@ -3,6 +3,7 @@ package serverAPI
 import (
 	"../dbStructs"
 	"fmt"
+	"errors"
 )
 
 type TableCommands int
@@ -10,7 +11,7 @@ type TableCommands int
 const NumColumns = 3
 
 var (
-	Tables = make(map[string]dbStructs.Table, 2)
+	Tables = map[string]dbStructs.Table{}
 	Columns = [NumColumns]string{"name", "age", "gender"}
 )
 
@@ -111,5 +112,20 @@ func UpdateTable() (err error) {
 }
 
 func CommitTable() (err error) {
+	return nil
+}
+
+func GetTableNames() (names []string) {
+	for key, _ := range Tables {
+		names = append(names, key)
+	}
+	return names
+}
+
+func CreateTable(name string) (err error) {
+	if len(Tables) == 2 {
+		return errors.New("Maximum number of tables already created")
+	}
+	Tables[name] = dbStructs.Table{name, map[string]dbStructs.Row{}}
 	return nil
 }

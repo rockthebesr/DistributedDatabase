@@ -9,9 +9,10 @@ To run testLock.go
     go run testLock.go "127.0.0.1:54345"
 
 To test heartbeats between servers
-    go run lbs.go "127.0.0.1:54321"
-    go run server.go "127.0.0.1:8080" "127.0.0.1:54321"
-    go run server.go "127.0.0.1:1234" "127.0.0.1:54321"
+    go run lbs.go "127.0.0.1:8080"
+    go run server.go "127.0.0.1:8080"
+    go run server.go "127.0.0.1:8080"
+    go run server.go "127.0.0.1:8080"
 
 To test app.go (connections between server, lbs and clients)
     In another terminal:
