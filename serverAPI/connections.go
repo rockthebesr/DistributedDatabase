@@ -1,12 +1,13 @@
 package serverAPI
 
 import (
-	"../util"
 	"errors"
 	"fmt"
 	"net/rpc"
 	"sync"
 	"time"
+
+	"../util"
 	"github.com/DistributedClocks/GoVector/govec"
 )
 
@@ -15,7 +16,7 @@ type ServerConn int
 type Connection struct {
 	Address         string
 	RecentHeartbeat int64
-	TableMappings	map[string]bool	// key:value = tableName:ownsLock
+	TableMappings   map[string]bool // key:value = tableName:ownsLock
 }
 
 type AllConnection struct {
@@ -25,13 +26,13 @@ type AllConnection struct {
 
 type AllTableLocks struct {
 	sync.RWMutex
-	all map[string]bool	// key:value = tableName:isLocked
-	TableNames	[]string
+	all        map[string]bool // key:value = tableName:isLocked
+	TableNames []string
 }
 
 var (
-	SelfIP				string
-	GoLogger 			*govec.GoLog
+	SelfIP   string
+	GoLogger *govec.GoLog
 
 	HeartbeatInterval = 2
 
@@ -43,7 +44,6 @@ var (
 	AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
 	allTableLocks = AllTableLocks{all: map[string]bool{"A": false, "B": false, "C": false}}
 )
-
 
 type DisconnectedError string
 
@@ -163,7 +163,7 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 
 	fmt.Printf("Got Register from %s\n", toRegister)
 
-	go MonitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
+	go MonitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
 
 	conn, err := rpc.Dial("tcp", toRegister)
 	util.CheckErr(err)
