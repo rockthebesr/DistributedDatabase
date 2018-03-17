@@ -28,6 +28,9 @@ func main() {
 
 	lbsIP := os.Args[1]
 
+	serverAPI.CreateTable("A")
+	serverAPI.CreateTable("B")
+
 	//Open listener
 	listener, err := net.Listen("tcp", "127.0.0.1:0")
 	util.CheckErr(err)
@@ -44,6 +47,7 @@ func main() {
 
 	// Register the server & tables with the LBS
 	tableNames := serverAPI.GetTableNames()
+	fmt.Println("Server has tables: ", tableNames)
 
 	var reply shared.TableNamesReply
 	args := shared.TableNamesArg{

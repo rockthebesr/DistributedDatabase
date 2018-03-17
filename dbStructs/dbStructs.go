@@ -1,13 +1,10 @@
 package dbStructs
 
-import "sync"
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 //Db structures
 
 //Table - A table in the db
 type Table struct {
-	sync.RWMutex
 	Name string
 	Rows map[string]Row
 }
