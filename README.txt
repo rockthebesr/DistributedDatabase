@@ -10,19 +10,35 @@ To run testLock.go
 
 To test heartbeats between servers
     go run lbs.go "127.0.0.1:8080"
-    go run server.go "127.0.0.1:8080"
-    go run server.go "127.0.0.1:8080"
-    go run server.go "127.0.0.1:8080"
+    go run server.go "127.0.0.1:8080" "127.0.0.1:8081"
+    go run server.go "127.0.0.1:8080" "127.0.0.1:8082"
+    go run server.go "127.0.0.1:8080" "127.0.0.1:8083"
 
 To test app.go (connections between server, lbs and clients)
     In another terminal:
     go run lbs.go 0.0.0.0:9990
 
     In another terminal:
-    go run server.go 0.0.0.0:9990
+    go run server.go 0.0.0.0:9990 127.0.0.1:12345
 
     In another terminal
     go run app.go
 
 To use GoVector, download it, follow instructions on the project GitHub
 
+To test server, lbs, and client together:
+    go run lbs.go "127.0.0.1:54321"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
+    go run app.go
+
+    sed -i '3,$d' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsLBS-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer127.0.0.1:12345-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer127.0.0.1:12346-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsClient127.0.0.1:9999-Log.txt' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:12345/X/g' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:12346/Y/g' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:9999//g' shiviz/govectorLog.txt
+
+    visit https://bestchai.bitbucket.io/shiviz/ and load shiviz/govectorLog.txt

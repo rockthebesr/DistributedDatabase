@@ -1,66 +1,74 @@
 (?<host>\w+) (?<clock>\{.*\})\n(?<event>.*)
 
-serverB {"serverB":1}
+LBS {"LBS":1}
 Initialization Complete
-serverB {"serverB":2}
+LBS {"serverX":2, "LBS":2}
+Received AddMappings()
+LBS {"LBS":3, "serverX":2}
+Sending AddMappings()
+LBS {"LBS":4, "serverX":4}
+Received GetPeers()
+LBS {"LBS":5, "serverX":4}
+Sending GetPeers()
+LBS {"LBS":6, "serverX":4, "serverY":2}
+Received AddMappings()
+LBS {"LBS":7, "serverX":4, "serverY":2}
+Sending AddMappings()
+LBS {"LBS":8, "serverX":4, "serverY":4}
+Received GetPeers()
+LBS {"LBS":9, "serverX":4, "serverY":4}
+Sending GetPeers()
+LBS {"LBS":10, "serverX":4, "serverY":4, "client":2}
+Received GetServers()
+LBS {"LBS":11, "serverX":4, "serverY":4, "client":2}
+Sending GetServers()
+serverX {"serverX":1}
+Initialization Complete
+serverX {"serverX":2}
 Sending AddMappings to LBS
-serverB {"serverB":3}
+serverX {"serverX":3, "LBS":3}
 Received AddMappings from LBS
-serverB {"serverB":4}
+serverX {"serverX":4, "LBS":3}
 Sending GetPeers to LBS
-serverB {"serverB":5}
+serverX {"serverX":5, "LBS":5}
 Received GetPeers from LBS
+serverX {"serverX":6, "LBS":9, "serverY":6}
+Received ConnectToPeer from Server
+serverX {"serverX":7, "LBS":9, "serverY":6}
+Sending ConnectToPeer back
+serverX {"LBS":11, "serverY":6, "client":4, "serverX":8}
+Received ClientConnect from Client
+serverX {"LBS":11, "serverY":6, "client":4, "serverX":9}
+Sending ClientConnect back
+serverX {"serverY":6, "client":6, "serverX":10, "LBS":11}
+Received TableLock() A
+serverX {"serverX":11, "LBS":11, "serverY":6, "client":6}
+Sending TableLock()A
+serverY {"serverY":1}
+Initialization Complete
+serverY {"serverY":2}
+Sending AddMappings to LBS
+serverY {"serverY":3, "LBS":7, "serverX":4}
+Received AddMappings from LBS
+serverY {"serverY":4, "LBS":7, "serverX":4}
+Sending GetPeers to LBS
+serverY {"serverY":5, "LBS":9, "serverX":4}
+Received GetPeers from LBS
+serverY {"serverY":6, "LBS":9, "serverX":4}
+Sending ConnectToPeer to Server
+serverY {"serverY":7, "LBS":9, "serverX":7}
+Received ConnectToPeer from Server
 client {"client":1}
 Initialization Complete
 client {"client":2}
 Send LBS.GetServers
-client {"client":3, "LBS":11, "serverB":4, "serverA":4}
+client {"client":3, "LBS":11, "serverX":4, "serverY":4}
 Received LBS.GetServers
-client {"client":4, "LBS":11, "serverB":4, "serverA":4}
+client {"client":4, "LBS":11, "serverX":4, "serverY":4}
 Send ServerConn.ClientConnect
-client {"client":5, "LBS":11, "serverB":4, "serverA":4}
+client {"serverX":9, "serverY":6, "client":5, "LBS":11}
 Established connection to server
-client {"LBS":11, "serverB":4, "serverA":4, "client":6}
+client {"LBS":11, "serverX":9, "serverY":6, "client":6}
 Send ServerConn.TableLock
-client {"LBS":11, "serverB":4, "serverA":4, "client":7}
+client {"serverX":11, "serverY":6, "client":7, "LBS":11}
 Received result
-LBS {"LBS":1}
-Initialization Complete
-LBS {"LBS":2, "serverB":2}
-Received AddMappings()
-LBS {"LBS":3, "serverB":2}
-Sending AddMappings()
-LBS {"LBS":4, "serverB":4}
-Received GetPeers()
-LBS {"serverB":4, "LBS":5}
-Sending GetPeers()
-LBS {"LBS":6, "serverB":4, "serverA":2}
-Received AddMappings()
-LBS {"LBS":7, "serverB":4, "serverA":2}
-Sending AddMappings()
-LBS {"serverA":4, "LBS":8, "serverB":4}
-Received GetPeers()
-LBS {"LBS":9, "serverB":4, "serverA":4}
-Sending GetPeers()
-LBS {"LBS":10, "serverB":4, "serverA":4, "client":2}
-Received GetServers()
-LBS {"client":2, "LBS":11, "serverB":4, "serverA":4}
-Sending GetServers()
-serverA {"serverA":1}
-Initialization Complete
-serverA {"serverA":2}
-Sending AddMappings to LBS
-serverA {"serverA":3}
-Received AddMappings from LBS
-serverA {"serverA":4}
-Sending GetPeers to LBS
-serverA {"serverA":5}
-Received GetPeers from LBS
-serverA {"serverA":6}
-Sending ConnectToPeer to Server
-serverA {"serverA":7}
-Received ConnectToPeer from Server
-serverA {"client":6, "serverA":8, "LBS":11, "serverB":4}
-Received TableLock() A
-serverA {"LBS":11, "serverB":4, "client":6, "serverA":9}
-Sending TableLock()A

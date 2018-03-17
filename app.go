@@ -22,9 +22,9 @@ import "os"
 import "./dbStructs"
 
 func main() {
+	// TODO provide as cmd arguments
 	lbsAddr := "127.0.0.1:54321"
 	localIP := "127.0.0.1:9999"
-	// localPath := "/tmp/dfs-dev/"
 
 	_, err := client.StartClient(lbsAddr, localIP)
 	if checkError(err) != nil {

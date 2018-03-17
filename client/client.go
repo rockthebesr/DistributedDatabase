@@ -10,6 +10,7 @@ import (
 	"../dbStructs"
 	"../shared"
 	"../util"
+	"../serverAPI"
 	"github.com/arcaneiceman/GoVector/govec"
 )
 
@@ -50,21 +51,23 @@ func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 	result := map[string]*rpc.Client{}
 	for t, sAddr := range tToServerIPs {
 
-		Logger.PrepareSend("Send ServerConn.ClientConnect", "msg")
+		buf := Logger.PrepareSend("Send ServerConn.ClientConnect", "msg")
 		conn, err := rpc.Dial("tcp", sAddr)
 		util.CheckErr(err)
-		var succ bool
-		conn.Call("ServerConn.ClientConnect", &localAddr, &succ)
+		var succ serverAPI.ConnectionReply
+		args := serverAPI.ConnectionArgs{IP: localAddr, GoVector: buf}
+		conn.Call("ServerConn.ClientConnect", &args, &succ)
 
-		if succ {
+		var msg string
+		if succ.Success {
 			fmt.Printf("Established bi-directional RPC to server %s\n", sAddr)
 			result[t] = conn
-			Logger.UnpackReceive("Established connection to server", []byte{1}, "msg")
+			Logger.UnpackReceive("Established connection to server", succ.GoVector, &msg)
 			go sendHeartbeats(conn, localAddr, false)
 			AllServers.RecentHeartbeat[sAddr] = time.Now().UnixNano()
 			go MonitorServers(sAddr, time.Duration(HeartbeatInterval)*time.Second*2)
 		} else {
-			Logger.UnpackReceive("Cannot establish connection to server", nil, "msg")
+			Logger.UnpackReceive("Cannot establish connection to server", succ.GoVector, &msg)
 		}
 	}
 	return result
@@ -101,7 +104,7 @@ func MonitorServers(k string, HeartbeatInterval time.Duration) {
 func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 	AllServers := new(AllConnection)
 	AllServers.RecentHeartbeat = map[string]int64{}
-	Logger = govec.InitGoVector("client"+localIP, "ddbsClient"+localIP)
+	Logger = govec.InitGoVector("client"+localIP, "shiviz/ddbsClient"+localIP)
 	//Connect to lbs
 	loadBalancer, err := rpc.Dial("tcp", lbsIPAddr)
 	util.CheckErr(err)

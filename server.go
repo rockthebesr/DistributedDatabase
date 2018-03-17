@@ -41,7 +41,7 @@ func main() {
 	defer listener.Close()
 
 	serverAPI.SelfIP = listener.Addr().String()
-	serverAPI.GoLogger = govec.InitGoVector("server"+serverAPI.SelfIP, "ddbsServer"+serverAPI.SelfIP)
+	serverAPI.GoLogger = govec.InitGoVector("server"+serverAPI.SelfIP, "shiviz/ddbsServer"+serverAPI.SelfIP)
 
 	//Connect to the load balancer
 	lbsConn, err := rpc.Dial("tcp", lbsIP)
@@ -78,7 +78,7 @@ func main() {
 	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
 	util.CheckErr(err)
 	fmt.Println("Registered server and tables to load balancer")
-	serverAPI.GoLogger.UnpackReceive("Received AddMappings from LBS", args.GoVector, &msg)
+	serverAPI.GoLogger.UnpackReceive("Received AddMappings from LBS", reply.GoVector, &msg)
 
 	//Retrieve neighbors
 	buf = serverAPI.GoLogger.PrepareSend("Sending GetPeers to LBS", "msg")
@@ -91,7 +91,7 @@ func main() {
 	err = lbsConn.Call("LBS.GetPeers", &args3, &servers)
 	util.CheckErr(err)
 	fmt.Println("Neighbours retrieved")
-	serverAPI.GoLogger.UnpackReceive("Received GetPeers from LBS", args.GoVector, &msg)
+	serverAPI.GoLogger.UnpackReceive("Received GetPeers from LBS", servers.GoVector, &msg)
 
 	for _, listOfIps := range servers.Servers {
 		for _, ip := range listOfIps {
@@ -103,17 +103,17 @@ func main() {
 
 	// Connects to other servers
 	for _, neighbour := range peerIPs {
-		var success bool
+		var success serverAPI.ConnectionReply
 		conn, err := rpc.Dial("tcp", neighbour)
 		util.CheckErr(err)
 
 		buf = serverAPI.GoLogger.PrepareSend("Sending ConnectToPeer to Server", "msg")
-		connArgs := serverAPI.ConnectionArgs{serverAPI.SelfIP, tableNames}
+		connArgs := serverAPI.ConnectionArgs{IP: serverAPI.SelfIP, TableNames: tableNames, GoVector: buf}
 		err = conn.Call("ServerConn.ConnectToPeer", &connArgs, &success)
 		util.CheckErr(err)
-		serverAPI.GoLogger.UnpackReceive("Received ConnectToPeer from Server", args.GoVector, &msg)
+		serverAPI.GoLogger.UnpackReceive("Received ConnectToPeer from Server", success.GoVector, &msg)
 
-		if success {
+		if success.Success {
 			// Sends heartbeats between connections
 			ignored := false
 			go serverAPI.SendServerHeartbeats(conn, serverAPI.SelfIP, ignored)

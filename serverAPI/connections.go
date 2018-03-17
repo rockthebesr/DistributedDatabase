@@ -16,6 +16,12 @@ type ServerConn int
 type ConnectionArgs struct {
 	IP string
 	TableNames []string
+	GoVector []byte
+}
+
+type ConnectionReply struct {
+	Success bool
+	GoVector []byte
 }
 
 type Connection struct {
@@ -110,7 +116,7 @@ func (s *ServerConn) ClientHeartbeatProtocol(addr *string, ignored *bool) error 
  @Param success -> a pointer to a boolean representing whether connection succeeded
  @Return error
 */
-func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *bool) (err error) {
+func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *ConnectionReply) (err error) {
 	AllServers.Lock()
 	defer AllServers.Unlock()
 
@@ -143,7 +149,13 @@ func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *bool) (err err
 	var ignored bool
 	go SendServerHeartbeats(conn, SelfIP, ignored)
 
-	*success = true
+	var buf []byte
+	var msg string
+	GoLogger.UnpackReceive("Received ConnectToPeer from Server", args.GoVector, &msg)
+	buf = GoLogger.PrepareSend("Sending ConnectToPeer back", "msg")
+
+
+	*success = ConnectionReply{Success: true, GoVector: buf}
 
 	return nil
 }
@@ -157,11 +169,11 @@ func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *bool) (err err
  @Param success -> a pointer to a boolean representing whether connection succeeded
  @Return error
 */
-func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
+func (s *ServerConn) ClientConnect(ip *ConnectionArgs, success *ConnectionReply) error {
 	AllClients.Lock()
 	defer AllClients.Unlock()
 
-	toRegister := *ip
+	toRegister := (*ip).IP
 	if _, exists := AllClients.All[toRegister]; exists {
 		return errors.New("IP already registered")
 	}
@@ -184,7 +196,14 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 	var ignored bool
 	go SendClientHeartbeats(conn, SelfIP, ignored)
 
-	*success = true
+	var buf []byte
+	var msg string
+	GoLogger.UnpackReceive("Received ClientConnect from Client", ip.GoVector, &msg)
+	buf = GoLogger.PrepareSend("Sending ClientConnect back", "msg")
+
+
+	*success = ConnectionReply{Success: true, GoVector: buf}
+
 
 	return nil
 }

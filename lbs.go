@@ -196,7 +196,7 @@ var (
 	outLog      *log.Logger = log.New(os.Stderr, "[lbs] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
 	allMappings AllMappings = AllMappings{all: make(map[string]map[string]bool)}
 	debugMode bool = shared.DEGUGMODE
-	Logger *govec.GoLog = govec.InitGoVector("LBS", "ddbsLBS")
+	Logger *govec.GoLog = govec.InitGoVector("LBS", "shiviz/ddbsLBS")
 )
 
 
