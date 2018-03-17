@@ -168,10 +168,10 @@ func (s *ServerConn) ClientConnect(ip *string, success *bool) error {
 	conn, err := rpc.Dial("tcp", toRegister)
 	util.CheckErr(err)
 
-	fmt.Printf("Established bi-directional RPC to server %s\n", toRegister)
+	fmt.Printf("Established bi-directional RPC to client %s\n", toRegister)
 
 	var ignored bool
-	go SendServerHeartbeats(conn, SelfIP, ignored)
+	go SendClientHeartbeats(conn, SelfIP, ignored)
 
 	*success = true
 

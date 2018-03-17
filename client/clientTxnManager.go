@@ -7,7 +7,7 @@ import (
 
 	"../dbStructs"
 	"../shared"
-	"../util/"
+	"../util"
 )
 
 var HeartbeatInterval = 2
