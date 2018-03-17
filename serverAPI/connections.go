@@ -13,6 +13,11 @@ import (
 
 type ServerConn int
 
+type ConnectionArgs struct {
+	IP string
+	TableNames []string
+}
+
 type Connection struct {
 	Address         string
 	RecentHeartbeat int64
@@ -37,11 +42,11 @@ var (
 	HeartbeatInterval = 2
 
 	AllClients = AllConnection{All: make(map[string]*Connection)}
-	//AllServers        = AllConnection{All: make(map[string]*Connection)}
+	AllServers        = AllConnection{All: make(map[string]*Connection)}
 	//allTableLocks	  = AllTableLocks{All: make(map[string]bool)}
 
 	//TEMPORARY, REMOVE LATER
-	AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
+	//AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
 	allTableLocks = AllTableLocks{all: map[string]bool{"A": false, "B": false, "C": false}}
 )
 
@@ -105,11 +110,17 @@ func (s *ServerConn) ClientHeartbeatProtocol(addr *string, ignored *bool) error 
  @Param success -> a pointer to a boolean representing whether connection succeeded
  @Return error
 */
-func (s *ServerConn) ConnectToPeer(ip *string, success *bool) (err error) {
+func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *bool) (err error) {
 	AllServers.Lock()
 	defer AllServers.Unlock()
 
-	toRegister := *ip
+	toRegister := args.IP
+
+	tablesAndLocks := make(map[string]bool)
+	for _, tableName := range args.TableNames {
+		tablesAndLocks[tableName] = false
+	}
+
 	if _, exists := AllServers.All[toRegister]; exists {
 		return errors.New("IP already registered")
 	}
@@ -117,7 +128,7 @@ func (s *ServerConn) ConnectToPeer(ip *string, success *bool) (err error) {
 	AllServers.All[toRegister] = &Connection{
 		toRegister,
 		time.Now().UnixNano(),
-		nil,
+		tablesAndLocks,
 	}
 
 	fmt.Printf("Got Register from %s\n", toRegister)

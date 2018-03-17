@@ -31,9 +31,10 @@ func main() {
 
 	serverAPI.CreateTable("A")
 	serverAPI.CreateTable("B")
+	serverAPI.CreateTable("C")
 
 	//Open listener
-	listener, err := net.Listen("tcp", "127.0.0.1:54345")
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
 	util.CheckErr(err)
 	defer listener.Close()
 
@@ -49,6 +50,19 @@ func main() {
 	// Register the server & tables with the LBS
 	tableNames := serverAPI.GetTableNames()
 	fmt.Println("Server has tables: ", tableNames)
+
+	tablesAndLocks := make(map[string]bool)
+	for _, tableName := range tableNames {
+		tablesAndLocks[tableName] = false
+	}
+
+	serverAPI.AllServers.Lock()
+	serverAPI.AllServers.All[serverAPI.SelfIP] = &serverAPI.Connection{
+		serverAPI.SelfIP,
+		time.Now().UnixNano(),
+		tablesAndLocks,
+	}
+	serverAPI.AllServers.Unlock()
 
 	var reply shared.TableNamesReply
 	args := shared.TableNamesArg{
@@ -82,7 +96,9 @@ func main() {
 		var success bool
 		conn, err := rpc.Dial("tcp", neighbour)
 		util.CheckErr(err)
-		err = conn.Call("ServerConn.ConnectToPeer", &serverAPI.SelfIP, &success)
+
+		connArgs := serverAPI.ConnectionArgs{serverAPI.SelfIP, tableNames}
+		err = conn.Call("ServerConn.ConnectToPeer", &connArgs, &success)
 		util.CheckErr(err)
 
 		if success {
