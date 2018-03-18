@@ -1,8 +1,9 @@
 package serverAPI
 
 import (
-	"../dbStructs"
 	"fmt"
+
+	"../dbStructs"
 )
 
 type TableCommands int
@@ -10,13 +11,13 @@ type TableCommands int
 const NumColumns = 3
 
 var (
-	Tables = map[string]dbStructs.Table{}
+	Tables  = map[string]dbStructs.Table{}
 	Columns = [NumColumns]string{"name", "age", "gender"}
 )
 
 /*
  Errors
- */
+*/
 type RowDoesNotExistError string
 
 func (e RowDoesNotExistError) Error() string {
@@ -49,7 +50,7 @@ func (e InvalidColumnNames) Error() string {
 
 /*
  Functions
- */
+*/
 func (t *TableCommands) SetRow(args dbStructs.TableAccessArgs, success *bool) (err error) {
 	if _, ok := Tables[args.TableName]; !ok {
 		return TableDoesNotExistError(args.TableName)
@@ -74,7 +75,7 @@ func (t *TableCommands) SetRow(args dbStructs.TableAccessArgs, success *bool) (e
 	return err
 }
 
-func (t *TableCommands) GetRow(args dbStructs.TableAccessArgs, tableRow *dbStructs.Row ) (err error) {
+func (t *TableCommands) GetRow(args dbStructs.TableAccessArgs, tableRow *dbStructs.Row) (err error) {
 	if _, ok := Tables[args.TableName]; !ok {
 		return TableDoesNotExistError(args.TableName)
 	}

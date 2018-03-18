@@ -11,14 +11,14 @@ type Table struct {
 
 //Row -  A row in a db table
 type Row struct {
-	Key string
+	Key  string
 	Data map[string]string
 }
 
 type TableAccessArgs struct {
 	TableName string
-	Key string
-	TableRow Row
+	Key       string
+	TableRow  Row
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

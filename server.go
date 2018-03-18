@@ -67,7 +67,7 @@ func main() {
 	serverAPI.AllServers.All[serverAPI.SelfIP] = &serverAPI.Connection{
 		serverAPI.SelfIP,
 		time.Now().UnixNano(),
-		nil,								// no handle for self
+		nil, // no handle for self
 		tablesAndLocks,
 	}
 	serverAPI.AllServers.Unlock()
@@ -79,7 +79,7 @@ func main() {
 	args := shared.TableNamesArg{
 		ServerIpAddress: serverAPI.SelfIP,
 		TableNames:      tableNames,
-		GoVector:		 buf,
+		GoVector:        buf,
 	}
 	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
 	util.CheckErr(err)
@@ -92,7 +92,7 @@ func main() {
 	args3 := shared.TableNamesArg{
 		ServerIpAddress: serverAPI.SelfIP,
 		TableNames:      tableNames,
-		GoVector:		 buf,
+		GoVector:        buf,
 	}
 	err = lbsConn.Call("LBS.GetPeers", &args3, &servers)
 	util.CheckErr(err)
@@ -150,10 +150,12 @@ func main() {
 	// Listens for other connections
 	serverConn := new(serverAPI.ServerConn)
 	tableCommands := new(serverAPI.TableCommands)
+	txnManager := new(serverAPI.TransactionManager)
 
 	rpcServer := rpc.NewServer()
 	rpcServer.RegisterName("ServerConn", serverConn)
 	rpcServer.RegisterName("TableCommands", tableCommands)
+	rpcServer.RegisterName("TransactionManager", txnManager)
 
 	for {
 		accept, err := listener.Accept()
