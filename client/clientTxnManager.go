@@ -51,6 +51,7 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 	//wg.Add(len(tableToServers))
 
 	tables := shared.KeysToArray_2(tableToServers)
+	fmt.Println("lockTables tables=", tables)
 
 	// testing deadlock
 	if TxnManagerSession.TestDeadLock_ReverseTableList {
@@ -66,7 +67,7 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 		recentTime := time.Now().UnixNano()
 
 		for range time.Tick(time.Millisecond * time.Duration(DeadlockRetryInterval)) {
-			if time.Now().UnixNano() - recentTime > int64(DeadlockTimeout*1000*1000000) {
+			if time.Now().UnixNano() - recentTime > int64(DeadlockTimeout*1000*1000000) {	// 2 seconds
 				for toUnlockTable, _ := range tableToServers {
 					if _, ok := TxnManagerSession.AcquiredLocks[toUnlockTable]; !ok {
 						delete(tableToServers, toUnlockTable)
@@ -77,7 +78,7 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 				return false, shared.TableUnavailableError(table)
 			}
 
-			buf := Logger.PrepareSend("Send ServerConn.TableLock ", "msg")
+			buf := Logger.PrepareSend("Send ServerConn.TableLock "+table, "msg")
 			args := shared.TableLockingArg{localAddr, table, buf}
 			var reply shared.TableLockingReply
 			var msg string
@@ -124,13 +125,17 @@ func unlockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 	for table, server := range tableToServers {
 		//go func(table string, server *rpc.Client) {
 			//defer wg.Done()
-			buf := Logger.PrepareSend("Send ServerConn.TableUnlock", "msg")
+			buf := Logger.PrepareSend("Send ServerConn.TableUnlock "+table, "msg")
 			args := shared.TableLockingArg{localAddr, table, buf}
 			var reply shared.TableLockingReply
 			var msg string
 			err := server.Call("ServerConn.TableUnlock", &args, &reply)
 			shared.CheckError(err)
-			Logger.UnpackReceive("Received result", reply.GoVector, &msg)
+			if err != nil {
+				Logger.UnpackReceive("Error "+table, reply.GoVector, &msg)
+			} else {
+				Logger.UnpackReceive("Received result "+table, reply.GoVector, &msg)
+			}
 			//replies <- reply.Success
 			if reply.Success == false {
 				return false, nil

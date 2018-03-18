@@ -26,7 +26,7 @@ To test app.go (connections between server, lbs and clients)
 
 To use GoVector, download it, follow instructions on the project GitHub
 
-To test server, lbs, and client together:
+To test server, lbs, and client together (single client):
     go run lbs.go "127.0.0.1:54321"
     go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
     go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
@@ -42,3 +42,23 @@ To test server, lbs, and client together:
     sed -i 's/127.0.0.1:9999//g' shiviz/govectorLog.txt
 
     visit https://bestchai.bitbucket.io/shiviz/ and load shiviz/govectorLog.txt
+
+To test strict 2-phase locking protocol with deadlocks:
+    go run lbs.go "127.0.0.1:54321"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
+    go run app_deadlock.go "127.0.0.1:54321" "127.0.0.1:9999" "true" "true"
+    go run app_deadlock.go "127.0.0.1:54321" "127.0.0.1:9998" "false" "false"
+
+    sed -i '3,$d' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsLBS-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer127.0.0.1:12345-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer127.0.0.1:12346-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsClient127.0.0.1:9999-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsClient127.0.0.1:9998-Log.txt' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:12345/X/g' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:12346/Y/g' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:9999/M/g' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:9998/N/g' shiviz/govectorLog.txt
+
+    shiviz using shiviz/govectorLog.txt

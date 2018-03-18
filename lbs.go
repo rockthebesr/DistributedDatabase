@@ -183,6 +183,7 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesRep
 
 	}
 
+	fmt.Println("GetServers", servers)
 	buf = Logger.PrepareSend("Sending GetServers()", "msg")
 
 	*reply = shared.TableNamesReply{TableNameToServers: servers, GoVector: buf}

@@ -6,7 +6,7 @@ import (
 	"net/rpc"
 	"sync"
 	"time"
-
+	//"../serverAPI"
 	"../dbStructs"
 	"../shared"
 	"github.com/arcaneiceman/GoVector/govec"
@@ -55,14 +55,25 @@ func GetNeededTables(txn dbStructs.Transaction) []string {
 //ConnectToServers - connect to servers and return map of tableNames -> server conns
 func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 	result := map[string]*rpc.Client{}
+	connectedIP := map[string]*rpc.Client{}
+
+	//fmt.Println("ServerConn", serverAPI.HeartbeatInterval)
+	// TODO do not connect to same server more than once
 	for t, sAddr := range tToServerIPs {
 
-		buf := Logger.PrepareSend("Send ServerConn.ClientConnect", "msg")
+		buf := Logger.PrepareSend("Send ServerConn.ClientConnect"+sAddr, "msg")
 		conn, err := rpc.Dial("tcp", sAddr)
 		shared.CheckErr(err)
 		var succ shared.ConnectionReply
 		args := shared.ConnectionArgs{IP: localAddr, GoVector: buf}
-		conn.Call("ServerConn.ClientConnect "+sAddr, &args, &succ)
+		err = conn.Call("ServerConn.ClientConnect", &args, &succ)
+
+		shared.CheckError(err)
+		if err != nil {
+			if _, ok := connectedIP[sAddr]; ok {
+				result[t] = connectedIP[sAddr]
+			}
+		}
 
 		var msg string
 		if succ.Success {
@@ -72,10 +83,17 @@ func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 			go sendHeartbeats(conn, localAddr, false)
 			AllServers.RecentHeartbeat[sAddr] = time.Now().UnixNano()
 			go MonitorServers(sAddr, time.Duration(HeartbeatInterval)*time.Second*2)
+			connectedIP[sAddr] = conn
 		} else {
+			if _, ok := connectedIP[sAddr]; ok {
+				result[t] = connectedIP[sAddr]
+			}
 			Logger.UnpackReceive("Cannot establish connection to server "+sAddr, succ.GoVector, &msg)
 		}
 	}
+
+	fmt.Println("ConnectToServers done", result)
+	// TODO before returning, make sure all servers are still connected?
 	return result
 }
 
@@ -140,6 +158,8 @@ func NewTransaction(txn dbStructs.Transaction) (bool, error) {
 	var msg string
 	//Get needed tables
 	tableNames := GetNeededTables(txn)
+
+	fmt.Println("NewTransaction tables=", tableNames)
 
 	//Get needed servers
 	buf := Logger.PrepareSend("Send LBS.GetServers", "msg")
