@@ -78,7 +78,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 
 	buf = GoLogger.PrepareSend("Sending TableLock()"+args.TableName, "msg")
 
-	*reply = shared.TableLockingReply{GoVector: buf}
+	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
 	fmt.Println("Table locked: " + args.TableName)
 	return nil
 }
@@ -156,7 +156,7 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 
 	buf = GoLogger.PrepareSend("Sending TableUnlock()", "msg")
 
-	*reply = shared.TableLockingReply{GoVector: buf}
+	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
 
 	return nil
 }

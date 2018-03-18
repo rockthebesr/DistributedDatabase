@@ -2,12 +2,13 @@ package client
 
 import (
 	"net/rpc"
-	"sync"
+	//"sync"
 	"time"
 
 	"../dbStructs"
 	"../shared"
 	"../util"
+	"fmt"
 )
 
 var HeartbeatInterval = 2
@@ -20,6 +21,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	if !isLocked {
 		return false, err
 	}
+	fmt.Println("done lockTables")
 	//TODO send all operations to servers? or call one operation at a time
 	// for _, operation := range txn.Operations {
 	// table := operation.TableName
@@ -27,17 +29,24 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	// }
 
 	//End of transaction
+
+	fmt.Println("unlockTables")
+	isUnlocked, err := unlockTables(tableToServers)
+	if !isUnlocked {
+		return false, err
+	}
+
 	return true, nil
 }
 
 func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
-	replies := make(chan bool)
-	var wg sync.WaitGroup
-	wg.Add(len(tableToServers))
+	//replies := make(chan bool)
+	//var wg sync.WaitGroup
+	//wg.Add(len(tableToServers))
 
 	for table, server := range tableToServers {
-		go func(table string, server *rpc.Client) {
-			defer wg.Done()
+		//go func(table string, server *rpc.Client) {
+			//defer wg.Done()
 			buf := Logger.PrepareSend("Send ServerConn.TableLock", "msg")
 			args := shared.TableLockingArg{localAddr, table, buf}
 			var reply shared.TableLockingReply
@@ -45,18 +54,56 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 			err := server.Call("ServerConn.TableLock", &args, &reply)
 			util.CheckError(err)
 			Logger.UnpackReceive("Received result", reply.GoVector, &msg)
-			replies <- reply.Success
+			//replies <- reply.Success
+			if reply.Success == false {
+				return false, nil
+			}
 
-		}(table, server)
+		//}(table, server)
 	}
 
-	wg.Wait()
+	//wg.Wait()
 	// If one of the replies is false, return false
-	for reply := range replies {
-		if !reply {
-			return false, nil
-		}
+	//for reply := range replies {
+	//	if !reply {
+	//		return false, nil
+	//	}
+	//}
+
+	return true, nil
+
+}
+
+func unlockTables(tableToServers map[string]*rpc.Client) (bool, error) {
+	//replies := make(chan bool)
+	//var wg sync.WaitGroup
+	//wg.Add(len(tableToServers))
+
+	for table, server := range tableToServers {
+		//go func(table string, server *rpc.Client) {
+			//defer wg.Done()
+			buf := Logger.PrepareSend("Send ServerConn.TableUnlock", "msg")
+			args := shared.TableLockingArg{localAddr, table, buf}
+			var reply shared.TableLockingReply
+			var msg string
+			err := server.Call("ServerConn.TableUnlock", &args, &reply)
+			util.CheckError(err)
+			Logger.UnpackReceive("Received result", reply.GoVector, &msg)
+			//replies <- reply.Success
+			if reply.Success == false {
+				return false, nil
+			}
+
+		//}(table, server)
 	}
+
+	//wg.Wait()
+	// If one of the replies is false, return false
+	//for reply := range replies {
+	//	if !reply {
+	//		return false, nil
+	//	}
+	//}
 
 	return true, nil
 

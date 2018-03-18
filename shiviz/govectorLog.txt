@@ -8,19 +8,19 @@ LBS {"LBS":3, "serverX":2}
 Sending AddMappings()
 LBS {"LBS":4, "serverX":4}
 Received GetPeers()
-LBS {"serverX":4, "LBS":5}
+LBS {"LBS":5, "serverX":4}
 Sending GetPeers()
-LBS {"serverX":4, "LBS":6, "serverY":2}
+LBS {"LBS":6, "serverX":4, "serverY":2}
 Received AddMappings()
-LBS {"serverX":4, "LBS":7, "serverY":2}
+LBS {"LBS":7, "serverX":4, "serverY":2}
 Sending AddMappings()
-LBS {"serverX":4, "LBS":8, "serverY":4}
+LBS {"serverX":4, "serverY":4, "LBS":8}
 Received GetPeers()
-LBS {"serverX":4, "LBS":9, "serverY":4}
+LBS {"serverX":4, "serverY":4, "LBS":9}
 Sending GetPeers()
-LBS {"serverX":4, "LBS":10, "serverY":4, "client":2}
+LBS {"serverX":4, "serverY":4, "LBS":10, "client":2}
 Received GetServers()
-LBS {"serverY":4, "client":2, "serverX":4, "LBS":11}
+LBS {"serverX":4, "serverY":4, "LBS":11, "client":2}
 Sending GetServers()
 serverX {"serverX":1}
 Initialization Complete
@@ -28,55 +28,71 @@ serverX {"serverX":2}
 Sending AddMappings to LBS
 serverX {"serverX":3, "LBS":3}
 Received AddMappings from LBS
-serverX {"serverX":4, "LBS":3}
+serverX {"LBS":3, "serverX":4}
 Sending GetPeers to LBS
 serverX {"LBS":5, "serverX":5}
 Received GetPeers from LBS
-serverX {"serverX":6, "LBS":9, "serverY":6}
+serverX {"LBS":9, "serverX":6, "serverY":6}
 Received ConnectToPeer from Server
-serverX {"serverX":7, "LBS":9, "serverY":6}
+serverX {"LBS":9, "serverX":7, "serverY":6}
 Sending ConnectToPeer back
-serverX {"serverX":8, "LBS":11, "serverY":6, "client":4}
+serverX {"LBS":11, "serverX":8, "serverY":6, "client":4}
 Received ClientConnect from Client
-serverX {"serverX":9, "LBS":11, "serverY":6, "client":4}
+serverX {"client":4, "LBS":11, "serverX":9, "serverY":6}
 Sending ClientConnect back
-serverX {"client":6, "serverX":10, "LBS":11, "serverY":6}
+serverX {"client":6, "LBS":11, "serverX":10, "serverY":6}
 Received TableLock() A
-serverX {"serverY":6, "client":6, "serverX":11, "LBS":11}
+serverX {"client":6, "LBS":11, "serverX":11, "serverY":6}
 Sending TableUnavailable to server Y
-serverX {"LBS":11, "serverY":9, "client":6, "serverX":12}
+serverX {"client":6, "LBS":11, "serverX":12, "serverY":9}
 Received TableUnavailable from server Y
-serverX {"serverY":9, "client":6, "serverX":13, "LBS":11}
+serverX {"LBS":11, "serverX":13, "serverY":9, "client":6}
 Sending TableLock()A
+serverX {"serverY":9, "client":8, "LBS":11, "serverX":14}
+Received TableUnlock()
+serverX {"serverX":15, "serverY":9, "client":8, "LBS":11}
+Sending TableAvailable to LBS
+serverX {"client":8, "LBS":11, "serverX":16, "serverY":11}
+Received TableAvailable from server Y
+serverX {"serverX":17, "serverY":11, "client":8, "LBS":11}
+Sending TableUnlock()
 serverY {"serverY":1}
 Initialization Complete
 serverY {"serverY":2}
 Sending AddMappings to LBS
-serverY {"serverY":3, "serverX":4, "LBS":7}
+serverY {"serverY":3, "LBS":7, "serverX":4}
 Received AddMappings from LBS
-serverY {"serverX":4, "LBS":7, "serverY":4}
+serverY {"serverX":4, "serverY":4, "LBS":7}
 Sending GetPeers to LBS
-serverY {"serverX":4, "LBS":9, "serverY":5}
+serverY {"serverX":4, "serverY":5, "LBS":9}
 Received GetPeers from LBS
-serverY {"serverX":4, "LBS":9, "serverY":6}
+serverY {"serverX":4, "serverY":6, "LBS":9}
 Sending ConnectToPeer to Server
-serverY {"serverX":7, "LBS":9, "serverY":7}
+serverY {"serverX":7, "serverY":7, "LBS":9}
 Received ConnectToPeer from Server
-serverY {"serverY":8, "serverX":11, "LBS":11, "client":6}
+serverY {"serverY":8, "LBS":11, "serverX":11, "client":6}
 Received TableUnavailable()
-serverY {"serverX":11, "LBS":11, "client":6, "serverY":9}
+serverY {"serverY":9, "LBS":11, "serverX":11, "client":6}
 Sending TableUnavailable()
+serverY {"LBS":11, "serverX":15, "client":8, "serverY":10}
+Received TableAvailable()
+serverY {"LBS":11, "serverX":15, "client":8, "serverY":11}
+Sending TableAvailable()
 client {"client":1}
 Initialization Complete
 client {"client":2}
 Send LBS.GetServers
-client {"client":3, "serverX":4, "LBS":11, "serverY":4}
+client {"client":3, "serverX":4, "serverY":4, "LBS":11}
 Received LBS.GetServers
-client {"client":4, "serverX":4, "LBS":11, "serverY":4}
+client {"serverX":4, "serverY":4, "LBS":11, "client":4}
 Send ServerConn.ClientConnect
-client {"serverY":6, "client":5, "serverX":9, "LBS":11}
+client {"serverX":9, "serverY":6, "LBS":11, "client":5}
 Established connection to server
-client {"LBS":11, "serverY":6, "client":6, "serverX":9}
+client {"serverX":9, "serverY":6, "LBS":11, "client":6}
 Send ServerConn.TableLock
-client {"LBS":11, "serverY":9, "client":7, "serverX":13}
+client {"serverX":13, "serverY":9, "LBS":11, "client":7}
+Received result
+client {"LBS":11, "client":8, "serverX":13, "serverY":9}
+Send ServerConn.TableUnlock
+client {"serverY":11, "LBS":11, "client":9, "serverX":17}
 Received result
