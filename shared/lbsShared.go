@@ -18,7 +18,7 @@ type ServerPeers struct {
 
 
 type TableLockingArg struct {
-	//ServerIpAddress string
+	IpAddress string
 	TableName string
 	GoVector []byte
 }

@@ -39,11 +39,11 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 		go func(table string, server *rpc.Client) {
 			defer wg.Done()
 			buf := Logger.PrepareSend("Send ServerConn.TableLock", "msg")
-			args := shared.TableLockingArg{table, buf}
+			args := shared.TableLockingArg{localAddr, table, buf}
 			var reply shared.TableLockingReply
 			var msg string
 			err := server.Call("ServerConn.TableLock", &args, &reply)
-			util.CheckErr(err)
+			util.CheckError(err)
 			Logger.UnpackReceive("Received result", reply.GoVector, &msg)
 			replies <- reply.Success
 

@@ -35,6 +35,10 @@ func main() {
 	serverAPI.CreateTable("B")
 	serverAPI.CreateTable("C")
 
+	serverAPI.AllTblLocks.Lock()
+	serverAPI.AllTblLocks.All = map[string]bool{"A": false, "B": false, "C": false}
+	serverAPI.AllTblLocks.Unlock()
+
 	//Open listener
 	listener, err := net.Listen("tcp", serverIP)
 	util.CheckErr(err)
@@ -58,10 +62,12 @@ func main() {
 		tablesAndLocks[tableName] = false
 	}
 
+	// TODO are all tables unlocked at this point? if peer owns a lock, then I should also be locked
 	serverAPI.AllServers.Lock()
 	serverAPI.AllServers.All[serverAPI.SelfIP] = &serverAPI.Connection{
 		serverAPI.SelfIP,
 		time.Now().UnixNano(),
+		nil,								// no handle for self
 		tablesAndLocks,
 	}
 	serverAPI.AllServers.Unlock()
@@ -126,11 +132,15 @@ func main() {
 			panic("IP already registered")
 		}
 
+		// TODO are all tables unlocked at this point? if peer owns a lock, then set to true
 		serverAPI.AllServers.All[neighbour] = &serverAPI.Connection{
 			neighbour,
 			time.Now().UnixNano(),
+			conn,
 			nil,
 		}
+
+		fmt.Println("neighbour: ", serverAPI.AllServers.All[neighbour].Handle)
 
 		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Second*2)
 

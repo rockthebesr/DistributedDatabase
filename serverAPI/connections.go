@@ -27,6 +27,7 @@ type ConnectionReply struct {
 type Connection struct {
 	Address         string
 	RecentHeartbeat int64
+	Handle 			*rpc.Client
 	TableMappings   map[string]bool // key:value = tableName:ownsLock
 }
 
@@ -37,7 +38,7 @@ type AllConnection struct {
 
 type AllTableLocks struct {
 	sync.RWMutex
-	all        map[string]bool // key:value = tableName:isLocked
+	All        map[string]bool // key:value = tableName:isLocked
 	TableNames []string
 }
 
@@ -49,11 +50,12 @@ var (
 
 	AllClients = AllConnection{All: make(map[string]*Connection)}
 	AllServers        = AllConnection{All: make(map[string]*Connection)}
-	//allTableLocks	  = AllTableLocks{All: make(map[string]bool)}
+	AllTblLocks = AllTableLocks{All: make(map[string]bool)}
 
 	//TEMPORARY, REMOVE LATER
 	//AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
-	allTableLocks = AllTableLocks{all: map[string]bool{"A": false, "B": false, "C": false}}
+
+
 )
 
 type DisconnectedError string
@@ -122,6 +124,7 @@ func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *ConnectionRepl
 
 	toRegister := args.IP
 
+	// TODO not all tables are unlocked at this point, how to communicate which tables are unavailable?
 	tablesAndLocks := make(map[string]bool)
 	for _, tableName := range args.TableNames {
 		tablesAndLocks[tableName] = false
@@ -134,6 +137,7 @@ func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *ConnectionRepl
 	AllServers.All[toRegister] = &Connection{
 		toRegister,
 		time.Now().UnixNano(),
+		nil,
 		tablesAndLocks,
 	}
 
@@ -144,10 +148,13 @@ func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *ConnectionRepl
 	conn, err := rpc.Dial("tcp", toRegister)
 	util.CheckErr(err)
 
-	fmt.Printf("Established bi-directional RPC to server %s\n", toRegister)
+	AllServers.All[toRegister].Handle = conn
+
+	fmt.Printf("Established bi-directional RPC to server %s %v\n", toRegister, AllServers.All[toRegister].Handle)
 
 	var ignored bool
 	go SendServerHeartbeats(conn, SelfIP, ignored)
+	AllServers.All[toRegister].Handle = conn
 
 	var buf []byte
 	var msg string
@@ -178,9 +185,11 @@ func (s *ServerConn) ClientConnect(ip *ConnectionArgs, success *ConnectionReply)
 		return errors.New("IP already registered")
 	}
 
+	// TODO client should hold some locks at this point
 	AllClients.All[toRegister] = &Connection{
 		toRegister,
 		time.Now().UnixNano(),
+		nil,
 		nil,
 	}
 
@@ -190,6 +199,8 @@ func (s *ServerConn) ClientConnect(ip *ConnectionArgs, success *ConnectionReply)
 
 	conn, err := rpc.Dial("tcp", toRegister)
 	util.CheckErr(err)
+
+	AllClients.All[toRegister].Handle = conn
 
 	fmt.Printf("Established bi-directional RPC to client %s\n", toRegister)
 
