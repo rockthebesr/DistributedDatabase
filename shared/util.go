@@ -51,7 +51,8 @@ func checkError(err error) error {
 func KeysToArray(keysMap map[string]bool) []string {
 	var keys []string
 	for key, _ := range keysMap {
-		if !InArray(key, keys) {
+		inArray, _ := InArray(key, keys)
+		if !inArray {
 			keys = append(keys, key)
 		}
 	}
@@ -61,18 +62,19 @@ func KeysToArray(keysMap map[string]bool) []string {
 func KeysToArray_2(keysMap map[string]*rpc.Client) []string {
 	var keys []string
 	for key, _ := range keysMap {
-		if !InArray(key, keys) {
+		inArray, _ := InArray(key, keys)
+		if !inArray {
 			keys = append(keys, key)
 		}
 	}
 	return keys
 }
 
-func InArray(value string, array []string) bool {
-	for _, k := range array {
+func InArray(value string, array []string) (bool, int) {
+	for i, k := range array {
 		if k == value {
-			return true
+			return true, i
 		}
 	}
-	return false
+	return false, -1
 }

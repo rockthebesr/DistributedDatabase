@@ -52,6 +52,7 @@ func main() {
 	defer lbsConn.Close()
 	fmt.Println("Connected to load balancer")
 
+	// TODO if LBS crashed at this point, then just reconnect to it
 	// Register the server & tables with the LBS
 	tableNames := serverAPI.GetTableNames()
 	fmt.Println("Server has tables: ", tableNames)
@@ -100,7 +101,8 @@ func main() {
 
 	for _, listOfIps := range servers.Servers {
 		for _, ip := range listOfIps {
-			if !shared.InArray(ip, peerIPs) {
+			inArray, _ := shared.InArray(ip, peerIPs)
+			if !inArray {
 				peerIPs = append(peerIPs, ip)
 			}
 		}

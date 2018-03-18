@@ -10,7 +10,9 @@ import (
 	"log"
 	"errors"
 	"github.com/DistributedClocks/GoVector/govec"
-
+	"time"
+	"io/ioutil"
+	"strings"
 )
 
 type AllMappings struct {
@@ -51,6 +53,20 @@ func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNamesRe
 	buf = Logger.PrepareSend("Sending AddMappings()", "msg")
 	*reply = shared.TableNamesReply{GoVector: buf}
 
+	// store new ip to disk
+	dat, err := ioutil.ReadFile(lbsDisk)
+	shared.CheckError(err)
+	servers := strings.Split(string(dat), ",")
+
+	inArray, _ := shared.InArray(args.ServerIpAddress, servers)
+	if !inArray {
+		servers = append(servers, args.ServerIpAddress)
+	}
+
+	serversStr := strings.Join(servers, ",")
+	err = ioutil.WriteFile(lbsDisk, []byte(serversStr), 0644)
+	shared.CheckError(err)
+
 	return nil
 }
 
@@ -78,6 +94,20 @@ func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableName
 	Logger.UnpackReceive("Received RemoveMappings()", args.GoVector, &msg)
 	buf = Logger.PrepareSend("Sending RemoveMappings()", "msg")
 	*reply = shared.TableNamesReply{GoVector: buf}
+
+	// delete ip from disk storage
+	dat, err := ioutil.ReadFile(lbsDisk)
+	shared.CheckError(err)
+	servers := strings.Split(string(dat), ",")
+
+	inArray, i := shared.InArray(args.ServerIpAddress, servers)
+	if inArray {
+		servers = append(servers[:i], servers[i+1:]...)
+	}
+
+	serversStr := strings.Join(servers, ",")
+	err = ioutil.WriteFile(lbsDisk, []byte(serversStr), 0644)
+	shared.CheckError(err)
 
 	return nil
 }
@@ -195,15 +225,92 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesRep
 var (
 	errLog      *log.Logger = log.New(os.Stderr, "[lbs] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
 	outLog      *log.Logger = log.New(os.Stderr, "[lbs] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
-	allMappings AllMappings = AllMappings{all: make(map[string]map[string]bool)}
+	allMappings AllMappings = AllMappings{all: make(map[string]map[string]bool)}	// tableName -> (ip -> isActive)
 	debugMode bool = shared.DEGUGMODE
 	Logger *govec.GoLog = govec.InitGoVector("LBS", "shiviz/ddbsLBS")
+
+	// for crash and recovery
+	lbsDisk = "lbsDisk.ddbs"
+	timeToCrash = 3
+	testCrashInterval = 500
 )
 
+func CrashLBS() {
+	allMappings.Lock()
+	allMappings.all = make(map[string]map[string]bool)
+	defer allMappings.Unlock()
+	return
+}
+
+func RecoverLBS() {
+	dat, err := ioutil.ReadFile(lbsDisk)
+	shared.CheckError(err)
+	servers := strings.Split(string(dat), ",")
+	//fmt.Println(dat, servers, len(servers))
+
+	allMappings.Lock()
+	defer allMappings.Unlock()
+
+	var buf []byte
+	var msg string
+
+	for i, serverIP := range servers {
+		if i == 0 {continue}
+		fmt.Println("RecoverLBS serverIP=", serverIP)
+
+		serverConn, err := rpc.Dial("tcp", serverIP)
+		shared.CheckErr(err)
+
+		buf = Logger.PrepareSend("Sending GetTableNames ip="+serverIP, "msg")
+		args := shared.TableAccessArgs{GoVector: buf}
+		var reply shared.TableAccessReply
+		err = serverConn.Call("TableCommands.GetTableNames", &args, &reply)
+		shared.CheckError(err)
+		Logger.UnpackReceive("Received GetTableNames reply="+strings.Join(reply.TableNames, ", "), reply.GoVector, &msg)
+
+		for z := 0; z < len(reply.TableNames); z++ {
+			tableName := reply.TableNames[z]
+
+			if listOfIps, ok := allMappings.all[tableName]; ok {
+				listOfIps[serverIP] = true
+
+			} else {
+				// tableName does not exist, add a new tableName to mapping
+				allMappings.all[tableName] = make(map[string]bool)
+				listOfIps := allMappings.all[tableName]
+				listOfIps[serverIP] = true
+			}
+		}
+	}
+	return
+}
+
+func simulateCrash() {
+	recentTime := time.Now().UnixNano()
+
+	// crashes at a specific time point
+	// TODO crash at a specific predefined event
+
+	for range time.Tick(time.Millisecond * time.Duration(testCrashInterval)) {
+		if time.Now().UnixNano() - recentTime > int64(timeToCrash*1000*1000000) {
+			Logger.LogLocalEvent("LBS crashed")
+			fmt.Println("LBS crashed")
+			CrashLBS()
+			RecoverLBS()
+			return
+		}
+	}
+
+}
 
 func main() {
 	fmt.Println("Starting LBS")
 	serverAddr := os.Args[1]
+	crashLBS := os.Args[2]
+
+	d1 := []byte{}
+	err := ioutil.WriteFile(lbsDisk, d1, 0644)
+	shared.CheckError(err)
 
 	// Register an RPC handler.
 	rpc.Register(new(LBS))
@@ -213,6 +320,11 @@ func main() {
 		fmt.Println("Listening error")
 	}
 	defer l.Close()
+
+	// simulating a crash
+	if crashLBS == "true" {
+		go simulateCrash()
+	}
 
 	for {
 		client, err := l.Accept()

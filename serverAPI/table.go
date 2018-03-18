@@ -4,6 +4,7 @@ import (
 	"../dbStructs"
 	"fmt"
 	"../shared"
+	"strings"
 )
 
 type TableCommands int
@@ -84,6 +85,23 @@ func (t *TableCommands) GetTableContents(args shared.TableAccessArgs, tableRows 
 	}
 
 	*tableRows = Tables[args.TableName].Rows
+	return err
+}
+
+func (t *TableCommands) GetTableNames(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
+	var buf []byte
+	var msg string
+	GoLogger.UnpackReceive("Received GetTableNames ", args.GoVector, &msg)
+
+	AllTblLocks.Lock()
+	allTables := shared.KeysToArray(AllTblLocks.All)
+	AllTblLocks.Unlock()
+
+
+	buf = GoLogger.PrepareSend("Sending GetTableNames reply="+strings.Join(allTables, ", "), "msg")
+
+	*reply = shared.TableAccessReply{TableNames: allTables, GoVector: buf}
+
 	return err
 }
 
