@@ -6,13 +6,12 @@ import (
 	"fmt"
 	"./shared"
 	"github.com/DistributedClocks/GoVector/govec"
-	"./util"
 )
 
 func main() {
 	lbsAddr := os.Args[1]
 	c, err := rpc.Dial("tcp", lbsAddr)
-	util.CheckError(err)
+	shared.CheckError(err)
 
 	Logger := govec.InitGoVector("testLBS", "ddbsTestLBS")
 
@@ -26,7 +25,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("LBS.AddMappings", &args, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received LBS.AddMappings", reply.GoVector, &msg)
 
 	buf = Logger.PrepareSend("Sending LBS.AddMappings", "msg")
@@ -36,7 +35,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("LBS.AddMappings", &args2, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received LBS.AddMappings", reply.GoVector, &msg)
 
 	var servers shared.ServerPeers
@@ -47,7 +46,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("LBS.GetPeers", &args3, &servers)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received LBS.GetPeers", servers.GoVector, &msg)
 
 	for tableName, listOfIps := range servers.Servers {
@@ -60,7 +59,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("LBS.GetServers", &args4, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
 
 	for tableName, ip := range reply.TableNameToServers {
@@ -73,7 +72,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("LBS.RemoveMappings", &args5, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received LBS.RemoveMappings", reply.GoVector, &msg)
 
 	fmt.Println("AFTER REMOVING:")
@@ -86,7 +85,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("LBS.GetPeers", &args6, &servers2)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received LBS.GetPeers", servers2.GoVector, &msg)
 
 	for tableName, listOfIps := range servers2.Servers {
@@ -100,7 +99,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("LBS.GetServers", &args7, &reply2)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received LBS.GetServers", reply2.GoVector, &msg)
 
 	for tableName, ip := range reply2.TableNameToServers {
@@ -127,7 +126,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("LBS.GetServers", &args9, &reply3)
-	util.CheckError(err)
+	shared.CheckError(err)
 
 	if err == nil {
 		Logger.UnpackReceive("Received LBS.GetServers", reply3.GoVector, &msg)

@@ -9,7 +9,6 @@ import (
 
 	"./serverAPI"
 	"./shared"
-	"./util"
 	"github.com/DistributedClocks/GoVector/govec"
 )
 
@@ -19,7 +18,7 @@ var (
 
 func main() {
 
-	defer util.HandlePanic()
+	defer shared.HandlePanic()
 
 	fmt.Println("Starting server")
 
@@ -41,7 +40,7 @@ func main() {
 
 	//Open listener
 	listener, err := net.Listen("tcp", serverIP)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 	defer listener.Close()
 
 	serverAPI.SelfIP = listener.Addr().String()
@@ -49,7 +48,7 @@ func main() {
 
 	//Connect to the load balancer
 	lbsConn, err := rpc.Dial("tcp", lbsIP)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 	defer lbsConn.Close()
 	fmt.Println("Connected to load balancer")
 
@@ -82,7 +81,7 @@ func main() {
 		GoVector:		 buf,
 	}
 	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 	fmt.Println("Registered server and tables to load balancer")
 	serverAPI.GoLogger.UnpackReceive("Received AddMappings from LBS", reply.GoVector, &msg)
 
@@ -95,13 +94,13 @@ func main() {
 		GoVector:		 buf,
 	}
 	err = lbsConn.Call("LBS.GetPeers", &args3, &servers)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 	fmt.Println("Neighbours retrieved")
 	serverAPI.GoLogger.UnpackReceive("Received GetPeers from LBS", servers.GoVector, &msg)
 
 	for _, listOfIps := range servers.Servers {
 		for _, ip := range listOfIps {
-			if !util.InArray(ip, peerIPs) {
+			if !shared.InArray(ip, peerIPs) {
 				peerIPs = append(peerIPs, ip)
 			}
 		}
@@ -109,14 +108,14 @@ func main() {
 
 	// Connects to other servers
 	for _, neighbour := range peerIPs {
-		var success serverAPI.ConnectionReply
+		var success shared.ConnectionReply
 		conn, err := rpc.Dial("tcp", neighbour)
-		util.CheckErr(err)
+		shared.CheckErr(err)
 
 		buf = serverAPI.GoLogger.PrepareSend("Sending ConnectToPeer to Server", "msg")
-		connArgs := serverAPI.ConnectionArgs{IP: serverAPI.SelfIP, TableNames: tableNames, GoVector: buf}
+		connArgs := shared.ConnectionArgs{IP: serverAPI.SelfIP, TableNames: tableNames, GoVector: buf}
 		err = conn.Call("ServerConn.ConnectToPeer", &connArgs, &success)
-		util.CheckErr(err)
+		shared.CheckErr(err)
 		serverAPI.GoLogger.UnpackReceive("Received ConnectToPeer from Server", success.GoVector, &msg)
 
 		if success.Success {
@@ -157,7 +156,7 @@ func main() {
 
 	for {
 		accept, err := listener.Accept()
-		util.CheckErr(err)
+		shared.CheckErr(err)
 		go rpcServer.ServeConn(accept)
 	}
 }

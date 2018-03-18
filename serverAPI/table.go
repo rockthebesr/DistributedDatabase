@@ -3,37 +3,18 @@ package serverAPI
 import (
 	"../dbStructs"
 	"fmt"
+	"../shared"
 )
 
 type TableCommands int
 
+// TODO can't hardcode number of columns
 const NumColumns = 3
 
 var (
 	Tables = map[string]dbStructs.Table{}
 	Columns = [NumColumns]string{"name", "age", "gender"}
 )
-
-/*
- Errors
- */
-type RowDoesNotExistError string
-
-func (e RowDoesNotExistError) Error() string {
-	return fmt.Sprintf("Row [%s] does not exist in the table", string(e))
-}
-
-type TableDoesNotExistError string
-
-func (e TableDoesNotExistError) Error() string {
-	return fmt.Sprintf("Table [%s] does not exist", string(e))
-}
-
-type TableUnavailableError string
-
-func (e TableUnavailableError) Error() string {
-	return fmt.Sprintf("Table [%s] is currently in use by another client", string(e))
-}
 
 type InvalidNumberOfColumns int
 
@@ -50,13 +31,13 @@ func (e InvalidColumnNames) Error() string {
 /*
  Functions
  */
-func (t *TableCommands) SetRow(args dbStructs.TableAccessArgs, success *bool) (err error) {
+func (t *TableCommands) SetRow(args shared.TableAccessArgs, success *bool) (err error) {
 	if _, ok := Tables[args.TableName]; !ok {
-		return TableDoesNotExistError(args.TableName)
+		return shared.TableDoesNotExistError(args.TableName)
 	}
 
 	if _, ok := Tables[args.TableName].Rows[args.Key]; !ok {
-		return RowDoesNotExistError(args.Key)
+		return shared.RowDoesNotExistError(args.Key)
 	}
 
 	if len(args.TableRow.Data) != NumColumns {
@@ -74,22 +55,22 @@ func (t *TableCommands) SetRow(args dbStructs.TableAccessArgs, success *bool) (e
 	return err
 }
 
-func (t *TableCommands) GetRow(args dbStructs.TableAccessArgs, tableRow *dbStructs.Row ) (err error) {
+func (t *TableCommands) GetRow(args shared.TableAccessArgs, tableRow *dbStructs.Row ) (err error) {
 	if _, ok := Tables[args.TableName]; !ok {
-		return TableDoesNotExistError(args.TableName)
+		return shared.TableDoesNotExistError(args.TableName)
 	}
 
 	if _, ok := Tables[args.TableName].Rows[args.Key]; !ok {
-		return RowDoesNotExistError(args.Key)
+		return shared.RowDoesNotExistError(args.Key)
 	}
 
 	*tableRow = Tables[args.TableName].Rows[args.Key]
 	return err
 }
 
-func (t *TableCommands) DeleteRow(args dbStructs.TableAccessArgs, success *bool) (err error) {
+func (t *TableCommands) DeleteRow(args shared.TableAccessArgs, success *bool) (err error) {
 	if _, ok := Tables[args.TableName]; !ok {
-		return TableDoesNotExistError(args.TableName)
+		return shared.TableDoesNotExistError(args.TableName)
 	}
 
 	delete(Tables[args.TableName].Rows, args.Key)
@@ -97,9 +78,9 @@ func (t *TableCommands) DeleteRow(args dbStructs.TableAccessArgs, success *bool)
 	return err
 }
 
-func (t *TableCommands) GetTableContents(args dbStructs.TableAccessArgs, tableRows *map[string]dbStructs.Row) (err error) {
+func (t *TableCommands) GetTableContents(args shared.TableAccessArgs, tableRows *map[string]dbStructs.Row) (err error) {
 	if _, ok := Tables[args.TableName]; !ok {
-		return TableDoesNotExistError(args.TableName)
+		return shared.TableDoesNotExistError(args.TableName)
 	}
 
 	*tableRows = Tables[args.TableName].Rows

@@ -1,6 +1,10 @@
-package util
+package shared
 
-import "fmt"
+import (
+	"fmt"
+	"net/rpc"
+	"os"
+)
 
 func Contains(s []string, e string) bool {
 	for _, a := range s {
@@ -35,7 +39,26 @@ func CheckError(err error) error {
 	return nil
 }
 
+// If error is non-nil, print it out and return it.
+func checkError(err error) error {
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error ", err.Error())
+		return err
+	}
+	return nil
+}
+
 func KeysToArray(keysMap map[string]bool) []string {
+	var keys []string
+	for key, _ := range keysMap {
+		if !InArray(key, keys) {
+			keys = append(keys, key)
+		}
+	}
+	return keys
+}
+
+func KeysToArray_2(keysMap map[string]*rpc.Client) []string {
 	var keys []string
 	for key, _ := range keysMap {
 		if !InArray(key, keys) {

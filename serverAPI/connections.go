@@ -7,22 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"../util"
+	"../shared"
 	"github.com/DistributedClocks/GoVector/govec"
 )
 
 type ServerConn int
-
-type ConnectionArgs struct {
-	IP string
-	TableNames []string
-	GoVector []byte
-}
-
-type ConnectionReply struct {
-	Success bool
-	GoVector []byte
-}
 
 type Connection struct {
 	Address         string
@@ -118,7 +107,7 @@ func (s *ServerConn) ClientHeartbeatProtocol(addr *string, ignored *bool) error 
  @Param success -> a pointer to a boolean representing whether connection succeeded
  @Return error
 */
-func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *ConnectionReply) (err error) {
+func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.ConnectionReply) (err error) {
 	AllServers.Lock()
 	defer AllServers.Unlock()
 
@@ -146,7 +135,7 @@ func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *ConnectionRepl
 	go MonitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
 
 	conn, err := rpc.Dial("tcp", toRegister)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 
 	AllServers.All[toRegister].Handle = conn
 
@@ -162,7 +151,7 @@ func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *ConnectionRepl
 	buf = GoLogger.PrepareSend("Sending ConnectToPeer back", "msg")
 
 
-	*success = ConnectionReply{Success: true, GoVector: buf}
+	*success = shared.ConnectionReply{Success: true, GoVector: buf}
 
 	return nil
 }
@@ -176,7 +165,7 @@ func (s *ServerConn) ConnectToPeer(args *ConnectionArgs, success *ConnectionRepl
  @Param success -> a pointer to a boolean representing whether connection succeeded
  @Return error
 */
-func (s *ServerConn) ClientConnect(ip *ConnectionArgs, success *ConnectionReply) error {
+func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.ConnectionReply) error {
 	AllClients.Lock()
 	defer AllClients.Unlock()
 
@@ -198,7 +187,7 @@ func (s *ServerConn) ClientConnect(ip *ConnectionArgs, success *ConnectionReply)
 	go MonitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
 
 	conn, err := rpc.Dial("tcp", toRegister)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 
 	AllClients.All[toRegister].Handle = conn
 
@@ -213,7 +202,7 @@ func (s *ServerConn) ClientConnect(ip *ConnectionArgs, success *ConnectionReply)
 	buf = GoLogger.PrepareSend("Sending ClientConnect back", "msg")
 
 
-	*success = ConnectionReply{Success: true, GoVector: buf}
+	*success = shared.ConnectionReply{Success: true, GoVector: buf}
 
 
 	return nil
@@ -267,7 +256,7 @@ func SendServerHeartbeats(conn *rpc.Client, localIP string, ignored bool) error 
 	var err error
 	for range time.Tick(time.Second * time.Duration(HeartbeatInterval)) {
 		err = conn.Call("ServerConn.ServerHeartbeatProtocol", &localIP, &ignored)
-		util.CheckErr(err)
+		shared.CheckErr(err)
 	}
 	return err
 }
@@ -276,7 +265,7 @@ func SendClientHeartbeats(conn *rpc.Client, localIP string, ignored bool) error 
 	var err error
 	for range time.Tick(time.Second * time.Duration(HeartbeatInterval)) {
 		err = conn.Call("ClientConn.ReceiveServerIP", &localIP, &ignored)
-		util.CheckErr(err)
+		shared.CheckErr(err)
 	}
 	return err
 }
