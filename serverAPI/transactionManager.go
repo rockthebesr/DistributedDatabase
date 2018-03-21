@@ -13,10 +13,8 @@ var (
 )
 
 //TODO
-func (t *TransactionManager) PrepareTransaction(arg *shared.TransactionArg, reply *shared.TransactionReply) error {
-	// for _, op := range arg.Transaction.Operations {
+func (t *TransactionManager) PrepareCommit(arg *shared.TransactionArg, reply *shared.TransactionReply) error {
 
-	// }
 	return nil
 }
 

@@ -12,6 +12,12 @@ import (
 	"../util"
 )
 
+type NotSupportedOperationType string
+
+func (e NotSupportedOperationType) Error() string {
+	return fmt.Sprintf("Operation type [%s] is not supported", string(e))
+}
+
 var HeartbeatInterval = 2
 var currentTransaction dbStructs.Transaction
 
@@ -25,14 +31,24 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 	fmt.Println("done lockTables")
 
-	//Tell servers to prepare transaction
-	isPrepared, err := parepareTransaction(tableToServers, txn)
+	var result []map[string]dbStructs.Row
+	//Tell servers to execute each operation
+	for _, op := range txn.Operations {
+		r, err := ExecuteOperation(op, tableToServers)
+		result = append(result, r)
+		if err != nil {
+			return false, err
+		}
+	}
+
+	//Tell servers to prepare commit
+	isPrepared, err := PrepareTransaction(tableToServers, txn)
 	if !isPrepared {
 		return false, err
 	}
 
 	//Tell servers to commit transaction
-	isComitted, err := commitTransaction(tableToServers, txn)
+	isComitted, err := CommitTransaction(tableToServers, txn)
 	if !isComitted {
 		return false, err
 	}
@@ -45,34 +61,63 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 		return false, err
 	}
 
+	fmt.Println(result)
+
 	return true, nil
 }
 
-func parepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
+func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Client) (map[string]dbStructs.Row, error) {
+	conn := tableToServers[op.TableName]
+	args := dbStructs.TableAccessArgs{TableName: op.TableName, Key: op.Key, TableRow: op.Value}
+	switch op.Type {
+	case dbStructs.SelectAll:
+		reply := map[string]dbStructs.Row{}
+		err := conn.Call("TableCommands.GetTableContents", &args, &reply)
+		return reply, err
+	case dbStructs.Select:
+		var reply dbStructs.Row
+		err := conn.Call("TableCommands.GetRow", &args, &reply)
+		result := map[string]dbStructs.Row{}
+		result[op.TableName] = reply
+		return result, err
+	case dbStructs.Set:
+		reply := false
+		err := conn.Call("TableCommands.SetRow", &args, &reply)
+		return nil, err
+	case dbStructs.Delete:
+		reply := false
+		err := conn.Call("TableCommands.DeleteRow", &args, &reply)
+		return nil, err
+	}
+	return nil, NotSupportedOperationType(op.Type)
+
+}
+
+func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
 	fmt.Println("Prepare servers to execute transaction")
 	for _, server := range tableToServers {
-		buf := Logger.PrepareSend("Send ServerConn.PrepareTransaction", "msg")
+		buf := Logger.PrepareSend("Send ServerConn.prepareCommit", "msg")
 		arg := shared.TransactionArg{Transaction: txn, IPAddress: localAddr, GoVector: buf}
 		reply := shared.TransactionReply{Success: false}
-		err := server.Call("TransactionManager.PrepareTransaction", &arg, &reply)
-		//If server cannot prepare transaction, return false
+		err := server.Call("TransactionManager.PrepareCommit", &arg, &reply)
+		//If server cannot prepare commit, return false
 		if !reply.Success || err != nil {
-			Logger.UnpackReceive("ServerConn.PrepareTransaction failed", reply.GoVector, "msg")
+			Logger.UnpackReceive("ServerConn.PrepareCommit failed", reply.GoVector, "msg")
 			return false, err
 		}
-		Logger.UnpackReceive("ServerConn.PrepareTransaction succeeded", reply.GoVector, "msg")
+		Logger.UnpackReceive("ServerConn.PrepareCommit succeeded", reply.GoVector, "msg")
 	}
 	return true, nil
 }
 
-func commitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
+func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
 	fmt.Println("Tell servers to commit transaction")
 	for _, server := range tableToServers {
 		buf := Logger.PrepareSend("Send ServerConn.CommitTransaction", "msg")
 		arg := shared.TransactionArg{Transaction: txn, IPAddress: localAddr, GoVector: buf}
 		reply := shared.TransactionReply{Success: false}
 		err := server.Call("TransactionManager.CommitTransaction", &arg, &reply)
-		//If server cannot prepare transaction, return false
+		//If server cannot commit transaction, return false
 		if !reply.Success || err != nil {
 			Logger.UnpackReceive("ServerConn.CommitTransaction failed", reply.GoVector, "msg")
 			return false, err
