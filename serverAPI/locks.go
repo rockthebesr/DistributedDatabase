@@ -3,7 +3,6 @@ package serverAPI
 import (
 	"errors"
 	"fmt"
-	"../util"
 	"../shared"
 )
 
@@ -51,7 +50,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 					}
 					fmt.Println("serverPeer.Handle", serverPeer.Address==ip, serverPeer.Handle)
 					err := serverPeer.Handle.Call("ServerConn.TableUnavailable", &args, &reply)
-					util.CheckError(err)
+					shared.CheckError(err)
 					if err != nil {
 						fmt.Println("Error TableLock err != nil", ip)
 						//AllTblLocks.All[args.TableName] = false
@@ -128,7 +127,7 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 						GoVector:		 buf,
 					}
 					err := serverPeer.Handle.Call("ServerConn.TableAvailable", &args, &reply)
-					util.CheckError(err)
+					shared.CheckError(err)
 					if err != nil {
 						//AllTblLocks.All[args.TableName] = false
 						//return errors.New("Table on peer is unavailable")

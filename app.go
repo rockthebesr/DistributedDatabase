@@ -18,8 +18,8 @@ package main
 import "./client"
 
 import "fmt"
-import "os"
 import "./dbStructs"
+import "./shared"
 
 func main() {
 	// TODO provide as cmd arguments
@@ -27,7 +27,7 @@ func main() {
 	localIP := "127.0.0.1:9999"
 
 	_, err := client.StartClient(lbsAddr, localIP)
-	if checkError(err) != nil {
+	if shared.CheckError(err) != nil {
 		fmt.Println(err)
 		return
 	}
@@ -39,11 +39,4 @@ func main() {
 	client.NewTransaction(txn)
 }
 
-// If error is non-nil, print it out and return it.
-func checkError(err error) error {
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error ", err.Error())
-		return err
-	}
-	return nil
-}
+

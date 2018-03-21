@@ -6,11 +6,9 @@ import (
 	"net/rpc"
 	"sync"
 	"time"
-
+	//"../serverAPI"
 	"../dbStructs"
 	"../shared"
-	"../util"
-	"../serverAPI"
 	"github.com/arcaneiceman/GoVector/govec"
 )
 
@@ -21,6 +19,13 @@ type AllConnection struct {
 	RecentHeartbeat map[string]int64
 }
 
+type  TransactionManagerSession struct {
+	TestDeadLock_ReverseTableList bool
+	TestDeadLock_ReleaseDeadlock bool
+	AcquiredLocks map[string]bool
+
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Settings
 var (
@@ -28,6 +33,7 @@ var (
 	localAddr  string
 	Logger     *govec.GoLog
 	AllServers AllConnection
+	TxnManagerSession TransactionManagerSession = TransactionManagerSession{AcquiredLocks: make(map[string]bool)}
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +44,7 @@ func GetNeededTables(txn dbStructs.Transaction) []string {
 	result := []string{}
 	for _, op := range txn.Operations {
 		t := op.TableName
-		if !util.Contains(result, t) {
+		if !shared.Contains(result, t) {
 			result = append(result, t)
 		}
 	}
@@ -49,27 +55,45 @@ func GetNeededTables(txn dbStructs.Transaction) []string {
 //ConnectToServers - connect to servers and return map of tableNames -> server conns
 func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 	result := map[string]*rpc.Client{}
+	connectedIP := map[string]*rpc.Client{}
+
+	//fmt.Println("ServerConn", serverAPI.HeartbeatInterval)
+	// TODO do not connect to same server more than once
 	for t, sAddr := range tToServerIPs {
 
-		buf := Logger.PrepareSend("Send ServerConn.ClientConnect", "msg")
+		buf := Logger.PrepareSend("Send ServerConn.ClientConnect"+sAddr, "msg")
 		conn, err := rpc.Dial("tcp", sAddr)
-		util.CheckErr(err)
-		var succ serverAPI.ConnectionReply
-		args := serverAPI.ConnectionArgs{IP: localAddr, GoVector: buf}
-		conn.Call("ServerConn.ClientConnect", &args, &succ)
+		shared.CheckErr(err)
+		var succ shared.ConnectionReply
+		args := shared.ConnectionArgs{IP: localAddr, GoVector: buf}
+		err = conn.Call("ServerConn.ClientConnect", &args, &succ)
+
+		shared.CheckError(err)
+		if err != nil {
+			if _, ok := connectedIP[sAddr]; ok {
+				result[t] = connectedIP[sAddr]
+			}
+		}
 
 		var msg string
 		if succ.Success {
 			fmt.Printf("Established bi-directional RPC to server %s\n", sAddr)
 			result[t] = conn
-			Logger.UnpackReceive("Established connection to server", succ.GoVector, &msg)
+			Logger.UnpackReceive("Established connection to server "+sAddr, succ.GoVector, &msg)
 			go sendHeartbeats(conn, localAddr, false)
 			AllServers.RecentHeartbeat[sAddr] = time.Now().UnixNano()
 			go MonitorServers(sAddr, time.Duration(HeartbeatInterval)*time.Second*2)
+			connectedIP[sAddr] = conn
 		} else {
-			Logger.UnpackReceive("Cannot establish connection to server", succ.GoVector, &msg)
+			if _, ok := connectedIP[sAddr]; ok {
+				result[t] = connectedIP[sAddr]
+			}
+			Logger.UnpackReceive("Cannot establish connection to server "+sAddr, succ.GoVector, &msg)
 		}
 	}
+
+	fmt.Println("ConnectToServers done", result)
+	// TODO before returning, make sure all servers are still connected?
 	return result
 }
 
@@ -107,18 +131,18 @@ func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 	Logger = govec.InitGoVector("client"+localIP, "shiviz/ddbsClient"+localIP)
 	//Connect to lbs
 	loadBalancer, err := rpc.Dial("tcp", lbsIPAddr)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 	fmt.Println("Connected to lbs at " + lbsIPAddr)
 	lbs = loadBalancer
 	addr, err := net.ResolveTCPAddr("tcp", localIP)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 
 	//bi-directional
 	localAddr = addr.String()
 	clientConn := new(ClientConn)
 	rpc.RegisterName("ClientConn", clientConn)
 	listener, err := net.Listen("tcp", localAddr)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 	go rpc.Accept(listener)
 
 	return true, nil
@@ -135,12 +159,14 @@ func NewTransaction(txn dbStructs.Transaction) (bool, error) {
 	//Get needed tables
 	tableNames := GetNeededTables(txn)
 
+	fmt.Println("NewTransaction tables=", tableNames)
+
 	//Get needed servers
 	buf := Logger.PrepareSend("Send LBS.GetServers", "msg")
 	args := shared.TableNamesArg{TableNames: tableNames, GoVector: buf}
 	reply := shared.TableNamesReply{}
 	err := lbs.Call("LBS.GetServers", &args, &reply)
-	util.CheckErr(err)
+	shared.CheckErr(err)
 	Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
 
 	//Connect to needed servers

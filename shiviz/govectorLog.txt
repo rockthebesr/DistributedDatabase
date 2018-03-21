@@ -4,31 +4,37 @@ LBS {"LBS":1}
 Initialization Complete
 LBS {"LBS":2, "serverX":2}
 Received AddMappings()
-LBS {"LBS":3, "serverX":2}
+LBS {"serverX":2, "LBS":3}
 Sending AddMappings()
-LBS {"LBS":4, "serverX":4}
+LBS {"serverX":4, "LBS":4}
 Received GetPeers()
 LBS {"LBS":5, "serverX":4}
 Sending GetPeers()
 LBS {"LBS":6, "serverX":4, "serverY":2}
 Received AddMappings()
-LBS {"LBS":7, "serverX":4, "serverY":2}
+LBS {"serverX":4, "serverY":2, "LBS":7}
 Sending AddMappings()
-LBS {"serverX":4, "serverY":4, "LBS":8}
+LBS {"LBS":8, "serverX":4, "serverY":4}
 Received GetPeers()
-LBS {"serverX":4, "serverY":4, "LBS":9}
+LBS {"LBS":9, "serverX":4, "serverY":4}
 Sending GetPeers()
-LBS {"serverX":4, "serverY":4, "LBS":10, "client":2}
-Received GetServers()
-LBS {"serverX":4, "serverY":4, "LBS":11, "client":2}
-Sending GetServers()
+LBS {"LBS":10, "serverX":4, "serverY":4}
+LBS crashed
+LBS {"LBS":11, "serverX":4, "serverY":4}
+Sending GetTableNames ip=X
+LBS {"serverX":9, "serverY":6, "LBS":12}
+Received GetTableNames reply=A, B, C
+LBS {"serverY":6, "LBS":13, "serverX":9}
+Sending GetTableNames ip=Y
+LBS {"serverX":9, "serverY":9, "LBS":14}
+Received GetTableNames reply=A, B, C
 serverX {"serverX":1}
 Initialization Complete
 serverX {"serverX":2}
 Sending AddMappings to LBS
 serverX {"serverX":3, "LBS":3}
 Received AddMappings from LBS
-serverX {"LBS":3, "serverX":4}
+serverX {"serverX":4, "LBS":3}
 Sending GetPeers to LBS
 serverX {"LBS":5, "serverX":5}
 Received GetPeers from LBS
@@ -36,63 +42,25 @@ serverX {"LBS":9, "serverX":6, "serverY":6}
 Received ConnectToPeer from Server
 serverX {"LBS":9, "serverX":7, "serverY":6}
 Sending ConnectToPeer back
-serverX {"LBS":11, "serverX":8, "serverY":6, "client":4}
-Received ClientConnect from Client
-serverX {"client":4, "LBS":11, "serverX":9, "serverY":6}
-Sending ClientConnect back
-serverX {"client":6, "LBS":11, "serverX":10, "serverY":6}
-Received TableLock() A
-serverX {"client":6, "LBS":11, "serverX":11, "serverY":6}
-Sending TableUnavailable to server Y
-serverX {"client":6, "LBS":11, "serverX":12, "serverY":9}
-Received TableUnavailable from server Y
-serverX {"LBS":11, "serverX":13, "serverY":9, "client":6}
-Sending TableLock()A
-serverX {"serverY":9, "client":8, "LBS":11, "serverX":14}
-Received TableUnlock()
-serverX {"serverX":15, "serverY":9, "client":8, "LBS":11}
-Sending TableAvailable to LBS
-serverX {"client":8, "LBS":11, "serverX":16, "serverY":11}
-Received TableAvailable from server Y
-serverX {"serverX":17, "serverY":11, "client":8, "LBS":11}
-Sending TableUnlock()
+serverX {"LBS":11, "serverX":8, "serverY":6}
+Received GetTableNames 
+serverX {"LBS":11, "serverX":9, "serverY":6}
+Sending GetTableNames reply=A, B, C
 serverY {"serverY":1}
 Initialization Complete
 serverY {"serverY":2}
 Sending AddMappings to LBS
-serverY {"serverY":3, "LBS":7, "serverX":4}
+serverY {"serverX":4, "serverY":3, "LBS":7}
 Received AddMappings from LBS
-serverY {"serverX":4, "serverY":4, "LBS":7}
+serverY {"serverY":4, "LBS":7, "serverX":4}
 Sending GetPeers to LBS
-serverY {"serverX":4, "serverY":5, "LBS":9}
+serverY {"serverY":5, "LBS":9, "serverX":4}
 Received GetPeers from LBS
-serverY {"serverX":4, "serverY":6, "LBS":9}
+serverY {"serverY":6, "LBS":9, "serverX":4}
 Sending ConnectToPeer to Server
-serverY {"serverX":7, "serverY":7, "LBS":9}
+serverY {"LBS":9, "serverX":7, "serverY":7}
 Received ConnectToPeer from Server
-serverY {"serverY":8, "LBS":11, "serverX":11, "client":6}
-Received TableUnavailable()
-serverY {"serverY":9, "LBS":11, "serverX":11, "client":6}
-Sending TableUnavailable()
-serverY {"LBS":11, "serverX":15, "client":8, "serverY":10}
-Received TableAvailable()
-serverY {"LBS":11, "serverX":15, "client":8, "serverY":11}
-Sending TableAvailable()
-client {"client":1}
-Initialization Complete
-client {"client":2}
-Send LBS.GetServers
-client {"client":3, "serverX":4, "serverY":4, "LBS":11}
-Received LBS.GetServers
-client {"serverX":4, "serverY":4, "LBS":11, "client":4}
-Send ServerConn.ClientConnect
-client {"serverX":9, "serverY":6, "LBS":11, "client":5}
-Established connection to server
-client {"serverX":9, "serverY":6, "LBS":11, "client":6}
-Send ServerConn.TableLock
-client {"serverX":13, "serverY":9, "LBS":11, "client":7}
-Received result
-client {"LBS":11, "client":8, "serverX":13, "serverY":9}
-Send ServerConn.TableUnlock
-client {"serverY":11, "LBS":11, "client":9, "serverX":17}
-Received result
+serverY {"serverY":8, "LBS":13, "serverX":9}
+Received GetTableNames 
+serverY {"LBS":13, "serverX":9, "serverY":9}
+Sending GetTableNames reply=A, B, C

@@ -3,7 +3,6 @@ package main
 import (
 	"os"
 	"net/rpc"
-	"./util"
 	"./shared"
 	"github.com/DistributedClocks/GoVector/govec"
 )
@@ -11,7 +10,7 @@ import (
 func main() {
 	lbsAddr := os.Args[1]
 	c, err := rpc.Dial("tcp", lbsAddr)
-	util.CheckError(err)
+	shared.CheckError(err)
 
 	Logger := govec.InitGoVector("testLock", "ddbsTestLock")
 
@@ -24,7 +23,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("ServerConn.TableLock", &args, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received ServerConn.TableLock A", reply.GoVector, &msg)
 
 	buf = Logger.PrepareSend("Sending ServerConn.TableLock A", "msg")
@@ -33,7 +32,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("ServerConn.TableLock", &args2, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	if err == nil {
 		Logger.UnpackReceive("Received ServerConn.TableLock A", reply.GoVector, &msg)
 	} else {
@@ -46,7 +45,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("ServerConn.TableLock", &args3, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received ServerConn.TableLock B", reply.GoVector, &msg)
 
 	buf = Logger.PrepareSend("Sending ServerConn.TableUnlock A", "msg")
@@ -55,7 +54,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("ServerConn.TableUnlock", &args4, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received ServerConn.TableUnlock A", reply.GoVector, &msg)
 
 	buf = Logger.PrepareSend("Sending ServerConn.TableLock A", "msg")
@@ -64,7 +63,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("ServerConn.TableLock", &args5, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received ServerConn.TableLock A", reply.GoVector, &msg)
 
 	buf = Logger.PrepareSend("Sending ServerConn.TableUnlock B", "msg")
@@ -73,7 +72,7 @@ func main() {
 		GoVector: buf,
 	}
 	err = c.Call("ServerConn.TableUnlock", &args6, &reply)
-	util.CheckError(err)
+	shared.CheckError(err)
 	Logger.UnpackReceive("Received ServerConn.TableUnlock B", reply.GoVector, &msg)
 
 }

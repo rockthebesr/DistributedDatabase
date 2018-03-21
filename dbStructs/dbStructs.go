@@ -15,12 +15,6 @@ type Row struct {
 	Data map[string]string
 }
 
-type TableAccessArgs struct {
-	TableName string
-	Key       string
-	TableRow  Row
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 //Transaction structures
 
