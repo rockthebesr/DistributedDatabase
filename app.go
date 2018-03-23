@@ -19,7 +19,9 @@ import "./client"
 
 import "fmt"
 import "./dbStructs"
-import "./shared"
+import (
+	"./shared"
+)
 
 func main() {
 	// TODO provide as cmd arguments

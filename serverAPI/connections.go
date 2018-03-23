@@ -6,7 +6,6 @@ import (
 	"net/rpc"
 	"sync"
 	"time"
-
 	"../shared"
 	"github.com/DistributedClocks/GoVector/govec"
 )
@@ -34,17 +33,16 @@ type AllTableLocks struct {
 var (
 	SelfIP   string
 	GoLogger *govec.GoLog
+	LBSConn  *rpc.Client
 
 	HeartbeatInterval = 2
 
-	AllClients = AllConnection{All: make(map[string]*Connection)}
-	AllServers        = AllConnection{All: make(map[string]*Connection)}
+	AllClients  = AllConnection{All: make(map[string]*Connection)}
+	AllServers  = AllConnection{All: make(map[string]*Connection)}
 	AllTblLocks = AllTableLocks{All: make(map[string]bool)}
 
 	//TEMPORARY, REMOVE LATER
 	//AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
-
-
 )
 
 type DisconnectedError string
@@ -142,8 +140,7 @@ func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.
 	fmt.Printf("Established bi-directional RPC to server %s %v\n", toRegister, AllServers.All[toRegister].Handle)
 
 	var ignored bool
-	go SendServerHeartbeats(conn, SelfIP, ignored)
-	AllServers.All[toRegister].Handle = conn
+	go SendServerHeartbeats(AllServers.All[toRegister].Handle, SelfIP, ignored)
 
 	var buf []byte
 	var msg string
@@ -201,9 +198,7 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 	GoLogger.UnpackReceive("Received ClientConnect from Client", ip.GoVector, &msg)
 	buf = GoLogger.PrepareSend("Sending ClientConnect back", "msg")
 
-
 	*success = shared.ConnectionReply{Success: true, GoVector: buf}
-
 
 	return nil
 }
@@ -220,7 +215,9 @@ func MonitorPeers(k string, HeartbeatInterval time.Duration) {
 		AllServers.Lock()
 		if time.Now().UnixNano()-AllServers.All[k].RecentHeartbeat > int64(HeartbeatInterval) {
 			fmt.Printf("%s timed out\n", k)
-			delete(AllServers.All, k)
+			fmt.Println(DisconnectedError(k))
+			GoLogger.LogLocalEvent("Server " + k + " crashed")
+			HandleServerCrash(k)
 			AllServers.Unlock()
 			return
 		}
@@ -274,4 +271,64 @@ func SendClientHeartbeats(conn *rpc.Client, localIP string, ignored bool) error 
 		}
 	}
 	return err
+}
+
+func HandleServerCrash(k string) {
+	var buf []byte
+	var msg string
+
+	AllServers.All[k].Handle.Close()
+
+	for tableName, ownsLock := range AllServers.All[k].TableMappings {
+		if ownsLock {
+			var buf []byte
+			var reply shared.TableLockingReply
+			args := shared.TableLockingArg{
+				k,
+				tableName,
+				buf,
+				}
+
+			AllTblLocks.Lock();
+			if AllTblLocks.All[tableName] {
+				GoLogger.LogLocalEvent("Unlocking Table "+ tableName + " for crashed server " + k)
+				AllTblLocks.All[tableName] = false
+				for _, peer := range AllServers.All {
+					if peer.Address != k {
+						conn := peer.Handle
+						fmt.Println(peer)
+						if conn != nil {
+							buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable "+tableName, "msg")
+							err := conn.Call("ServerConn.TableAvailable", &args, &reply)
+							shared.CheckErr(err)
+							if err != nil {
+								GoLogger.UnpackReceive("Error "+tableName, reply.GoVector, &msg)
+							} else {
+								GoLogger.UnpackReceive("Received result "+tableName, reply.GoVector, &msg)
+							}
+						}
+					}
+				}
+			}
+			AllTblLocks.Unlock();
+		}
+	}
+
+	delete(AllServers.All, k)
+
+	var reply shared.TableNamesReply
+
+	args := shared.TableNamesArg{
+		ServerIpAddress: k,
+		GoVector: buf,
+	}
+
+	buf = GoLogger.PrepareSend("Removing server mappings from LBS", "msg")
+	err := LBSConn.Call("LBS.RemoveMappings", &args, &reply)
+	shared.CheckError(err)
+	if err != nil {
+		GoLogger.UnpackReceive("Error removing server mappings ", reply.GoVector, &msg)
+	} else {
+		GoLogger.UnpackReceive("Received result from removing server mappings", reply.GoVector, &msg)
+	}
 }

@@ -54,7 +54,8 @@ func main() {
 	//Connect to the load balancer
 	lbsConn, err := rpc.Dial("tcp", lbsIP)
 	shared.CheckErr(err)
-	defer lbsConn.Close()
+	serverAPI.LBSConn = lbsConn
+	defer serverAPI.LBSConn.Close()
 	fmt.Println("Connected to load balancer")
 
 	// TODO if LBS crashed at this point, then just reconnect to it
@@ -86,7 +87,7 @@ func main() {
 		TableNames:      tableNames,
 		GoVector:        buf,
 	}
-	err = lbsConn.Call("LBS.AddMappings", &args, &reply)
+	err = serverAPI.LBSConn.Call("LBS.AddMappings", &args, &reply)
 	shared.CheckErr(err)
 	fmt.Println("Registered server and tables to load balancer")
 	serverAPI.GoLogger.UnpackReceive("Received AddMappings from LBS", reply.GoVector, &msg)
@@ -99,7 +100,7 @@ func main() {
 		TableNames:      tableNames,
 		GoVector:        buf,
 	}
-	err = lbsConn.Call("LBS.GetPeers", &args3, &servers)
+	err = serverAPI.LBSConn.Call("LBS.GetPeers", &args3, &servers)
 	shared.CheckErr(err)
 	fmt.Println("Neighbours retrieved")
 	serverAPI.GoLogger.UnpackReceive("Received GetPeers from LBS", servers.GoVector, &msg)
@@ -138,12 +139,17 @@ func main() {
 			panic("IP already registered")
 		}
 
+		tablesAndLocks := make(map[string]bool)
+		for _, tableName := range tableNames {
+			tablesAndLocks[tableName] = false
+		}
+
 		// TODO are all tables unlocked at this point? if peer owns a lock, then set to true
 		serverAPI.AllServers.All[neighbour] = &serverAPI.Connection{
 			neighbour,
 			time.Now().UnixNano(),
 			conn,
-			nil,
+			tablesAndLocks,
 		}
 
 		fmt.Println("neighbour: ", serverAPI.AllServers.All[neighbour].Handle)
