@@ -12,51 +12,133 @@ server127.0.0.1:12345 {"server127.0.0.1:12345":6, "LBS":9, "server127.0.0.1:1234
 Received ConnectToPeer from Server
 server127.0.0.1:12345 {"server127.0.0.1:12345":7, "LBS":9, "server127.0.0.1:12346":6}
 Sending ConnectToPeer back
-server127.0.0.1:12345 {"server127.0.0.1:12346":9, "server127.0.0.1:12345":8, "LBS":11, "client127.0.0.1:9999":6}
+server127.0.0.1:12345 {"LBS":13, "server127.0.0.1:12346":6, "server127.0.0.1:12345":8, "server127.0.0.1:17500":6}
+Received ConnectToPeer from Server
+server127.0.0.1:12345 {"LBS":13, "server127.0.0.1:12346":6, "server127.0.0.1:12345":9, "server127.0.0.1:17500":6}
+Sending ConnectToPeer back
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":6, "server127.0.0.1:12345":10, "server127.0.0.1:17500":6, "client127.0.0.1:9999":4}
 Received ClientConnect from Client
-server127.0.0.1:12345 {"client127.0.0.1:9999":6, "server127.0.0.1:12346":9, "server127.0.0.1:12345":9, "LBS":11}
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":6, "server127.0.0.1:12345":11, "server127.0.0.1:17500":6, "client127.0.0.1:9999":4}
 Sending ClientConnect back
-server127.0.0.1:12345 {"server127.0.0.1:12346":11, "server127.0.0.1:12345":10, "LBS":11, "client127.0.0.1:9999":10}
-Received TableLock() B
-server127.0.0.1:12345 {"server127.0.0.1:12346":11, "server127.0.0.1:12345":11, "LBS":11, "client127.0.0.1:9999":10}
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":6, "server127.0.0.1:12345":12, "server127.0.0.1:17500":6, "client127.0.0.1:9999":8}
+Received TableLock() A
+server127.0.0.1:12345 {"server127.0.0.1:12346":6, "server127.0.0.1:12345":13, "server127.0.0.1:17500":6, "client127.0.0.1:9999":8, "LBS":15}
 Sending TableUnavailable to server 127.0.0.1:12346
-server127.0.0.1:12345 {"server127.0.0.1:12346":13, "server127.0.0.1:12345":12, "LBS":11, "client127.0.0.1:9999":10}
+server127.0.0.1:12345 {"server127.0.0.1:12345":14, "server127.0.0.1:17500":8, "client127.0.0.1:9999":8, "LBS":15, "server127.0.0.1:12346":11}
 Received TableUnavailable from server 127.0.0.1:12346
-server127.0.0.1:12345 {"client127.0.0.1:9999":10, "server127.0.0.1:12346":13, "server127.0.0.1:12345":13, "LBS":11}
+server127.0.0.1:12345 {"server127.0.0.1:12346":11, "server127.0.0.1:12345":15, "server127.0.0.1:17500":8, "client127.0.0.1:9999":8, "LBS":15}
+Sending TableUnavailable to server 127.0.0.1:17500
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":11, "server127.0.0.1:12345":16, "server127.0.0.1:17500":11, "client127.0.0.1:9999":8}
+Received TableUnavailable from server 127.0.0.1:17500
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":11, "server127.0.0.1:12345":17, "server127.0.0.1:17500":11, "client127.0.0.1:9999":8}
+Sending TableLock()A
+server127.0.0.1:12345 {"server127.0.0.1:12346":11, "server127.0.0.1:12345":18, "server127.0.0.1:17500":11, "client127.0.0.1:9999":10, "LBS":15}
+Received TableLock() B
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":11, "server127.0.0.1:12345":19, "server127.0.0.1:17500":11, "client127.0.0.1:9999":10}
+Sending TableUnavailable to server 127.0.0.1:12346
+server127.0.0.1:12345 {"server127.0.0.1:17500":11, "client127.0.0.1:9999":10, "LBS":15, "server127.0.0.1:12346":13, "server127.0.0.1:12345":20}
+Received TableUnavailable from server 127.0.0.1:12346
+server127.0.0.1:12345 {"server127.0.0.1:12345":21, "server127.0.0.1:17500":11, "client127.0.0.1:9999":10, "LBS":15, "server127.0.0.1:12346":13}
+Sending TableUnavailable to server 127.0.0.1:17500
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":13, "server127.0.0.1:12345":22, "server127.0.0.1:17500":13, "client127.0.0.1:9999":10}
+Received TableUnavailable from server 127.0.0.1:17500
+server127.0.0.1:12345 {"server127.0.0.1:17500":13, "client127.0.0.1:9999":10, "LBS":15, "server127.0.0.1:12346":13, "server127.0.0.1:12345":23}
 Sending TableLock()B
-server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":14, "server127.0.0.1:12346":15, "server127.0.0.1:12345":14}
+server127.0.0.1:12345 {"server127.0.0.1:12346":13, "server127.0.0.1:12345":24, "server127.0.0.1:17500":13, "client127.0.0.1:9999":12, "LBS":15}
+Received GetRow 
+server127.0.0.1:12345 {"server127.0.0.1:12346":13, "server127.0.0.1:12345":25, "server127.0.0.1:17500":13, "client127.0.0.1:9999":12, "LBS":15}
+Sending GetRow reply=Table:A
+  Key:test age:30 gender:M name:John 
+
+server127.0.0.1:12345 {"client127.0.0.1:9999":14, "LBS":15, "server127.0.0.1:12346":13, "server127.0.0.1:12345":26, "server127.0.0.1:17500":13}
 Received SetRow 
-server127.0.0.1:12345 {"client127.0.0.1:9999":14, "server127.0.0.1:12346":15, "server127.0.0.1:12345":15, "LBS":11}
+server127.0.0.1:12345 {"server127.0.0.1:12346":13, "server127.0.0.1:12345":27, "server127.0.0.1:17500":13, "client127.0.0.1:9999":14, "LBS":15}
 Sending SetRow added=Table:B
   Key:test2 name:Alice age:30 gender:F 
 
-server127.0.0.1:12345 {"client127.0.0.1:9999":16, "server127.0.0.1:12346":15, "server127.0.0.1:12345":16, "LBS":11}
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":13, "server127.0.0.1:12345":28, "server127.0.0.1:17500":13, "client127.0.0.1:9999":16}
 Received GetRow 
-server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":16, "server127.0.0.1:12346":15, "server127.0.0.1:12345":17}
+server127.0.0.1:12345 {"server127.0.0.1:17500":13, "client127.0.0.1:9999":16, "LBS":15, "server127.0.0.1:12346":13, "server127.0.0.1:12345":29}
 Sending GetRow reply=Table:B
-  Key:test2 age:30 gender:F name:Alice 
+  Key:test2 name:Alice age:30 gender:F 
 
-server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":20, "server127.0.0.1:12346":17, "server127.0.0.1:12345":18}
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":13, "server127.0.0.1:12345":30, "server127.0.0.1:17500":13, "client127.0.0.1:9999":18}
 Received PrepareCommit() from 127.0.0.1:9999
-server127.0.0.1:12345 {"server127.0.0.1:12345":19, "LBS":11, "client127.0.0.1:9999":20, "server127.0.0.1:12346":17}
-Sending PrepareTableForCommit for table B
-server127.0.0.1:12345 {"server127.0.0.1:12346":19, "server127.0.0.1:12345":20, "LBS":11, "client127.0.0.1:9999":20}
+server127.0.0.1:12345 {"server127.0.0.1:12346":13, "server127.0.0.1:12345":31, "server127.0.0.1:17500":13, "client127.0.0.1:9999":18, "LBS":15}
+Sending PrepareTableForCommit for table A
+server127.0.0.1:12345 {"client127.0.0.1:9999":18, "LBS":15, "server127.0.0.1:12346":15, "server127.0.0.1:12345":32, "server127.0.0.1:17500":13}
 Received PrepareTableForCommit reply
-server127.0.0.1:12345 {"server127.0.0.1:12346":19, "server127.0.0.1:12345":21, "LBS":11, "client127.0.0.1:9999":20}
+server127.0.0.1:12345 {"client127.0.0.1:9999":18, "LBS":15, "server127.0.0.1:12346":15, "server127.0.0.1:12345":33, "server127.0.0.1:17500":13}
+Sending PrepareTableForCommit for table A
+server127.0.0.1:12345 {"server127.0.0.1:12346":15, "server127.0.0.1:12345":34, "server127.0.0.1:17500":15, "client127.0.0.1:9999":18, "LBS":15}
+Received PrepareTableForCommit reply
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":15, "server127.0.0.1:12345":35, "server127.0.0.1:17500":15, "client127.0.0.1:9999":18}
+Sending PrepareTableForCommit for table B
+server127.0.0.1:12345 {"server127.0.0.1:17500":15, "client127.0.0.1:9999":18, "LBS":15, "server127.0.0.1:12346":17, "server127.0.0.1:12345":36}
+Received PrepareTableForCommit reply
+server127.0.0.1:12345 {"server127.0.0.1:12346":17, "server127.0.0.1:12345":37, "server127.0.0.1:17500":15, "client127.0.0.1:9999":18, "LBS":15}
+Sending PrepareTableForCommit for table B
+server127.0.0.1:12345 {"server127.0.0.1:12345":38, "server127.0.0.1:17500":17, "client127.0.0.1:9999":18, "LBS":15, "server127.0.0.1:12346":17}
+Received PrepareTableForCommit reply
+server127.0.0.1:12345 {"server127.0.0.1:12345":39, "server127.0.0.1:17500":17, "client127.0.0.1:9999":18, "LBS":15, "server127.0.0.1:12346":17}
 Sending PrepareCommit successful back to127.0.0.1:9999
-server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":24, "server127.0.0.1:12346":21, "server127.0.0.1:12345":22}
+server127.0.0.1:12345 {"client127.0.0.1:9999":20, "LBS":15, "server127.0.0.1:12346":17, "server127.0.0.1:12345":40, "server127.0.0.1:17500":17}
+Received PrepareCommit() from 127.0.0.1:9999
+server127.0.0.1:12345 {"server127.0.0.1:17500":17, "client127.0.0.1:9999":20, "LBS":15, "server127.0.0.1:12346":17, "server127.0.0.1:12345":41}
+Sending PrepareTableForCommit for table A
+server127.0.0.1:12345 {"server127.0.0.1:17500":17, "client127.0.0.1:9999":20, "LBS":15, "server127.0.0.1:12346":19, "server127.0.0.1:12345":42}
+Received PrepareTableForCommit reply
+server127.0.0.1:12345 {"server127.0.0.1:12345":43, "server127.0.0.1:17500":17, "client127.0.0.1:9999":20, "LBS":15, "server127.0.0.1:12346":19}
+Sending PrepareTableForCommit for table A
+server127.0.0.1:12345 {"server127.0.0.1:12345":44, "server127.0.0.1:17500":19, "client127.0.0.1:9999":20, "LBS":15, "server127.0.0.1:12346":19}
+Received PrepareTableForCommit reply
+server127.0.0.1:12345 {"server127.0.0.1:12345":45, "server127.0.0.1:17500":19, "client127.0.0.1:9999":20, "LBS":15, "server127.0.0.1:12346":19}
+Sending PrepareTableForCommit for table B
+server127.0.0.1:12345 {"server127.0.0.1:12345":46, "server127.0.0.1:17500":19, "client127.0.0.1:9999":20, "LBS":15, "server127.0.0.1:12346":21}
+Received PrepareTableForCommit reply
+server127.0.0.1:12345 {"server127.0.0.1:17500":19, "client127.0.0.1:9999":20, "LBS":15, "server127.0.0.1:12346":21, "server127.0.0.1:12345":47}
+Sending PrepareTableForCommit for table B
+server127.0.0.1:12345 {"server127.0.0.1:12346":21, "server127.0.0.1:12345":48, "server127.0.0.1:17500":21, "client127.0.0.1:9999":20, "LBS":15}
+Received PrepareTableForCommit reply
+server127.0.0.1:12345 {"server127.0.0.1:12346":21, "server127.0.0.1:12345":49, "server127.0.0.1:17500":21, "client127.0.0.1:9999":20, "LBS":15}
+Sending PrepareCommit successful back to127.0.0.1:9999
+server127.0.0.1:12345 {"server127.0.0.1:12346":21, "server127.0.0.1:12345":50, "server127.0.0.1:17500":21, "client127.0.0.1:9999":22, "LBS":15}
 Received CommitTransaction() from 127.0.0.1:9999
-server127.0.0.1:12345 {"server127.0.0.1:12345":23, "LBS":11, "client127.0.0.1:9999":24, "server127.0.0.1:12346":21}
-Sending CommitTable for table B
-server127.0.0.1:12345 {"server127.0.0.1:12345":24, "LBS":11, "client127.0.0.1:9999":24, "server127.0.0.1:12346":23}
+server127.0.0.1:12345 {"server127.0.0.1:12345":51, "server127.0.0.1:17500":21, "client127.0.0.1:9999":22, "LBS":15, "server127.0.0.1:12346":21}
+Sending CommitTable for table A
+server127.0.0.1:12345 {"server127.0.0.1:12346":21, "server127.0.0.1:12345":52, "server127.0.0.1:17500":23, "client127.0.0.1:9999":22, "LBS":15}
 Received CommitTable reply
-server127.0.0.1:12345 {"client127.0.0.1:9999":24, "server127.0.0.1:12346":23, "server127.0.0.1:12345":25, "LBS":11}
+server127.0.0.1:12345 {"client127.0.0.1:9999":22, "LBS":15, "server127.0.0.1:12346":21, "server127.0.0.1:12345":53, "server127.0.0.1:17500":23}
+Sending CommitTable for table A
+server127.0.0.1:12345 {"server127.0.0.1:17500":23, "client127.0.0.1:9999":22, "LBS":15, "server127.0.0.1:12346":23, "server127.0.0.1:12345":54}
+Received CommitTable reply
+server127.0.0.1:12345 {"server127.0.0.1:12346":23, "server127.0.0.1:12345":55, "server127.0.0.1:17500":23, "client127.0.0.1:9999":22, "LBS":15}
+Sending CommitTable for table B
+server127.0.0.1:12345 {"server127.0.0.1:17500":23, "client127.0.0.1:9999":22, "LBS":15, "server127.0.0.1:12346":25, "server127.0.0.1:12345":56}
+Received CommitTable reply
+server127.0.0.1:12345 {"server127.0.0.1:12345":57, "server127.0.0.1:17500":23, "client127.0.0.1:9999":22, "LBS":15, "server127.0.0.1:12346":25}
+Sending CommitTable for table B
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":25, "server127.0.0.1:12345":58, "server127.0.0.1:17500":25, "client127.0.0.1:9999":22}
+Received CommitTable reply
+server127.0.0.1:12345 {"client127.0.0.1:9999":22, "LBS":15, "server127.0.0.1:12346":25, "server127.0.0.1:12345":59, "server127.0.0.1:17500":25}
 Sending CommitTransction successful back to127.0.0.1:9999
-server127.0.0.1:12345 {"client127.0.0.1:9999":28, "server127.0.0.1:12346":25, "server127.0.0.1:12345":26, "LBS":11}
-Received TableUnlock()
-server127.0.0.1:12345 {"server127.0.0.1:12346":25, "server127.0.0.1:12345":27, "LBS":11, "client127.0.0.1:9999":28}
-Sending TableAvailable to LBS
-server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":28, "server127.0.0.1:12346":27, "server127.0.0.1:12345":28}
-Received TableAvailable from server 127.0.0.1:12346
-server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":28, "server127.0.0.1:12346":27, "server127.0.0.1:12345":29}
-Sending TableUnlock()
+server127.0.0.1:12345 {"client127.0.0.1:9999":24, "LBS":15, "server127.0.0.1:12346":25, "server127.0.0.1:12345":60, "server127.0.0.1:17500":25}
+Received CommitTransaction() from 127.0.0.1:9999
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":25, "server127.0.0.1:12345":61, "server127.0.0.1:17500":25, "client127.0.0.1:9999":24}
+Sending CommitTable for table A
+server127.0.0.1:12345 {"client127.0.0.1:9999":24, "LBS":15, "server127.0.0.1:12346":27, "server127.0.0.1:12345":62, "server127.0.0.1:17500":25}
+Received CommitTable reply
+server127.0.0.1:12345 {"client127.0.0.1:9999":24, "LBS":15, "server127.0.0.1:12346":27, "server127.0.0.1:12345":63, "server127.0.0.1:17500":25}
+Sending CommitTable for table A
+server127.0.0.1:12345 {"server127.0.0.1:17500":27, "client127.0.0.1:9999":24, "LBS":15, "server127.0.0.1:12346":27, "server127.0.0.1:12345":64}
+Received CommitTable reply
+server127.0.0.1:12345 {"server127.0.0.1:17500":27, "client127.0.0.1:9999":24, "LBS":15, "server127.0.0.1:12346":27, "server127.0.0.1:12345":65}
+Sending CommitTable for table B
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":29, "server127.0.0.1:12345":66, "server127.0.0.1:17500":27, "client127.0.0.1:9999":24}
+Received CommitTable reply
+server127.0.0.1:12345 {"LBS":15, "server127.0.0.1:12346":29, "server127.0.0.1:12345":67, "server127.0.0.1:17500":27, "client127.0.0.1:9999":24}
+Sending CommitTable for table B
+server127.0.0.1:12345 {"client127.0.0.1:9999":24, "LBS":15, "server127.0.0.1:12346":29, "server127.0.0.1:12345":68, "server127.0.0.1:17500":29}
+Received CommitTable reply
+server127.0.0.1:12345 {"server127.0.0.1:12345":69, "server127.0.0.1:17500":29, "client127.0.0.1:9999":24, "LBS":15, "server127.0.0.1:12346":29}
+Sending CommitTransction successful back to127.0.0.1:9999

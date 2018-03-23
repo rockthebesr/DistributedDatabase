@@ -277,42 +277,41 @@ func HandleServerCrash(k string) {
 	var buf []byte
 	var msg string
 
-	AllServers.All[k].Handle.Close()
-
 	for tableName, ownsLock := range AllServers.All[k].TableMappings {
 		if ownsLock {
 			var buf []byte
 			var reply shared.TableLockingReply
-			args := shared.TableLockingArg{
-				k,
-				tableName,
-				buf,
-				}
 
-			AllTblLocks.Lock();
 			if AllTblLocks.All[tableName] {
+				fmt.Println("Unlocked table ", tableName)
 				GoLogger.LogLocalEvent("Unlocking Table "+ tableName + " for crashed server " + k)
 				AllTblLocks.All[tableName] = false
 				for _, peer := range AllServers.All {
-					if peer.Address != k {
+					if peer.Address != k  && peer.Address != SelfIP{
 						conn := peer.Handle
-						fmt.Println(peer)
 						if conn != nil {
 							buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable "+tableName, "msg")
+							args := shared.TableLockingArg{
+								SelfIP,
+								tableName,
+								buf,
+							}
 							err := conn.Call("ServerConn.TableAvailable", &args, &reply)
 							shared.CheckErr(err)
 							if err != nil {
 								GoLogger.UnpackReceive("Error "+tableName, reply.GoVector, &msg)
 							} else {
-								GoLogger.UnpackReceive("Received result "+tableName, reply.GoVector, &msg)
+								GoLogger.UnpackReceive("Received table available from server "+ peer.Address, reply.GoVector, &msg)
 							}
+							fmt.Println("Sent table available to ", peer.Address)
 						}
 					}
 				}
 			}
-			AllTblLocks.Unlock();
 		}
 	}
+
+	AllServers.All[k].Handle.Close()
 
 	delete(AllServers.All, k)
 
