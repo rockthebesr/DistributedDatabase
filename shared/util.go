@@ -82,14 +82,16 @@ func InArray(value string, array []string) (bool, int) {
 
 func TableToString(name string, rows map[string]dbStructs.Row) (error, string) {
 	tableString := ""
-	tableString = tableString + "Table:" + name + "\n"
+	tableString = tableString + " Table: " + name + "{"
 
 	for key, row := range rows {
+		tableString = tableString + "("
 		tableString = tableString + "  Key:" + key + " "
 		for attribute, value := range row.Data {
 			tableString = tableString + attribute + ":" + value + " "
 		}
-		tableString = tableString + "\n"
+		tableString = tableString + ")"
 	}
+	tableString = tableString + "}"
 	return nil, tableString
 }

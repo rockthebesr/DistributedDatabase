@@ -74,6 +74,7 @@ func main() {
 		time.Now().UnixNano(),
 		nil, // no handle for self
 		tablesAndLocks,
+		0,
 	}
 	serverAPI.AllServers.Unlock()
 
@@ -144,6 +145,7 @@ func main() {
 			time.Now().UnixNano(),
 			conn,
 			nil,
+			0,		// TODO use channel to stop Monitor
 		}
 
 		fmt.Println("neighbour: ", serverAPI.AllServers.All[neighbour].Handle)

@@ -9,6 +9,7 @@ import (
 
 	"../shared"
 	"github.com/DistributedClocks/GoVector/govec"
+	"strings"
 )
 
 type ServerConn int
@@ -18,6 +19,7 @@ type Connection struct {
 	RecentHeartbeat int64
 	Handle 			*rpc.Client
 	TableMappings   map[string]bool // key:value = tableName:ownsLock
+	StopChannel 	int
 }
 
 type AllConnection struct {
@@ -28,7 +30,7 @@ type AllConnection struct {
 type AllTableLocks struct {
 	sync.RWMutex
 	All        map[string]bool // key:value = tableName:isLocked
-	TableNames []string
+	TableNames []string	// not used
 }
 
 var (
@@ -116,7 +118,7 @@ func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.
 	// TODO not all tables are unlocked at this point, how to communicate which tables are unavailable?
 	tablesAndLocks := make(map[string]bool)
 	for _, tableName := range args.TableNames {
-		tablesAndLocks[tableName] = false
+		tablesAndLocks[tableName] = false	//TODO can't assume this, this is incorrect
 	}
 
 	if _, exists := AllServers.All[toRegister]; exists {
@@ -128,6 +130,7 @@ func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.
 		time.Now().UnixNano(),
 		nil,
 		tablesAndLocks,
+		0,
 	}
 
 	fmt.Printf("Got Register from %s\n", toRegister)
@@ -180,16 +183,21 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 		time.Now().UnixNano(),
 		nil,
 		nil,
+		0,
 	}
 
 	fmt.Printf("Got Register from %s\n", toRegister)
 
-	go MonitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
+	//stop := make(chan bool)
+	AllClients.All[toRegister].StopChannel = 0
+
+	go MonitorClients(toRegister, time.Duration(HeartbeatInterval)*time.Second*2, &AllClients.All[toRegister].StopChannel)
 
 	conn, err := rpc.Dial("tcp", toRegister)
 	shared.CheckErr(err)
 
 	AllClients.All[toRegister].Handle = conn
+
 
 	fmt.Printf("Established bi-directional RPC to client %s\n", toRegister)
 
@@ -237,11 +245,21 @@ func MonitorPeers(k string, HeartbeatInterval time.Duration) {
  @Param k -> ip address to monitor
  @Param HeartbeatInterval -> time between heartbeats, before a peer is considered disconnected
 */
-func MonitorClients(k string, HeartbeatInterval time.Duration) {
+func MonitorClients(k string, HeartbeatInterval time.Duration, stop *int) {
+	fmt.Println("MonitorClients started for " + k)
 	for {
+		if *stop == 1 {
+			fmt.Println("MonitorClients stopped for " + k)
+			AllClients.Lock()
+			delete(AllClients.All, k)
+			AllClients.Unlock()
+			*stop = 0
+			return
+		}
 		AllClients.Lock()
 		if time.Now().UnixNano()-AllClients.All[k].RecentHeartbeat > int64(HeartbeatInterval) {
 			fmt.Printf("%s timed out\n", k)
+			handleClientCrash(k)
 			delete(AllClients.All, k)
 			AllClients.Unlock()
 			return
@@ -274,4 +292,69 @@ func SendClientHeartbeats(conn *rpc.Client, localIP string, ignored bool) error 
 		}
 	}
 	return err
+}
+
+func handleClientCrash(clientIP string) error {
+	AllServers.Lock()
+	defer AllServers.Unlock()
+
+	tablesContents := ""
+	tablesToUnlock := TransactionTables[clientIP]
+	fmt.Println("!!!start handleClientCrash tablesToUnlock=",tablesToUnlock)
+	for _, tableName := range tablesToUnlock {
+		// Server rolls back transactions
+		RollBackTable(tableName)
+
+		for _, conn := range AllServers.All {
+			if _, ok := conn.TableMappings[tableName]; !ok {
+				continue
+			}
+			if conn.Address == SelfIP {
+				continue
+			}
+			// Tell peers to roll back
+			var msg string
+			buf := GoLogger.PrepareSend("Send TransactionManager.RollBackPeer table="+tableName, "msg")
+			args := shared.TableLockingArg{TableName:tableName, GoVector:buf}
+			reply := shared.TableLockingReply{Success:false}
+			err := conn.Handle.Call("TransactionManager.RollBackPeer", &args, &reply)
+			shared.CheckErr(err)
+			if err != nil || !reply.Success{
+
+			}
+			GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
+
+			// Tell peers to unlock
+			buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable table="+tableName, "msg")
+			args = shared.TableLockingArg{TableName:tableName, GoVector:buf}
+			reply = shared.TableLockingReply{Success:false}
+			err = conn.Handle.Call("ServerConn.TableAvailable", &args, &reply)
+			shared.CheckError(err)
+			if err != nil || !reply.Success{
+
+			}
+			GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
+		}
+
+		// Server unlocks tables (i.e. Server detect Client crash, unlock table)
+		AllServers.All[SelfIP].TableMappings[tableName] = false // unsets the owner of the lock
+		AllTblLocks.All[tableName] = false // sets table to unlocked
+
+		_, tableString := shared.TableToString(tableName, Tables[tableName].Rows)
+		tablesContents = tablesContents + tableString
+	}
+	AllTblLocks.Lock()
+	defer AllTblLocks.Unlock()
+	currentLockedTables := []string{}
+	for table, locked := range AllTblLocks.All{
+		if locked == true {
+			currentLockedTables = append(currentLockedTables, table)
+		}
+	}
+	GoLogger.LogLocalEvent("Handled client crash. LockedTables=" + strings.Join(currentLockedTables, ", ") + " TablesContents="+tablesContents)
+
+	// Remove all the tables in lockedTables list
+	TransactionTables[clientIP] = []string{}
+
+	return nil
 }

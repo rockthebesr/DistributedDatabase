@@ -33,7 +33,10 @@ var (
 	localAddr  string
 	Logger     *govec.GoLog
 	AllServers AllConnection
+	// TODO
 	TxnManagerSession TransactionManagerSession = TransactionManagerSession{AcquiredLocks: make(map[string]bool)}
+	connectedIP = map[string]*rpc.Client{}
+	stop int
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +58,7 @@ func GetNeededTables(txn dbStructs.Transaction) []string {
 //ConnectToServers - connect to servers and return map of tableNames -> server conns
 func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 	result := map[string]*rpc.Client{}
-	connectedIP := map[string]*rpc.Client{}
+
 
 	//fmt.Println("ServerConn", serverAPI.HeartbeatInterval)
 	// TODO do not connect to same server more than once
@@ -153,7 +156,7 @@ func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 // Return True if the Transaction has been completed successfully,
 // return False if the Transaction aborted.
 // Can return DisconnectedError if client is disconnected
-func NewTransaction(txn dbStructs.Transaction) (bool, error) {
+func NewTransaction(txn dbStructs.Transaction, crashPoint CrashPoint) (bool, error) {
 	AllServers.RecentHeartbeat = make(map[string]int64)
 	var msg string
 	//Get needed tables
@@ -173,7 +176,19 @@ func NewTransaction(txn dbStructs.Transaction) (bool, error) {
 	tablesToServerConns := ConnectToServers(reply.TableNameToServers)
 
 	//Execute the transaction
-	result, err := ExecuteTransaction(txn, tablesToServerConns)
+	result, err := ExecuteTransaction(txn, tablesToServerConns, crashPoint)
+
+	// at this point, Client crash does not affect the servers
 
 	return result, err
+}
+
+// Allows us to control when we want to crash
+type CrashPoint int
+const (
+	FailBeforeClientSendsCommit CrashPoint = 1
+)
+
+func crashClient() {
+	stop = 1
 }

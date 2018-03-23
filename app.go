@@ -19,12 +19,20 @@ import "./client"
 
 import "fmt"
 import "./dbStructs"
-import "./shared"
+import (
+	"./shared"
+	"os"
+	"strconv"
+	"time"
+)
 
 func main() {
 	// TODO provide as cmd arguments
 	lbsAddr := "127.0.0.1:54321"
 	localIP := "127.0.0.1:9999"
+
+	crashPointArg := os.Args[1]
+	crashPoint, _:= strconv.Atoi(crashPointArg)
 
 	_, err := client.StartClient(lbsAddr, localIP)
 	if shared.CheckError(err) != nil {
@@ -40,16 +48,24 @@ func main() {
 	opTableName2 := "B"
 	opKey2 := "test2"
 	m := map[string]string{"name":"Alice", "age":"30", "gender":"F"}
-	row := dbStructs.Row{"test", m}
+	row := dbStructs.Row{"test2", m}
 	op2 := dbStructs.Operation{Type: opType2, TableName: opTableName2, Key: opKey2, Value: row}
 
-	opType3 := dbStructs.Select
+	opType3 := dbStructs.Set
 	opTableName3 := "B"
 	opKey3 := "test2"
-	op3 := dbStructs.Operation{Type: opType3, TableName: opTableName3, Key: opKey3}
+	m = map[string]string{"name":"Sam", "age":"60", "gender":"M"}
+	row = dbStructs.Row{"test2", m}
+	op3 := dbStructs.Operation{Type: opType3, TableName: opTableName3, Key: opKey3, Value: row}
 
-	txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op, op2, op3}}
-	client.NewTransaction(txn)
+	txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op, op2}}
+	client.NewTransaction(txn, 0)
+
+	time.Sleep(time.Second * 3)
+	txn2 := dbStructs.Transaction{Operations: []dbStructs.Operation{op3}}
+	client.NewTransaction(txn2, client.CrashPoint(crashPoint))
+
+	time.Sleep(time.Second * 3)
 }
 
 

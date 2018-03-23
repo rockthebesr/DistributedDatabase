@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"../shared"
+	"strings"
 )
 
 func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.TableLockingReply) error {
@@ -12,7 +13,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 
 	var buf []byte
 	var msg string
-	GoLogger.UnpackReceive("Received TableLock() "+args.TableName, args.GoVector, &msg)
+	GoLogger.UnpackReceive("Received TableLock() "+args.TableName + " tablesLockedByClient="+strings.Join(TransactionTables[args.IpAddress], ", "), args.GoVector, &msg)
 
 	if _, ok := AllTblLocks.All[args.TableName]; !ok {
 		buf = GoLogger.PrepareSend("Error TableLock() table does not exist "+args.TableName, "msg")
@@ -78,14 +79,18 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 	// Keep track of which tables are locked by a client
 	if _, ok := TransactionTables[args.IpAddress]; !ok {
 		TransactionTables[args.IpAddress] = []string{}
+	}
+	inArray, _ := shared.InArray(args.TableName, TransactionTables[args.IpAddress])
+	if !inArray {
 		TransactionTables[args.IpAddress] = append(TransactionTables[args.IpAddress], args.TableName)
 	}
+
 
 	// Copy the current contents of the table to BACKUP
 	err := CopyTable(args.TableName)
 	shared.CheckError(err)
 
-	buf = GoLogger.PrepareSend("Sending TableLock()"+args.TableName, "msg")
+	buf = GoLogger.PrepareSend("Sending TableLock() tablesLockedByClient="+strings.Join(TransactionTables[args.IpAddress], ", "), "msg")
 
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
 	fmt.Println("Table locked: " + args.TableName)
@@ -166,14 +171,14 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 	lockedTables := TransactionTables[args.IpAddress]
 	inArray, i := shared.InArray(args.TableName, lockedTables)
 	if inArray {
-		lockedTables = append(lockedTables[:i], lockedTables[i+1:]...)
+		TransactionTables[args.IpAddress] = append(TransactionTables[args.IpAddress][:i], TransactionTables[args.IpAddress][i+1:]...)
 	} else {
 		// the table being unlocked does not appear in the lockedTables list
-		fmt.Println("Something weird has happened 3 table=" + args.TableName)
+		fmt.Println("Something weird has happened 3 table=" + args.TableName)		// TODO: why handleClientCrash has 2 tables of same name?
 		//return errors.New("Something weird has happened 3")
 	}
 
-	buf = GoLogger.PrepareSend("Sending TableUnlock()", "msg")
+	buf = GoLogger.PrepareSend("Sending TableUnlock() tablesLockedByClient="+strings.Join(TransactionTables[args.IpAddress], ", "), "msg")
 
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
 
@@ -189,10 +194,11 @@ func (s *ServerConn) TableAvailable(args *shared.TableLockingArg, reply *shared.
 	GoLogger.UnpackReceive("Received TableAvailable()", args.GoVector, &msg)
 
 	if AllTblLocks.All[args.TableName] == false {
-		return errors.New("Something weird has happened")
+		return errors.New("Something weird has happened table="+ args.TableName + " selfIP="+SelfIP)
 	}
 
 	AllTblLocks.All[args.TableName] = false
+	fmt.Println("TableAvailable "+args.TableName)
 
 	buf = GoLogger.PrepareSend("Sending TableAvailable()", "msg")
 
@@ -216,6 +222,7 @@ func (s *ServerConn) TableUnavailable(args *shared.TableLockingArg, reply *share
 	}
 
 	AllTblLocks.All[args.TableName] = true
+	fmt.Println("TableUnavailable "+args.TableName)
 
 	buf = GoLogger.PrepareSend("Sending TableUnavailable()", "msg")
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}

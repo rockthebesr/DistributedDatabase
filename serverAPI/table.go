@@ -192,6 +192,28 @@ func CopyTable(name string) error {
 	return nil
 }
 
+func RollBackTable(name string) error {
+	table := Tables[name].Rows
+	backup := Tables[name+"_BACKUP"].Rows
+
+	for row := range table {
+		delete(table, row)
+	}
+
+	for row := range backup {
+		newRow := dbStructs.Row{Data: make(map[string]string)}
+		newRow.Key = backup[row].Key
+		for attribute := range backup[row].Data {
+			newRow.Data[attribute] = backup[row].Data[attribute]
+		}
+		table[backup[row].Key] = newRow
+	}
+
+	fmt.Println("RollBackTable", name, Tables[name])
+
+	return nil
+}
+
 
 func CreateTable(name string) (err error) {
 	Tables[name] = dbStructs.Table{name, map[string]dbStructs.Row{}}

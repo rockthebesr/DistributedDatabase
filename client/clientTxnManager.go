@@ -25,7 +25,11 @@ var DeadlockRetryInterval = 500 // in MilliSeconds
 var SleepDuration = 3000
 
 //TODO
-func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rpc.Client) (bool, error) {
+func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rpc.Client, crashPoint CrashPoint) (bool, error) {
+	fmt.Println("ExecuteTransaction=", tableToServers)
+
+	stop = 0
+
 	currentTransaction = txn
 	//Lock tables
 	isLocked, err := lockTables(tableToServers)
@@ -52,7 +56,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 
 	//Tell servers to commit transaction
-	isComitted, err := CommitTransaction(tableToServers, txn)
+	isComitted, err := CommitTransaction(tableToServers, txn, crashPoint)
 	if !isComitted {
 		return false, err
 	}
@@ -67,6 +71,14 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 
 	// TODO need to return result, distinguish between the operations
 	fmt.Println(result)
+
+	AllServers.Lock()
+	for ip := range AllServers.RecentHeartbeat {
+		delete(AllServers.RecentHeartbeat, ip)
+	}
+	AllServers.Unlock()
+
+	stop = 1
 
 	return true, nil
 }
@@ -146,9 +158,17 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 	return true, nil
 }
 
-func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
+func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint CrashPoint) (bool, error) {
 	fmt.Println("Tell servers to commit transaction")
 	var msg string
+
+	fmt.Println("crashPoint=", crashPoint)
+	if crashPoint == FailBeforeClientSendsCommit {
+		crashClient()
+		Logger.LogLocalEvent("Client has crashed")
+		return false, nil
+	}
+
 	for _, server := range tableToServers {
 		buf := Logger.PrepareSend("Send ServerConn.CommitTransaction", "msg")
 		arg := shared.TransactionArg{Transaction: txn, IPAddress: localAddr, GoVector: buf}
@@ -161,6 +181,9 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 		}
 		Logger.UnpackReceive("ServerConn.CommitTransaction succeeded", reply.GoVector, &msg)
 	}
+
+
+
 	return true, nil
 }
 
@@ -278,6 +301,12 @@ func unlockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 func sendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 	var err error
 	for range time.Tick(time.Second * time.Duration(HeartbeatInterval)) {
+		if stop == 1 {
+			fmt.Println("stopped sendHeartbeats")
+
+			return errors.New("Client has crashed")
+			//return nil
+		}
 		err = conn.Call("ServerConn.ClientHeartbeatProtocol", &localIP, &ignored)
 		shared.CheckErr(err)
 	}
