@@ -21,9 +21,9 @@ type Row struct {
 
 //Transaction -  A transaction, which consists of multiple Operations
 type Transaction struct {
-	ClientIP string
+	ClientIP      string
 	TransactionNo int
-	Operations []Operation
+	Operations    []Operation
 }
 
 //OperationType - Type of operation. We support 4 types of Operation

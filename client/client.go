@@ -19,20 +19,19 @@ type AllConnection struct {
 	RecentHeartbeat map[string]int64
 }
 
-type  TransactionManagerSession struct {
+type TransactionManagerSession struct {
 	TestDeadLock_ReverseTableList bool
-	TestDeadLock_ReleaseDeadlock bool
-	AcquiredLocks map[string]bool
-
+	TestDeadLock_ReleaseDeadlock  bool
+	AcquiredLocks                 map[string]bool
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Settings
 var (
-	lbs        *rpc.Client
-	localAddr  string
-	Logger     *govec.GoLog
-	AllServers AllConnection
+	lbs               *rpc.Client
+	localAddr         string
+	Logger            *govec.GoLog
+	AllServers        AllConnection
 	TxnManagerSession TransactionManagerSession = TransactionManagerSession{AcquiredLocks: make(map[string]bool)}
 )
 

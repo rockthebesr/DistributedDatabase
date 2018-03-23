@@ -1,0 +1,62 @@
+server127.0.0.1:12345 {"server127.0.0.1:12345":1}
+Initialization Complete
+server127.0.0.1:12345 {"server127.0.0.1:12345":2}
+Sending AddMappings to LBS
+server127.0.0.1:12345 {"server127.0.0.1:12345":3, "LBS":3}
+Received AddMappings from LBS
+server127.0.0.1:12345 {"server127.0.0.1:12345":4, "LBS":3}
+Sending GetPeers to LBS
+server127.0.0.1:12345 {"server127.0.0.1:12345":5, "LBS":5}
+Received GetPeers from LBS
+server127.0.0.1:12345 {"server127.0.0.1:12345":6, "LBS":9, "server127.0.0.1:12346":6}
+Received ConnectToPeer from Server
+server127.0.0.1:12345 {"server127.0.0.1:12345":7, "LBS":9, "server127.0.0.1:12346":6}
+Sending ConnectToPeer back
+server127.0.0.1:12345 {"server127.0.0.1:12346":9, "server127.0.0.1:12345":8, "LBS":11, "client127.0.0.1:9999":6}
+Received ClientConnect from Client
+server127.0.0.1:12345 {"client127.0.0.1:9999":6, "server127.0.0.1:12346":9, "server127.0.0.1:12345":9, "LBS":11}
+Sending ClientConnect back
+server127.0.0.1:12345 {"server127.0.0.1:12346":11, "server127.0.0.1:12345":10, "LBS":11, "client127.0.0.1:9999":10}
+Received TableLock() B
+server127.0.0.1:12345 {"server127.0.0.1:12346":11, "server127.0.0.1:12345":11, "LBS":11, "client127.0.0.1:9999":10}
+Sending TableUnavailable to server 127.0.0.1:12346
+server127.0.0.1:12345 {"server127.0.0.1:12346":13, "server127.0.0.1:12345":12, "LBS":11, "client127.0.0.1:9999":10}
+Received TableUnavailable from server 127.0.0.1:12346
+server127.0.0.1:12345 {"client127.0.0.1:9999":10, "server127.0.0.1:12346":13, "server127.0.0.1:12345":13, "LBS":11}
+Sending TableLock()B
+server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":14, "server127.0.0.1:12346":15, "server127.0.0.1:12345":14}
+Received SetRow 
+server127.0.0.1:12345 {"client127.0.0.1:9999":14, "server127.0.0.1:12346":15, "server127.0.0.1:12345":15, "LBS":11}
+Sending SetRow added=Table:B
+  Key:test2 name:Alice age:30 gender:F 
+
+server127.0.0.1:12345 {"client127.0.0.1:9999":16, "server127.0.0.1:12346":15, "server127.0.0.1:12345":16, "LBS":11}
+Received GetRow 
+server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":16, "server127.0.0.1:12346":15, "server127.0.0.1:12345":17}
+Sending GetRow reply=Table:B
+  Key:test2 age:30 gender:F name:Alice 
+
+server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":20, "server127.0.0.1:12346":17, "server127.0.0.1:12345":18}
+Received PrepareCommit() from 127.0.0.1:9999
+server127.0.0.1:12345 {"server127.0.0.1:12345":19, "LBS":11, "client127.0.0.1:9999":20, "server127.0.0.1:12346":17}
+Sending PrepareTableForCommit for table B
+server127.0.0.1:12345 {"server127.0.0.1:12346":19, "server127.0.0.1:12345":20, "LBS":11, "client127.0.0.1:9999":20}
+Received PrepareTableForCommit reply
+server127.0.0.1:12345 {"server127.0.0.1:12346":19, "server127.0.0.1:12345":21, "LBS":11, "client127.0.0.1:9999":20}
+Sending PrepareCommit successful back to127.0.0.1:9999
+server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":24, "server127.0.0.1:12346":21, "server127.0.0.1:12345":22}
+Received CommitTransaction() from 127.0.0.1:9999
+server127.0.0.1:12345 {"server127.0.0.1:12345":23, "LBS":11, "client127.0.0.1:9999":24, "server127.0.0.1:12346":21}
+Sending CommitTable for table B
+server127.0.0.1:12345 {"server127.0.0.1:12345":24, "LBS":11, "client127.0.0.1:9999":24, "server127.0.0.1:12346":23}
+Received CommitTable reply
+server127.0.0.1:12345 {"client127.0.0.1:9999":24, "server127.0.0.1:12346":23, "server127.0.0.1:12345":25, "LBS":11}
+Sending CommitTransction successful back to127.0.0.1:9999
+server127.0.0.1:12345 {"client127.0.0.1:9999":28, "server127.0.0.1:12346":25, "server127.0.0.1:12345":26, "LBS":11}
+Received TableUnlock()
+server127.0.0.1:12345 {"server127.0.0.1:12346":25, "server127.0.0.1:12345":27, "LBS":11, "client127.0.0.1:9999":28}
+Sending TableAvailable to LBS
+server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":28, "server127.0.0.1:12346":27, "server127.0.0.1:12345":28}
+Received TableAvailable from server 127.0.0.1:12346
+server127.0.0.1:12345 {"LBS":11, "client127.0.0.1:9999":28, "server127.0.0.1:12346":27, "server127.0.0.1:12345":29}
+Sending TableUnlock()

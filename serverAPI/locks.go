@@ -3,6 +3,7 @@ package serverAPI
 import (
 	"errors"
 	"fmt"
+
 	"../shared"
 )
 
@@ -45,10 +46,10 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 					var reply shared.TableLockingReply
 					args := shared.TableLockingArg{
 						IpAddress: SelfIP,
-						TableName:      tableName,
-						GoVector:		 buf,
+						TableName: tableName,
+						GoVector:  buf,
 					}
-					fmt.Println("serverPeer.Handle", serverPeer.Address==ip, serverPeer.Handle)
+					fmt.Println("serverPeer.Handle", serverPeer.Address == ip, serverPeer.Handle)
 					err := serverPeer.Handle.Call("ServerConn.TableUnavailable", &args, &reply)
 					shared.CheckError(err)
 					if err != nil {
@@ -82,7 +83,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 	}
 
 	// Copy the current contents of the table to BACKUP
-	err := CopyTable(args.TableName)
+	err := BackupTable(args.TableName)
 	shared.CheckError(err)
 
 	buf = GoLogger.PrepareSend("Sending TableLock()"+args.TableName, "msg")
@@ -133,8 +134,8 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 					var reply shared.TableLockingReply
 					args := shared.TableLockingArg{
 						IpAddress: SelfIP,
-						TableName:      tableName,
-						GoVector:		 buf,
+						TableName: tableName,
+						GoVector:  buf,
 					}
 					err := serverPeer.Handle.Call("ServerConn.TableAvailable", &args, &reply)
 					shared.CheckError(err)
@@ -157,10 +158,9 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 		}
 	}
 
-
 	// else
 	AllServers.All[SelfIP].TableMappings[args.TableName] = false // unsets the owner of the lock
-	AllTblLocks.All[args.TableName] = false // sets table to unlocked
+	AllTblLocks.All[args.TableName] = false                      // sets table to unlocked
 
 	// Remove the table from the lockedTables list
 	lockedTables := TransactionTables[args.IpAddress]
