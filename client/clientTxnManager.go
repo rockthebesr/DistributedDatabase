@@ -62,6 +62,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 
 	//End of transaction
 
+	//Comment out when testing server crashing
 	isUnlocked, err := unlockTables(tableToServers)
 	if !isUnlocked {
 		fmt.Println("Cannot unlock tables")

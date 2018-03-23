@@ -94,3 +94,21 @@ To test server crash (without recovery right now) comment out unlocking tables w
     go run app.go
 
     Kill whichever server the app connected to
+
+    sed -i '3,$d' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsLBS-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer127.0.0.1:12345-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer127.0.0.1:12346-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer127.0.0.1:17500-Log.txt' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:12345/X/g/' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:12346/Y/g/' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:17500/Z/g/' shiviz/govectorLog.txt
+
+    for macOs/linux:
+    cd shiviz/
+    cat ddbsLBS-Log.txt ddbsServer127.0.0.1\:12345-Log.txt ddbsServer127.0.0.1\:12346-Log.txt ddbsServer127.0.0.1\:17500-Log.txt ddbsClient127.0.0.1\:9999-Log.txt > govectorLog.txt
+    cd ..
+    sed -i 's/127.0.0.1:12345/X/g' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:12346/Y/g' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:17500/Z/g' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:9999//g' shiviz/govectorLog.txt

@@ -216,6 +216,7 @@ func (s *ServerConn) TableUnavailable(args *shared.TableLockingArg, reply *share
 	}
 
 	AllTblLocks.All[args.TableName] = true
+	AllServers.All[args.IpAddress].TableMappings[args.TableName] = true
 
 	buf = GoLogger.PrepareSend("Sending TableUnavailable()", "msg")
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
