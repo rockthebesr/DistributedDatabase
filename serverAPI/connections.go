@@ -277,7 +277,8 @@ func HandleServerCrash(k string) {
 	var buf []byte
 	var msg string
 
-	for tableName, ownsLock := range AllServers.All[k].TableMappings {
+	tablesAndLocks := AllServers.All[k].TableMappings
+	for tableName, ownsLock := range tablesAndLocks {
 		if ownsLock {
 			var buf []byte
 			var reply shared.TableLockingReply
@@ -285,6 +286,7 @@ func HandleServerCrash(k string) {
 			if AllTblLocks.All[tableName] {
 				fmt.Println("Unlocked table ", tableName)
 				GoLogger.LogLocalEvent("Unlocking Table "+ tableName + " for crashed server " + k)
+
 				AllTblLocks.All[tableName] = false
 				for _, peer := range AllServers.All {
 					if peer.Address != k  && peer.Address != SelfIP{
@@ -308,6 +310,7 @@ func HandleServerCrash(k string) {
 					}
 				}
 			}
+			AllServers.All[k].TableMappings[tableName] = false;
 		}
 	}
 
