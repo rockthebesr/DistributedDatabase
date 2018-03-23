@@ -75,6 +75,16 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 	// else
 	AllServers.All[SelfIP].TableMappings[args.TableName] = true // sets the owner of the lock to self
 
+	// Keep track of which tables are locked by a client
+	if _, ok := TransactionTables[args.IpAddress]; !ok {
+		TransactionTables[args.IpAddress] = []string{}
+		TransactionTables[args.IpAddress] = append(TransactionTables[args.IpAddress], args.TableName)
+	}
+
+	// Copy the current contents of the table to BACKUP
+	err := CopyTable(args.TableName)
+	shared.CheckError(err)
+
 	buf = GoLogger.PrepareSend("Sending TableLock()"+args.TableName, "msg")
 
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
@@ -136,12 +146,12 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 					// should always succeed
 					if reply.Success == false {
 						//AllTblLocks.All[args.TableName] = true
-						return errors.New("Something weird has happened")
+						return errors.New("Something weird has happened 1")
 					}
 					GoLogger.UnpackReceive("Received TableAvailable from server "+ip, reply.GoVector, &msg)
 				} else {
 					//AllTblLocks.All[args.TableName] = true
-					return errors.New("Something weird has happened")
+					return errors.New("Something weird has happened 2")
 				}
 			}
 		}
@@ -150,8 +160,18 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 
 	// else
 	AllServers.All[SelfIP].TableMappings[args.TableName] = false // unsets the owner of the lock
-
 	AllTblLocks.All[args.TableName] = false // sets table to unlocked
+
+	// Remove the table from the lockedTables list
+	lockedTables := TransactionTables[args.IpAddress]
+	inArray, i := shared.InArray(args.TableName, lockedTables)
+	if inArray {
+		lockedTables = append(lockedTables[:i], lockedTables[i+1:]...)
+	} else {
+		// the table being unlocked does not appear in the lockedTables list
+		fmt.Println("Something weird has happened 3 table=" + args.TableName)
+		//return errors.New("Something weird has happened 3")
+	}
 
 	buf = GoLogger.PrepareSend("Sending TableUnlock()", "msg")
 

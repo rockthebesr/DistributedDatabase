@@ -33,7 +33,12 @@ func main() {
 	serverAPI.CreateTable("A")
 	serverAPI.CreateTable("B")
 	serverAPI.CreateTable("C")
+	// TODO disallow any clients to use these tables
+	serverAPI.CreateTable("A"+"_BACKUP")
+	serverAPI.CreateTable("B"+"_BACKUP")
+	serverAPI.CreateTable("C"+"_BACKUP")
 
+	// TODO when a new server joins, need to ask peers whether these tables are already locked
 	serverAPI.AllTblLocks.Lock()
 	serverAPI.AllTblLocks.All = map[string]bool{"A": false, "B": false, "C": false}
 	serverAPI.AllTblLocks.Unlock()

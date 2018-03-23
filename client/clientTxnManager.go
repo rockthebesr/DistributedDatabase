@@ -9,6 +9,7 @@ import (
 
 	"../dbStructs"
 	"../shared"
+	"errors"
 )
 
 type NotSupportedOperationType string
@@ -35,6 +36,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 
 	var result []map[string]dbStructs.Row
 	//Tell servers to execute each operation
+	// TODO if the op is a JOIN, then do the op locally
 	for _, op := range txn.Operations {
 		r, err := ExecuteOperation(op, tableToServers)
 		result = append(result, r)
@@ -63,32 +65,63 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 	fmt.Println("done unlockTables")
 
+	// TODO need to return result, distinguish between the operations
 	fmt.Println(result)
 
 	return true, nil
 }
 
+// TODO need to test each operation
 func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Client) (map[string]dbStructs.Row, error) {
 	conn := tableToServers[op.TableName]
-	args := shared.TableAccessArgs{TableName: op.TableName, Key: op.Key, TableRow: op.Value}
+	var msg string
+	buf := Logger.PrepareSend("Send ExecuteOperation", "msg")
+	args := shared.TableAccessArgs{TableName: op.TableName, Key: op.Key, TableRow: op.Value, GoVector: buf}
+	reply := shared.TableAccessReply{Success: false}
 	switch op.Type {
 	case dbStructs.SelectAll:
-		reply := map[string]dbStructs.Row{}
+
 		err := conn.Call("TableCommands.GetTableContents", &args, &reply)
-		return reply, err
+		shared.CheckError(err)
+		if reply.Success == false {
+			return nil, errors.New("failed op")
+		}
+
+		err, tableString := shared.TableToString(op.TableName, reply.OneTableContents)
+		Logger.UnpackReceive("ServerConn.GetTableContents succeeded"+tableString, reply.GoVector, &msg)
+		return reply.OneTableContents, err
 	case dbStructs.Select:
-		var reply dbStructs.Row
+
 		err := conn.Call("TableCommands.GetRow", &args, &reply)
+		shared.CheckError(err)
+		if reply.Success == false {
+			return nil, errors.New("failed op")
+		}
+
 		result := map[string]dbStructs.Row{}
-		result[op.TableName] = reply
+		result[op.Key] = reply.OneRow
+		err, tableString := shared.TableToString(op.TableName, result)
+		Logger.UnpackReceive("ServerConn.GetRow succeeded"+tableString, reply.GoVector, &msg)
 		return result, err
 	case dbStructs.Set:
-		reply := false
+
 		err := conn.Call("TableCommands.SetRow", &args, &reply)
+		shared.CheckError(err)
+		if reply.Success == false {
+			return nil, errors.New("failed op")
+		}
+
+		Logger.UnpackReceive("ServerConn.SetRow succeeded for table "+op.TableName, reply.GoVector, &msg)
 		return nil, err
 	case dbStructs.Delete:
-		reply := false
+
 		err := conn.Call("TableCommands.DeleteRow", &args, &reply)
+		shared.CheckError(err)
+		if reply.Success == false {
+			return nil, errors.New("failed op")
+		}
+
+		Logger.UnpackReceive("ServerConn.DeleteRow succeeded for table "+op.TableName, reply.GoVector, &msg)
 		return nil, err
 	}
 	return nil, NotSupportedOperationType(op.Type)
@@ -97,6 +130,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 
 func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
 	fmt.Println("Prepare servers to execute transaction")
+	var msg string
 	for _, server := range tableToServers {
 		buf := Logger.PrepareSend("Send ServerConn.prepareCommit", "msg")
 		arg := shared.TransactionArg{Transaction: txn, IPAddress: localAddr, GoVector: buf}
@@ -104,16 +138,17 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 		err := server.Call("TransactionManager.PrepareCommit", &arg, &reply)
 		//If server cannot prepare commit, return false
 		if !reply.Success || err != nil {
-			Logger.UnpackReceive("ServerConn.PrepareCommit failed", reply.GoVector, "msg")
+			Logger.UnpackReceive("ServerConn.PrepareCommit failed", reply.GoVector, &msg)
 			return false, err
 		}
-		Logger.UnpackReceive("ServerConn.PrepareCommit succeeded", reply.GoVector, "msg")
+		Logger.UnpackReceive("ServerConn.PrepareCommit succeeded", reply.GoVector, &msg)
 	}
 	return true, nil
 }
 
 func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
 	fmt.Println("Tell servers to commit transaction")
+	var msg string
 	for _, server := range tableToServers {
 		buf := Logger.PrepareSend("Send ServerConn.CommitTransaction", "msg")
 		arg := shared.TransactionArg{Transaction: txn, IPAddress: localAddr, GoVector: buf}
@@ -121,10 +156,10 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 		err := server.Call("TransactionManager.CommitTransaction", &arg, &reply)
 		//If server cannot commit transaction, return false
 		if !reply.Success || err != nil {
-			Logger.UnpackReceive("ServerConn.CommitTransaction failed", reply.GoVector, "msg")
+			Logger.UnpackReceive("ServerConn.CommitTransaction failed", reply.GoVector, &msg)
 			return false, err
 		}
-		Logger.UnpackReceive("ServerConn.CommitTransaction succeeded", reply.GoVector, "msg")
+		Logger.UnpackReceive("ServerConn.CommitTransaction succeeded", reply.GoVector, &msg)
 	}
 	return true, nil
 }
@@ -163,7 +198,7 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 			}
 
 			buf := Logger.PrepareSend("Send ServerConn.TableLock "+table, "msg")
-			args := shared.TableLockingArg{localAddr, table, buf}
+			args := shared.TableLockingArg{IpAddress: localAddr, TableName: table, GoVector: buf}
 			var reply shared.TableLockingReply
 			var msg string
 			err := serverHandle.Call("ServerConn.TableLock", &args, &reply)
@@ -210,7 +245,7 @@ func unlockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 		//go func(table string, server *rpc.Client) {
 		//defer wg.Done()
 		buf := Logger.PrepareSend("Send ServerConn.TableUnlock "+table, "msg")
-		args := shared.TableLockingArg{localAddr, table, buf}
+		args := shared.TableLockingArg{IpAddress: localAddr, TableName: table, GoVector: buf}
 		var reply shared.TableLockingReply
 		var msg string
 		err := server.Call("ServerConn.TableUnlock", &args, &reply)

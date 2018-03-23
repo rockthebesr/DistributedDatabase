@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/rpc"
 	"os"
+	"../dbStructs"
 )
 
 func Contains(s []string, e string) bool {
@@ -77,4 +78,18 @@ func InArray(value string, array []string) (bool, int) {
 		}
 	}
 	return false, -1
+}
+
+func TableToString(name string, rows map[string]dbStructs.Row) (error, string) {
+	tableString := ""
+	tableString = tableString + "Table:" + name + "\n"
+
+	for key, row := range rows {
+		tableString = tableString + "  Key:" + key + " "
+		for attribute, value := range row.Data {
+			tableString = tableString + attribute + ":" + value + " "
+		}
+		tableString = tableString + "\n"
+	}
+	return nil, tableString
 }

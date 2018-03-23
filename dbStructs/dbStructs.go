@@ -7,6 +7,7 @@ package dbStructs
 type Table struct {
 	Name string
 	Rows map[string]Row
+	// TODO schema
 }
 
 //Row -  A row in a db table
@@ -20,6 +21,8 @@ type Row struct {
 
 //Transaction -  A transaction, which consists of multiple Operations
 type Transaction struct {
+	ClientIP string
+	TransactionNo int
 	Operations []Operation
 }
 

@@ -35,7 +35,20 @@ func main() {
 	opTableName := "A"
 	opKey := "test"
 	op := dbStructs.Operation{Type: opType, TableName: opTableName, Key: opKey}
-	txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op}}
+
+	opType2 := dbStructs.Set
+	opTableName2 := "B"
+	opKey2 := "test2"
+	m := map[string]string{"name":"Alice", "age":"30", "gender":"F"}
+	row := dbStructs.Row{"test", m}
+	op2 := dbStructs.Operation{Type: opType2, TableName: opTableName2, Key: opKey2, Value: row}
+
+	opType3 := dbStructs.Select
+	opTableName3 := "B"
+	opKey3 := "test2"
+	op3 := dbStructs.Operation{Type: opType3, TableName: opTableName3, Key: opKey3}
+
+	txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op, op2, op3}}
 	client.NewTransaction(txn)
 }
 

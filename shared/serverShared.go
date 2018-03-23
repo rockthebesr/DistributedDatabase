@@ -4,6 +4,29 @@ import (
 	"../dbStructs"
 )
 
+type TableLockingArg struct {
+	IpAddress string
+	TableName string
+	GoVector  []byte
+}
+
+type TableLockingReply struct {
+	Success  bool
+	GoVector []byte
+}
+
+type TransactionArg struct {
+	IPAddress   string
+	Transaction dbStructs.Transaction
+	GoVector    []byte
+}
+
+type TransactionReply struct {
+	Success  bool
+	GoVector []byte
+}
+
+
 type TableAccessArgs struct {
 	TableName string
 	Key string
