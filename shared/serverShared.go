@@ -16,9 +16,9 @@ type TableLockingReply struct {
 }
 
 type TransactionArg struct {
-	IPAddress   string
-	Transaction dbStructs.Transaction
-	GoVector    []byte
+	IPAddress     string
+	UpdatedTables []string
+	GoVector      []byte
 }
 
 type TransactionReply struct {
@@ -26,29 +26,29 @@ type TransactionReply struct {
 	GoVector []byte
 }
 
-
-type TableAccessArgs struct {
-	TableName string
-	Key string
-	TableRow dbStructs.Row
-	GoVector []byte
-}
-
 type ConnectionArgs struct {
-	IP string
+	IP         string
 	TableNames []string
-	GoVector []byte
+	GoVector   []byte
 }
 
 type ConnectionReply struct {
-	Success bool
+	Success  bool
 	GoVector []byte
 }
 
+type TableAccessArgs struct {
+	TableName string
+	Key       string
+	TableRow  dbStructs.Row
+	NewTable  dbStructs.Table
+	GoVector  []byte
+}
+
 type TableAccessReply struct {
-	TableNames []string
+	TableNames       []string
 	OneTableContents map[string]dbStructs.Row
-	OneRow dbStructs.Row
-	Success bool
-	GoVector []byte
+	OneRow           dbStructs.Row
+	Success          bool
+	GoVector         []byte
 }

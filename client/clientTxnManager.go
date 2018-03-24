@@ -7,9 +7,10 @@ import (
 	"sort"
 	"time"
 
+	"errors"
+
 	"../dbStructs"
 	"../shared"
-	"errors"
 )
 
 type NotSupportedOperationType string
@@ -52,19 +53,23 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	//Tell servers to prepare commit
 	isPrepared, err := PrepareTransaction(tableToServers, txn)
 	if !isPrepared {
+		fmt.Println("Cannot prepare transaction")
 		return false, err
 	}
 
 	//Tell servers to commit transaction
 	isComitted, err := CommitTransaction(tableToServers, txn, crashPoint)
 	if !isComitted {
+		fmt.Println("Cannot commit transaction")
 		return false, err
 	}
 
 	//End of transaction
 
+	//Comment out when testing server crashing
 	isUnlocked, err := unlockTables(tableToServers)
 	if !isUnlocked {
+		fmt.Println("Cannot unlock tables")
 		return false, err
 	}
 	fmt.Println("done unlockTables")
@@ -141,11 +146,12 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 }
 
 func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
-	fmt.Println("Prepare servers to execute transaction")
+	fmt.Println("Prepare servers to prepare transaction")
+	serverToTables := reverseMap(tableToServers)
 	var msg string
 	for _, server := range tableToServers {
-		buf := Logger.PrepareSend("Send ServerConn.prepareCommit", "msg")
-		arg := shared.TransactionArg{Transaction: txn, IPAddress: localAddr, GoVector: buf}
+		buf := Logger.PrepareSend("Send ServerConn.prepareCommit", &msg)
+		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf}
 		reply := shared.TransactionReply{Success: false}
 		err := server.Call("TransactionManager.PrepareCommit", &arg, &reply)
 		//If server cannot prepare commit, return false
@@ -160,6 +166,7 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 
 func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint CrashPoint) (bool, error) {
 	fmt.Println("Tell servers to commit transaction")
+	serverToTables := reverseMap(tableToServers)
 	var msg string
 
 	fmt.Println("crashPoint=", crashPoint)
@@ -170,12 +177,14 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 	}
 
 	for _, server := range tableToServers {
-		buf := Logger.PrepareSend("Send ServerConn.CommitTransaction", "msg")
-		arg := shared.TransactionArg{Transaction: txn, IPAddress: localAddr, GoVector: buf}
+		buf := Logger.PrepareSend("Send ServerConn.CommitTransaction", &msg)
+		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf}
 		reply := shared.TransactionReply{Success: false}
 		err := server.Call("TransactionManager.CommitTransaction", &arg, &reply)
 		//If server cannot commit transaction, return false
 		if !reply.Success || err != nil {
+			fmt.Println(reply.Success)
+			fmt.Println(err)
 			Logger.UnpackReceive("ServerConn.CommitTransaction failed", reply.GoVector, &msg)
 			return false, err
 		}
@@ -311,4 +320,18 @@ func sendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 		shared.CheckErr(err)
 	}
 	return err
+}
+
+//Helper
+
+func reverseMap(m map[string]*rpc.Client) map[*rpc.Client][]string {
+	n := make(map[*rpc.Client][]string)
+	for k, v := range m {
+		if _, ok := n[v]; ok {
+			n[v] = append(n[v], k)
+		} else {
+			n[v] = []string{k}
+		}
+	}
+	return n
 }

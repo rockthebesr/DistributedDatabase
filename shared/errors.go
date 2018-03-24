@@ -23,3 +23,9 @@ func (e TableUnavailableError) Error() string {
 	return fmt.Sprintf("Table [%s] is currently in use by another client", string(e))
 }
 
+type DisconnectedError string
+
+func (e DisconnectedError) Error() string {
+	return fmt.Sprintf("DFS: Not connnected to server [%s]", string(e))
+}
+
