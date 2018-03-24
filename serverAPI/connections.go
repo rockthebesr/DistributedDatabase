@@ -400,6 +400,8 @@ func HandleServerCrash(k string) {
 
 	AllServers.All[k].Handle.Close()
 
+	GoLogger.LogLocalEvent("Deleting server " + k + " from list of peers")
+
 	delete(AllServers.All, k)
 
 	var reply shared.TableNamesReply
