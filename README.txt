@@ -90,8 +90,8 @@ To test server crash (without recovery right now) comment out unlocking tables w
     go run lbs.go "127.0.0.1:54321" "false"
     go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
     go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:17500"
-    go run app.go
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12347"
+    go run app.go "0"
 
     Kill whichever server the app connected to
 
@@ -99,16 +99,17 @@ To test server crash (without recovery right now) comment out unlocking tables w
     sed -i '$r shiviz/ddbsLBS-Log.txt' shiviz/govectorLog.txt
     sed -i '$r shiviz/ddbsServer127.0.0.1:12345-Log.txt' shiviz/govectorLog.txt
     sed -i '$r shiviz/ddbsServer127.0.0.1:12346-Log.txt' shiviz/govectorLog.txt
-    sed -i '$r shiviz/ddbsServer127.0.0.1:17500-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer127.0.0.1:12347-Log.txt' shiviz/govectorLog.txt
     sed -i 's/127.0.0.1:12345/X/g/' shiviz/govectorLog.txt
     sed -i 's/127.0.0.1:12346/Y/g/' shiviz/govectorLog.txt
-    sed -i 's/127.0.0.1:17500/Z/g/' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:12347/Z/g/' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:9999//g' shiviz/govectorLog.txt
 
     for macOs/linux:
     cd shiviz/
-    cat ddbsLBS-Log.txt ddbsServer127.0.0.1\:12345-Log.txt ddbsServer127.0.0.1\:12346-Log.txt ddbsServer127.0.0.1\:17500-Log.txt ddbsClient127.0.0.1\:9999-Log.txt > govectorLog.txt
+    cat ddbsLBS-Log.txt ddbsServer127.0.0.1\:12345-Log.txt ddbsServer127.0.0.1\:12346-Log.txt ddbsServer127.0.0.1\:12347-Log.txt ddbsClient127.0.0.1\:9999-Log.txt > govectorLog.txt
     cd ..
     sed -i 's/127.0.0.1:12345/X/g' shiviz/govectorLog.txt
     sed -i 's/127.0.0.1:12346/Y/g' shiviz/govectorLog.txt
-    sed -i 's/127.0.0.1:17500/Z/g' shiviz/govectorLog.txt
+    sed -i 's/127.0.0.1:12347/Z/g' shiviz/govectorLog.txt
     sed -i 's/127.0.0.1:9999//g' shiviz/govectorLog.txt
