@@ -16,7 +16,7 @@ var (
 	//New tables that will be comitted after 2pc has been done.
 )
 
-//TODO
+
 func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *shared.TransactionReply) error {
 	var msg string
 	GoLogger.UnpackReceive("Received PrepareCommit() from "+args.IPAddress, args.GoVector, &msg)
@@ -85,15 +85,6 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 	return nil
 }
 
-//func (t *TransactionManager) RollBack(arg *shared.TransactionArg, reply *shared.TransactionReply) error{
-//	tablesToRollBack := TransactionTables[arg.IPAddress]
-//	for _, table := range tablesToRollBack {
-//		RollBackTable(table)
-//	}
-//
-//	(*reply).Success = true
-//	return nil
-//}
 
 // Can be called by a primary Server or a Client that owns the lock
 // TODO how to check that the Client owns the lock?

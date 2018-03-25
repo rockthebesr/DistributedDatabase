@@ -63,6 +63,7 @@ func main() {
 	tableNames := serverAPI.GetTableNames()
 	fmt.Println("Server has tables: ", tableNames)
 
+	// first, assume that all my tables are unlocked
 	tablesAndLocks := make(map[string]bool)
 	for _, tableName := range tableNames {
 		tablesAndLocks[tableName] = false
@@ -140,6 +141,7 @@ func main() {
 			panic("IP already registered")
 		}
 
+		// TODO
 		tablesAndLocks := make(map[string]bool)
 		for _, tableName := range tableNames {
 			tablesAndLocks[tableName] = false

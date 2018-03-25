@@ -186,7 +186,10 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint CrashPoint) (bool, err
 // Allows us to control when we want to crash
 type CrashPoint int
 const (
-	FailBeforeClientSendsCommit CrashPoint = 1
+	FailAfterClientSendsPrepareCommit CrashPoint = 1 //Server rolls back, unlocks tables
+	FailDuringTransaction  CrashPoint = 2 //Server rolls back, unlocks tables
+	FailAfterClientSendsCommit  CrashPoint = 3	//Server rolls back, unlocks tables
+	FailAfterClientReceivesAllOfCommitSucceeded  CrashPoint = 4	//Server should persist the commit, but unlocks tables
 )
 
 func crashClient() {

@@ -214,6 +214,12 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 /*
  Internal function for monitoring heartbeats from peers. If a peer has timed out, then the server
  deletes it from its list of connected servers.
+ TODO handling crashed server
+	case 0: if server is not handling a transaction, then don't do anything else
+	case 1: server is currently handling a transaction, then unlock the tables owned by the crashed server (roll back just in case)
+	case 2: server has sent a new table to me, then I roll back and unlock the tables owned by the crashed server
+	case 3: server has sent commit, and I have already committed, then I roll back and unlock the tables owned by the crashed server
+	case 4: server has replied commit succeeded, then I still roll back and unlock the tables owned by the crashed server
 
  @Param k -> ip address to monitor
  @Param HeartbeatInterval -> time between heartbeats, before a peer is considered disconnected

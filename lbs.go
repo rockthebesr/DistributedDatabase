@@ -184,11 +184,12 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesRep
 		servers[tableName] = ""
 
 		listOfIps := allMappings.all[tableName]
+		numActive := getNumOfActiveServers(listOfIps)
 
 		// assume that at least one server is active
 		for ip, active := range listOfIps {
 			if active == true {
-
+				// then something went wrong
 				if servers[tableName] != "" {
 					continue
 				}
@@ -196,7 +197,17 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesRep
 				if debugMode == true {
 					outLog.Printf("GetServers() Mapping for tableName=%s ip=%s\n", tableName, ip)
 				}
-				servers[tableName] = ip
+
+				if numActive == 1 {
+					servers[tableName] = ip
+					break
+				}
+
+				if !serverAssigned(ip, servers) || (allServersForTableAssigned(listOfIps, servers)) {
+					servers[tableName] = ip
+					break
+				}
+
 				continue
 			}
 		}
@@ -234,6 +245,49 @@ var (
 	timeToCrash = 3
 	testCrashInterval = 500
 )
+
+func getNumOfActiveServers(listOfIps map[string]bool) int {
+	numActive := 0
+	for _, active := range listOfIps {
+		if active {
+			numActive += 1
+		}
+	}
+
+	return numActive
+}
+
+func serverAssigned(ip string, servers map[string]string) bool {
+	for _, ipAssigned := range servers {
+		if ip == ipAssigned {
+			return true
+		}
+	}
+	return false
+}
+
+func allServersForTableAssigned(listOfIps map[string]bool, servers map[string]string) bool {
+	for ip, active := range listOfIps {
+		if !active {
+			continue
+		} else {
+			isAssigned := false
+			for _, ipAssigned := range servers {
+				if ip == ipAssigned {
+					isAssigned = true
+					break
+				}
+			}
+			if isAssigned {
+				continue
+			} else {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 
 func CrashLBS() {
 	allMappings.Lock()
