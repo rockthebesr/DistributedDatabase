@@ -406,16 +406,18 @@ func HandleServerCrash(k string) {
 
 	AllServers.All[k].Handle.Close()
 
+	GoLogger.LogLocalEvent("Deleting server " + k + " from list of peers")
+
 	delete(AllServers.All, k)
 
 	var reply shared.TableNamesReply
 
+	buf = GoLogger.PrepareSend("Removing server mappings from LBS", "msg")
 	args := shared.TableNamesArg{
 		ServerIpAddress: k,
 		GoVector: buf,
 	}
 
-	buf = GoLogger.PrepareSend("Removing server mappings from LBS", "msg")
 	err := LBSConn.Call("LBS.RemoveMappings", &args, &reply)
 	shared.CheckError(err)
 	if err != nil {
