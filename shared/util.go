@@ -95,3 +95,22 @@ func TableToString(name string, rows map[string]dbStructs.Row) (error, string) {
 	tableString = tableString + "}"
 	return nil, tableString
 }
+
+// Given a table-to-ips mapping, return an ip-to-tables-to-lockOwner mapping
+func ReverseMap(peers map[string][]string) (error, map[string]map[string]bool) {
+	reverse := make(map[string]map[string]bool)
+
+	for tableName, listOfIps := range peers {
+		for _, ip := range listOfIps {
+
+			if _, ok := reverse[ip]; !ok {
+				reverse[ip] = make(map[string]bool)
+			}
+
+			reverse[ip][tableName] = false
+
+		}
+	}
+
+	return nil, reverse
+}

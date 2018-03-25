@@ -18,6 +18,8 @@ var (
 
 
 func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *shared.TransactionReply) error {
+	AllServers.Lock()
+	defer AllServers.Unlock()
 	var msg string
 	GoLogger.UnpackReceive("Received PrepareCommit() from "+args.IPAddress, args.GoVector, &msg)
 	updatedTables := args.UpdatedTables
@@ -80,8 +82,6 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 	buf := GoLogger.PrepareSend("Sending CommitTransction successful back to"+args.IPAddress, &msg)
 	*reply = shared.TransactionReply{true, buf}
 
-	AllClients.All[args.IPAddress].StopChannel = 1	// once commit succeeds, stop listening for heartbeats
-
 	return nil
 }
 
@@ -100,7 +100,8 @@ func (t *TransactionManager) RollBackPeer(arg *shared.TableLockingArg, reply *sh
 	GoLogger.UnpackReceive("Received RollBackPeer", arg.GoVector, &msg)
 
 	(*reply).Success = true
-	buf = GoLogger.PrepareSend("Reply RollBackPeer table=" + arg.TableName, "msg")
+	_, str := shared.TableToString(arg.TableName, Tables[arg.TableName].Rows)
+	buf = GoLogger.PrepareSend("Reply RollBackPeer table=" + arg.TableName + " TableContents: " + str, "msg")
 	(*reply).GoVector = buf
 
 	return nil

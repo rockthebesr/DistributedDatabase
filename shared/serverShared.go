@@ -34,6 +34,7 @@ type ConnectionArgs struct {
 
 type ConnectionReply struct {
 	Success  bool
+	TableOwners map[string]bool	// the server owns the lock
 	GoVector []byte
 }
 

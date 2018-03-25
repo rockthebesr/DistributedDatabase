@@ -230,6 +230,8 @@ func RollBackTable(name string) error {
 	}
 
 	fmt.Println("RollBackTable", name, Tables[name])
+	_, str := shared.TableToString(name, table)
+	GoLogger.LogLocalEvent("Roll back Table "+ name + " TableContents: " +  str)
 
 	return nil
 }

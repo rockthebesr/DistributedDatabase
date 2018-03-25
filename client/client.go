@@ -183,7 +183,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint CrashPoint) (bool, err
 	return result, err
 }
 
-// Allows us to control when we want to crash
+// Allows us to control when we want to crash the client
 type CrashPoint int
 const (
 	FailAfterClientSendsPrepareCommit CrashPoint = 1 //Server rolls back, unlocks tables

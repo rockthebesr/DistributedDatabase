@@ -85,6 +85,12 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 	fmt.Println("done unlockTables")
 
+	if crashPoint == FailAfterClientReceivesAllOfCommitSucceeded {
+		crashClient()
+		Logger.LogLocalEvent("Client has crashed after receiving Commit Success from all Servers")
+		return false, nil
+	}
+
 	// TODO need to return result, distinguish between the operations
 	fmt.Println(result)
 
@@ -222,12 +228,6 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 			return false, err
 		}
 		Logger.UnpackReceive("ServerConn.CommitTransaction succeeded", reply.GoVector, &msg)
-	}
-
-	if crashPoint == FailAfterClientReceivesAllOfCommitSucceeded {
-		crashClient()
-		Logger.LogLocalEvent("Client has after receiving Commit Success from all Servers")
-		return false, nil
 	}
 
 	return true, nil

@@ -10,6 +10,7 @@ import (
 	"./serverAPI"
 	"./shared"
 	"github.com/DistributedClocks/GoVector/govec"
+
 )
 
 var (
@@ -75,7 +76,7 @@ func main() {
 		serverAPI.SelfIP,
 		time.Now().UnixNano(),
 		nil, // no handle for self
-		tablesAndLocks,
+		tablesAndLocks,		// I don't own any locks
 		0,
 	}
 	serverAPI.AllServers.Unlock()
@@ -116,6 +117,9 @@ func main() {
 		}
 	}
 
+	err, serverTables := shared.ReverseMap(servers.Servers)
+	shared.CheckError(err)
+
 	// Connects to other servers
 	for _, neighbour := range peerIPs {
 		var success shared.ConnectionReply
@@ -137,27 +141,40 @@ func main() {
 
 		serverAPI.AllServers.Lock()
 
+
 		if _, exists := serverAPI.AllServers.All[neighbour]; exists {
 			panic("IP already registered")
 		}
 
-		// TODO
-		tablesAndLocks := make(map[string]bool)
-		for _, tableName := range tableNames {
-			tablesAndLocks[tableName] = false
+		// inherit the locking states of peer
+		for tblName, ownsLock := range success.TableOwners {
+			serverTables[neighbour][tblName] = ownsLock
+
+			if ownsLock {
+				serverAPI.AllTblLocks.Lock()
+				serverAPI.AllTblLocks.All[tblName] = ownsLock
+				serverAPI.AllTblLocks.Unlock()
+			}
+
 		}
+
+		// TODO
+		//tablesAndLocks := make(map[string]bool)
+		//for _, tableName := range tableNames {
+		//	tablesAndLocks[tableName] = false
+		//}
 
 		// TODO are all tables unlocked at this point? if peer owns a lock, then set to true
 		serverAPI.AllServers.All[neighbour] = &serverAPI.Connection{
 			neighbour,
 			time.Now().UnixNano(),
 			conn,
-			tablesAndLocks,
+			serverTables[neighbour],
 			0,		// TODO use channel to stop Monitor
 
 		}
 
-		fmt.Println("neighbour: ", serverAPI.AllServers.All[neighbour].Handle)
+		fmt.Println("neighbour: ", serverAPI.AllServers.All[neighbour].Handle, serverAPI.AllServers.All[neighbour].TableMappings)
 
 		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Second*2)
 
