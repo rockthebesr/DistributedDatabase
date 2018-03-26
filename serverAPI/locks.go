@@ -99,6 +99,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 }
 
 func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.TableLockingReply) error {
+
 	AllTblLocks.Lock()
 	defer AllTblLocks.Unlock()
 
@@ -135,7 +136,7 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 			if tableName == args.TableName {
 				// at this point, all tables with tableName are unavailable (must do: if a peer crashes, remove the server from AllServers)
 				if ownLock == false {
-					buf = GoLogger.PrepareSend("Sending TableAvailable to LBS", "msg")
+					buf = GoLogger.PrepareSend("Sending TableAvailable to " + ip, "msg")
 					var reply shared.TableLockingReply
 					args := shared.TableLockingArg{
 						IpAddress: SelfIP,
@@ -188,6 +189,10 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 }
 
 func (s *ServerConn) TableAvailable(args *shared.TableLockingArg, reply *shared.TableLockingReply) error {
+	if Crash {
+		return errors.New("crashed")
+	}
+
 	AllTblLocks.Lock()
 	defer AllTblLocks.Unlock()
 

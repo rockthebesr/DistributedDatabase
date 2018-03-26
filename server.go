@@ -190,10 +190,6 @@ func main() {
 	for {
 		accept, err := listener.Accept()
 		shared.CheckErr(err)
-		if serverAPI.Crash {
-			fmt.Println("Block msg")
-			continue
-		}
 		go rpcServer.ServeConn(accept)
 	}
 }

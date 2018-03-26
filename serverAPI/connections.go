@@ -45,6 +45,7 @@ var (
 	AllTblLocks = AllTableLocks{All: make(map[string]bool)}
 
 	Crash = false
+	CrashPtr = &Crash
 
 	//TEMPORARY, REMOVE LATER
 	//AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
@@ -66,6 +67,9 @@ func (e DisconnectedError) Error() string {
  @Return error
 */
 func (s *ServerConn) ServerHeartbeatProtocol(addr *string, ignored *bool) error {
+	if Crash {
+		return errors.New("crashed")
+	}
 	AllServers.Lock()
 	defer AllServers.Unlock()
 

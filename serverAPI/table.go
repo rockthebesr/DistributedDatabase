@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"strings"
-
 	"../dbStructs"
 	"../shared"
 )
@@ -141,6 +140,9 @@ func (t *TableCommands) GetTableNames(args shared.TableAccessArgs, reply *shared
 
 //PrepareTableForCommit - The primary server will call this method on its peers to prepare a table for commit
 func (t *TableCommands) PrepareTableForCommit(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
+	if Crash {
+		return nil
+	}
 	var msg string
 	GoLogger.UnpackReceive("Received PrepareTableForCommit for table "+args.TableName, args.GoVector, &msg)
 
@@ -156,6 +158,9 @@ func (t *TableCommands) PrepareTableForCommit(args shared.TableAccessArgs, reply
 
 //CommitTable- The primary server will call this method on its peers to commit a table
 func (t *TableCommands) CommitTable(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
+	if Crash {
+		return nil
+	}
 	var msg string
 	GoLogger.UnpackReceive("Received CommitTable for table "+args.TableName, args.GoVector, &msg)
 
