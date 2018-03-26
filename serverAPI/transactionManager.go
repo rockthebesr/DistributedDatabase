@@ -18,6 +18,7 @@ var (
 )
 
 func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *shared.TransactionReply) error {
+
 	AllServers.Lock()
 	defer AllServers.Unlock()
 	var msg string
@@ -78,7 +79,8 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 		}
 	}
 
-	buf := GoLogger.PrepareSend("Sending CommitTransction successful back to"+args.IPAddress, &msg)
+	_, str := shared.TableToString(args.UpdatedTables[0], Tables[args.UpdatedTables[0]].Rows)
+	buf := GoLogger.PrepareSend("Sending CommitTransction successful back to"+args.IPAddress +"Table="+str, &msg)
 	*reply = shared.TransactionReply{true, buf}
 
 	return nil

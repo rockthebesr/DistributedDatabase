@@ -12,377 +12,117 @@ LBS {"LBS":5, "serverX":4}
 Sending GetPeers()
 LBS {"LBS":6, "serverX":4, "serverY":2}
 Received AddMappings()
-LBS {"serverX":4, "serverY":2, "LBS":7}
+LBS {"LBS":7, "serverX":4, "serverY":2}
 Sending AddMappings()
 LBS {"serverX":4, "serverY":4, "LBS":8}
 Received GetPeers()
-LBS {"LBS":9, "serverX":4, "serverY":4}
+LBS {"serverY":4, "LBS":9, "serverX":4}
 Sending GetPeers()
-LBS {"LBS":10, "serverX":4, "serverY":4, "client":2}
+LBS {"serverY":4, "LBS":10, "serverX":4, "client":2}
 Received GetServers()
-LBS {"serverY":4, "client":2, "LBS":11, "serverX":4}
-Sending GetServers()
-LBS {"LBS":12, "serverX":35, "serverY":35, "client":28}
-Received GetServers()
-LBS {"serverX":35, "serverY":35, "client":28, "LBS":13}
+LBS {"serverY":4, "LBS":11, "serverX":4, "client":2}
 Sending GetServers()
 serverX {"serverX":1}
 Initialization Complete
 serverX {"serverX":2}
 Sending AddMappings to LBS
-serverX {"serverX":3, "LBS":3}
+serverX {"LBS":3, "serverX":3}
 Received AddMappings from LBS
 serverX {"serverX":4, "LBS":3}
 Sending GetPeers to LBS
-serverX {"serverX":5, "LBS":5}
+serverX {"LBS":5, "serverX":5}
 Received GetPeers from LBS
-serverX {"serverX":6, "LBS":9, "serverY":6}
+serverX {"serverX":6, "serverY":6, "LBS":9}
 Received ConnectToPeer from Server
-serverX {"serverX":7, "LBS":9, "serverY":6}
+serverX {"serverX":7, "serverY":6, "LBS":9}
 Sending ConnectToPeer back
-serverX {"client":4, "serverY":6, "serverX":8, "LBS":11}
+serverX {"serverX":8, "serverY":6, "client":4, "LBS":11}
 Received ClientConnect from Client
-serverX {"serverX":9, "LBS":11, "client":4, "serverY":6}
+serverX {"LBS":11, "serverX":9, "serverY":6, "client":4}
 Sending ClientConnect back
-serverX {"serverY":9, "serverX":10, "LBS":11, "client":8}
-Received TableLock() A tablesLockedByClient=
-serverX {"LBS":11, "client":8, "serverY":9, "serverX":11}
-Sending TableUnavailable to server Y
-serverX {"LBS":11, "client":8, "serverY":11, "serverX":12}
-Received TableUnavailable from server Y
-serverX {"LBS":11, "client":8, "serverY":11, "serverX":13}
-Sending TableLock() tablesLockedByClient=A
-serverX {"serverY":13, "serverX":14, "LBS":11, "client":10}
-Received TableUnavailable()
-serverX {"LBS":11, "client":10, "serverY":13, "serverX":15}
-Sending TableUnavailable()
-serverX {"serverX":16, "LBS":11, "client":12, "serverY":15}
-Received GetRow 
-serverX {"client":12, "serverY":15, "serverX":17, "LBS":11}
-Sending GetRow reply= Table: A{(  Key:test name:John age:30 gender:M )}
-serverX {"client":16, "serverY":19, "serverX":18, "LBS":11}
-Received PrepareTableForCommit for table B
-serverX {"serverY":19, "serverX":19, "LBS":11, "client":16}
-Sending PrepareTableForCommit result table =  Table: B{(  Key:test2 gender:F name:Alice age:30 )(  Key:test gender:M name:John age:30 )}
-serverX {"client":18, "serverY":21, "serverX":20, "LBS":11}
-Received PrepareCommit() from 
-serverX {"serverY":21, "serverX":21, "LBS":11, "client":18}
-Sending PrepareTableForCommit for table A
-serverX {"serverX":22, "LBS":11, "client":18, "serverY":23}
-Received PrepareTableForCommit reply
-serverX {"serverY":23, "serverX":23, "LBS":11, "client":18}
-Sending PrepareCommit successful back to
-serverX {"LBS":11, "client":20, "serverY":23, "serverX":24}
-Received CommitTransaction() from 
-serverX {"serverX":25, "LBS":11, "client":20, "serverY":23}
-Sending CommitTable for table A
-serverX {"serverY":25, "serverX":26, "LBS":11, "client":20}
-Received CommitTable reply
-serverX {"serverX":27, "LBS":11, "client":20, "serverY":25}
-Sending CommitTransction successful back to
-serverX {"client":22, "serverY":27, "serverX":28, "LBS":11}
-Received CommitTable for table B
-serverX {"client":22, "serverY":27, "serverX":29, "LBS":11}
-Sending CommitTable result table =  Table: B{(  Key:test2 age:30 gender:F name:Alice )(  Key:test gender:M name:John age:30 )}
-serverX {"client":24, "serverY":31, "serverX":30, "LBS":11}
-Received TableAvailable()
-serverX {"client":24, "serverY":31, "serverX":31, "LBS":11}
-Sending TableAvailable()
-serverX {"serverX":32, "LBS":11, "client":26, "serverY":33}
-Received TableUnlock()
-serverX {"serverX":33, "LBS":11, "client":26, "serverY":33}
-Sending TableAvailable to LBS
-serverX {"LBS":11, "client":26, "serverY":35, "serverX":34}
-Received TableAvailable from server Y
-serverX {"client":26, "serverY":35, "serverX":35, "LBS":11}
-Sending TableUnlock() tablesLockedByClient=
-serverX {"LBS":13, "client":30, "serverY":35, "serverX":36}
-Received ClientConnect from Client
-serverX {"serverX":37, "LBS":13, "client":30, "serverY":35}
-Sending ClientConnect back
-serverX {"client":34, "serverY":37, "serverX":38, "LBS":13}
+serverX {"serverY":6, "client":6, "LBS":11, "serverX":10}
 Received TableLock() B tablesLockedByClient=
-serverX {"serverY":37, "serverX":39, "LBS":13, "client":34}
+serverX {"serverY":6, "client":6, "LBS":11, "serverX":11}
 Sending TableUnavailable to server Y
-serverX {"LBS":13, "client":34, "serverY":39, "serverX":40}
+serverX {"serverY":9, "client":6, "LBS":11, "serverX":12}
 Received TableUnavailable from server Y
-serverX {"client":34, "serverY":39, "serverX":41, "LBS":13}
+serverX {"LBS":11, "serverX":13, "serverY":9, "client":6}
 Sending TableLock() tablesLockedByClient=B
-serverX {"LBS":13, "client":36, "serverY":41, "serverX":42}
-Received TableUnavailable()
-serverX {"serverX":43, "LBS":13, "client":36, "serverY":41}
-Sending TableUnavailable()
-serverX {"LBS":13, "client":38, "serverY":43, "serverX":44}
+serverX {"LBS":11, "serverX":14, "serverY":9, "client":8}
 Received SetRow 
-serverX {"LBS":13, "client":38, "serverY":43, "serverX":45}
-Sending SetRow added= Table: B{(  Key:test2 age:60 gender:M name:Sam )}
-serverX {"serverX":46, "LBS":13, "client":42, "serverY":47}
-Received PrepareTableForCommit for table C
-serverX {"LBS":13, "client":42, "serverY":47, "serverX":47}
-Sending PrepareTableForCommit result table =  Table: C{(  Key:test name:John age:30 gender:M )(  Key:test3 gender:M name:Sam age:60 )}
-serverX {"serverX":48, "LBS":13, "client":44, "serverY":49}
+serverX {"serverY":9, "client":8, "LBS":11, "serverX":15}
+Sending SetRow added= Table: B{(  Key:test2 name:Alice age:30 gender:F )}
+serverX {"LBS":11, "serverX":16, "serverY":9, "client":10}
 Received PrepareCommit() from 
-serverX {"client":44, "serverY":49, "serverX":49, "LBS":13}
+serverX {"serverX":17, "serverY":9, "client":10, "LBS":11}
 Sending PrepareTableForCommit for table B
-serverX {"LBS":13, "client":44, "serverY":51, "serverX":50}
+serverX {"serverY":9, "client":10, "LBS":11, "serverX":18}
 Received PrepareTableForCommit reply
-serverX {"serverX":51, "LBS":13, "client":44, "serverY":51}
+serverX {"serverY":9, "client":10, "LBS":11, "serverX":19}
 Sending PrepareCommit successful back to
-serverX {"LBS":13, "client":46, "serverY":51, "serverX":52}
+serverX {"serverY":9, "client":12, "LBS":11, "serverX":20}
 Received CommitTransaction() from 
-serverX {"client":46, "serverY":51, "serverX":53, "LBS":13}
+serverX {"client":12, "LBS":11, "serverX":21, "serverY":9}
 Sending CommitTable for table B
-serverX {"client":46, "serverY":53, "serverX":54, "LBS":13}
+serverX {"client":12, "LBS":11, "serverX":22, "serverY":9}
 Received CommitTable reply
-serverX {"LBS":13, "client":46, "serverY":53, "serverX":55}
-Sending CommitTransction successful back to
-serverX {"client":48, "serverY":55, "serverX":56, "LBS":13}
-Received CommitTable for table C
-serverX {"serverY":55, "serverX":57, "LBS":13, "client":48}
-Sending CommitTable result table =  Table: C{(  Key:test age:30 gender:M name:John )(  Key:test3 name:Sam age:60 gender:M )}
-serverX {"serverX":58, "LBS":13, "client":50, "serverY":57}
+serverX {"client":12, "LBS":11, "serverX":23, "serverY":9}
+Sending CommitTransction successful back toTable= Table: B{(  Key:test2 age:30 gender:F name:Alice )(  Key:test age:30 gender:M name:John )}
+serverX {"serverY":9, "client":14, "LBS":11, "serverX":24}
 Received TableUnlock()
-serverX {"client":50, "serverY":57, "serverX":59, "LBS":13}
+serverX {"serverX":25, "serverY":9, "client":14, "LBS":11}
 Sending TableAvailable to LBS
-serverX {"serverX":60, "LBS":13, "client":50, "serverY":59}
-Received TableAvailable from server Y
-serverX {"LBS":13, "client":50, "serverY":59, "serverX":61}
+serverX {"client":14, "LBS":11, "serverX":26, "serverY":9}
 Sending TableUnlock() tablesLockedByClient=
-serverX {"client":52, "serverY":61, "serverX":62, "LBS":13}
-Received TableAvailable()
-serverX {"serverX":63, "LBS":13, "client":52, "serverY":61}
-Sending TableAvailable()
+serverX {"serverY":9, "client":14, "LBS":11, "serverX":27}
+Server Y crashed
 serverY {"serverY":1}
 Initialization Complete
 serverY {"serverY":2}
 Sending AddMappings to LBS
-serverY {"serverY":3, "LBS":7, "serverX":4}
+serverY {"serverX":4, "serverY":3, "LBS":7}
 Received AddMappings from LBS
-serverY {"serverY":4, "LBS":7, "serverX":4}
+serverY {"serverX":4, "serverY":4, "LBS":7}
 Sending GetPeers to LBS
 serverY {"serverY":5, "LBS":9, "serverX":4}
 Received GetPeers from LBS
 serverY {"LBS":9, "serverX":4, "serverY":6}
 Sending ConnectToPeer to Server
-serverY {"LBS":9, "serverX":7, "serverY":7}
+serverY {"serverX":7, "serverY":7, "LBS":9}
 Received ConnectToPeer from Server
-serverY {"client":6, "LBS":11, "serverX":9, "serverY":8}
-Received ClientConnect from Client
-serverY {"serverY":9, "client":6, "LBS":11, "serverX":9}
-Sending ClientConnect back
-serverY {"serverY":10, "client":8, "LBS":11, "serverX":11}
+serverY {"LBS":11, "client":6, "serverX":11, "serverY":8}
 Received TableUnavailable()
-serverY {"serverX":11, "serverY":11, "client":8, "LBS":11}
+serverY {"serverY":9, "LBS":11, "client":6, "serverX":11}
 Sending TableUnavailable()
-serverY {"serverX":13, "serverY":12, "client":10, "LBS":11}
-Received TableLock() B tablesLockedByClient=
-serverY {"LBS":11, "serverX":13, "serverY":13, "client":10}
-Sending TableUnavailable to server X
-serverY {"client":10, "LBS":11, "serverX":15, "serverY":14}
-Received TableUnavailable from server X
-serverY {"serverY":15, "client":10, "LBS":11, "serverX":15}
-Sending TableLock() tablesLockedByClient=B
-serverY {"client":14, "LBS":11, "serverX":17, "serverY":16}
-Received SetRow 
-serverY {"serverY":17, "client":14, "LBS":11, "serverX":17}
-Sending SetRow added= Table: B{(  Key:test2 name:Alice age:30 gender:F )}
-serverY {"client":16, "LBS":11, "serverX":17, "serverY":18}
-Received PrepareCommit() from 
-serverY {"serverY":19, "client":16, "LBS":11, "serverX":17}
-Sending PrepareTableForCommit for table B
-serverY {"serverY":20, "client":16, "LBS":11, "serverX":19}
-Received PrepareTableForCommit reply
-serverY {"LBS":11, "serverX":19, "serverY":21, "client":16}
-Sending PrepareCommit successful back to
-serverY {"serverY":22, "client":18, "LBS":11, "serverX":21}
-Received PrepareTableForCommit for table A
-serverY {"serverX":21, "serverY":23, "client":18, "LBS":11}
-Sending PrepareTableForCommit result table =  Table: A{(  Key:test name:John age:30 gender:M )}
-serverY {"LBS":11, "serverX":25, "serverY":24, "client":20}
-Received CommitTable for table A
-serverY {"client":20, "LBS":11, "serverX":25, "serverY":25}
-Sending CommitTable result table =  Table: A{(  Key:test name:John age:30 gender:M )}
-serverY {"client":22, "LBS":11, "serverX":27, "serverY":26}
-Received CommitTransaction() from 
-serverY {"LBS":11, "serverX":27, "serverY":27, "client":22}
-Sending CommitTable for table B
-serverY {"LBS":11, "serverX":29, "serverY":28, "client":22}
-Received CommitTable reply
-serverY {"serverY":29, "client":22, "LBS":11, "serverX":29}
-Sending CommitTransction successful back to
-serverY {"serverY":30, "client":24, "LBS":11, "serverX":29}
-Received TableUnlock()
-serverY {"serverX":29, "serverY":31, "client":24, "LBS":11}
-Sending TableAvailable to LBS
-serverY {"serverY":32, "client":24, "LBS":11, "serverX":31}
-Received TableAvailable from server X
-serverY {"serverY":33, "client":24, "LBS":11, "serverX":31}
-Sending TableUnlock() tablesLockedByClient=
-serverY {"LBS":11, "serverX":33, "serverY":34, "client":26}
-Received TableAvailable()
-serverY {"client":26, "LBS":11, "serverX":33, "serverY":35}
-Sending TableAvailable()
-serverY {"serverX":37, "serverY":36, "client":32, "LBS":13}
-Received ClientConnect from Client
-serverY {"LBS":13, "serverX":37, "serverY":37, "client":32}
-Sending ClientConnect back
-serverY {"client":34, "LBS":13, "serverX":39, "serverY":38}
-Received TableUnavailable()
-serverY {"client":34, "LBS":13, "serverX":39, "serverY":39}
-Sending TableUnavailable()
-serverY {"LBS":13, "serverX":41, "serverY":40, "client":36}
-Received TableLock() C tablesLockedByClient=
-serverY {"client":36, "LBS":13, "serverX":41, "serverY":41}
-Sending TableUnavailable to server X
-serverY {"client":36, "LBS":13, "serverX":43, "serverY":42}
-Received TableUnavailable from server X
-serverY {"client":36, "LBS":13, "serverX":43, "serverY":43}
-Sending TableLock() tablesLockedByClient=C
-serverY {"LBS":13, "serverX":45, "serverY":44, "client":40}
-Received SetRow 
-serverY {"LBS":13, "serverX":45, "serverY":45, "client":40}
-Sending SetRow added= Table: C{(  Key:test3 age:60 gender:M name:Sam )}
-serverY {"serverY":46, "client":42, "LBS":13, "serverX":45}
-Received PrepareCommit() from 
-serverY {"serverY":47, "client":42, "LBS":13, "serverX":45}
-Sending PrepareTableForCommit for table C
-serverY {"serverY":48, "client":42, "LBS":13, "serverX":47}
-Received PrepareTableForCommit reply
-serverY {"serverX":47, "serverY":49, "client":42, "LBS":13}
-Sending PrepareCommit successful back to
-serverY {"serverX":49, "serverY":50, "client":44, "LBS":13}
-Received PrepareTableForCommit for table B
-serverY {"serverY":51, "client":44, "LBS":13, "serverX":49}
-Sending PrepareTableForCommit result table =  Table: B{(  Key:test2 age:60 gender:M name:Sam )(  Key:test age:30 gender:M name:John )}
-serverY {"serverX":53, "serverY":52, "client":46, "LBS":13}
-Received CommitTable for table B
-serverY {"serverY":53, "client":46, "LBS":13, "serverX":53}
-Sending CommitTable result table =  Table: B{(  Key:test2 age:60 gender:M name:Sam )(  Key:test gender:M name:John age:30 )}
-serverY {"serverY":54, "client":48, "LBS":13, "serverX":55}
-Received CommitTransaction() from 
-serverY {"serverY":55, "client":48, "LBS":13, "serverX":55}
-Sending CommitTable for table C
-serverY {"serverY":56, "client":48, "LBS":13, "serverX":57}
-Received CommitTable reply
-serverY {"client":48, "LBS":13, "serverX":57, "serverY":57}
-Sending CommitTransction successful back to
-serverY {"client":50, "LBS":13, "serverX":59, "serverY":58}
-Received TableAvailable()
-serverY {"LBS":13, "serverX":59, "serverY":59, "client":50}
-Sending TableAvailable()
-serverY {"serverY":60, "client":52, "LBS":13, "serverX":61}
-Received TableUnlock()
-serverY {"serverY":61, "client":52, "LBS":13, "serverX":61}
-Sending TableAvailable to LBS
-serverY {"client":52, "LBS":13, "serverX":63, "serverY":62}
-Received TableAvailable from server X
-serverY {"serverY":63, "client":52, "LBS":13, "serverX":63}
-Sending TableUnlock() tablesLockedByClient=
+serverY {"serverX":11, "serverY":10, "LBS":11, "client":6}
+Server has crashed
 client {"client":1}
 Initialization Complete
 client {"client":2}
 Send LBS.GetServers
-client {"serverX":4, "serverY":4, "client":3, "LBS":11}
+client {"serverY":4, "LBS":11, "client":3, "serverX":4}
 Received LBS.GetServers
-client {"LBS":11, "serverX":4, "serverY":4, "client":4}
+client {"LBS":11, "client":4, "serverX":4, "serverY":4}
 Send ServerConn.ClientConnectX
-client {"LBS":11, "serverX":9, "serverY":6, "client":5}
+client {"LBS":11, "client":5, "serverX":9, "serverY":6}
 Established connection to server X
-client {"serverX":9, "serverY":6, "client":6, "LBS":11}
-Send ServerConn.ClientConnectY
-client {"client":7, "LBS":11, "serverX":9, "serverY":9}
-Established connection to server Y
-client {"serverY":9, "client":8, "LBS":11, "serverX":9}
-Send ServerConn.TableLock A
-client {"client":9, "LBS":11, "serverX":13, "serverY":11}
-Received result A
-client {"serverX":13, "serverY":11, "client":10, "LBS":11}
+client {"LBS":11, "client":6, "serverX":9, "serverY":6}
 Send ServerConn.TableLock B
-client {"serverX":15, "serverY":15, "client":11, "LBS":11}
+client {"LBS":11, "client":7, "serverX":13, "serverY":9}
 Received result B
-client {"serverX":15, "serverY":15, "client":12, "LBS":11}
+client {"serverX":13, "serverY":9, "LBS":11, "client":8}
 Send ExecuteOperation
-client {"LBS":11, "serverX":17, "serverY":15, "client":13}
-ServerConn.GetRow succeeded Table: A{(  Key:test name:John age:30 gender:M )}
-client {"serverX":17, "serverY":15, "client":14, "LBS":11}
-Send ExecuteOperation
-client {"serverY":17, "client":15, "LBS":11, "serverX":17}
+client {"client":9, "serverX":15, "serverY":9, "LBS":11}
 ServerConn.SetRow succeeded for table B
-client {"LBS":11, "serverX":17, "serverY":17, "client":16}
+client {"serverY":9, "LBS":11, "client":10, "serverX":15}
 Send ServerConn.prepareCommit
-client {"serverX":19, "serverY":21, "client":17, "LBS":11}
+client {"serverY":9, "LBS":11, "client":11, "serverX":19}
 ServerConn.PrepareCommit succeeded
-client {"client":18, "LBS":11, "serverX":19, "serverY":21}
-Send ServerConn.prepareCommit
-client {"serverY":23, "client":19, "LBS":11, "serverX":23}
-ServerConn.PrepareCommit succeeded
-client {"serverX":23, "serverY":23, "client":20, "LBS":11}
+client {"LBS":11, "client":12, "serverX":19, "serverY":9}
 Send ServerConn.CommitTransaction
-client {"LBS":11, "serverX":27, "serverY":25, "client":21}
+client {"serverX":23, "serverY":9, "LBS":11, "client":13}
 ServerConn.CommitTransaction succeeded
-client {"client":22, "LBS":11, "serverX":27, "serverY":25}
-Send ServerConn.CommitTransaction
-client {"LBS":11, "serverX":29, "serverY":29, "client":23}
-ServerConn.CommitTransaction succeeded
-client {"client":24, "LBS":11, "serverX":29, "serverY":29}
+client {"serverX":23, "serverY":9, "LBS":11, "client":14}
 Send ServerConn.TableUnlock B
-client {"client":25, "LBS":11, "serverX":31, "serverY":33}
+client {"serverX":26, "serverY":9, "LBS":11, "client":15}
 Received result B
-client {"client":26, "LBS":11, "serverX":31, "serverY":33}
-Send ServerConn.TableUnlock A
-client {"serverY":35, "client":27, "LBS":11, "serverX":35}
-Received result A
-client {"serverY":35, "client":28, "LBS":11, "serverX":35}
-Send LBS.GetServers
-client {"serverX":35, "serverY":35, "client":29, "LBS":13}
-Received LBS.GetServers
-client {"LBS":13, "serverX":35, "serverY":35, "client":30}
-Send ServerConn.ClientConnectX
-client {"serverX":37, "serverY":35, "client":31, "LBS":13}
-Established connection to server X
-client {"LBS":13, "serverX":37, "serverY":35, "client":32}
-Send ServerConn.ClientConnectY
-client {"client":33, "LBS":13, "serverX":37, "serverY":37}
-Established connection to server Y
-client {"serverX":37, "serverY":37, "client":34, "LBS":13}
-Send ServerConn.TableLock B
-client {"LBS":13, "serverX":41, "serverY":39, "client":35}
-Received result B
-client {"serverX":41, "serverY":39, "client":36, "LBS":13}
-Send ServerConn.TableLock C
-client {"serverY":43, "client":37, "LBS":13, "serverX":43}
-Received result C
-client {"client":38, "LBS":13, "serverX":43, "serverY":43}
-Send ExecuteOperation
-client {"LBS":13, "serverX":45, "serverY":43, "client":39}
-ServerConn.SetRow succeeded for table B
-client {"serverY":43, "client":40, "LBS":13, "serverX":45}
-Send ExecuteOperation
-client {"serverX":45, "serverY":45, "client":41, "LBS":13}
-ServerConn.SetRow succeeded for table C
-client {"LBS":13, "serverX":45, "serverY":45, "client":42}
-Send ServerConn.prepareCommit
-client {"LBS":13, "serverX":47, "serverY":49, "client":43}
-ServerConn.PrepareCommit succeeded
-client {"serverY":49, "client":44, "LBS":13, "serverX":47}
-Send ServerConn.prepareCommit
-client {"serverX":51, "serverY":51, "client":45, "LBS":13}
-ServerConn.PrepareCommit succeeded
-client {"client":46, "LBS":13, "serverX":51, "serverY":51}
-Send ServerConn.CommitTransaction
-client {"client":47, "LBS":13, "serverX":55, "serverY":53}
-ServerConn.CommitTransaction succeeded
-client {"client":48, "LBS":13, "serverX":55, "serverY":53}
-Send ServerConn.CommitTransaction
-client {"client":49, "LBS":13, "serverX":57, "serverY":57}
-ServerConn.CommitTransaction succeeded
-client {"serverX":57, "serverY":57, "client":50, "LBS":13}
-Send ServerConn.TableUnlock B
-client {"serverX":61, "serverY":59, "client":51, "LBS":13}
-Received result B
-client {"serverY":59, "client":52, "LBS":13, "serverX":61}
-Send ServerConn.TableUnlock C
-client {"serverY":63, "client":53, "LBS":13, "serverX":63}
-Received result C
-client {"client":54, "LBS":13, "serverX":63, "serverY":63}
-Client has after receiving Commit Success from all Servers

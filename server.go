@@ -39,7 +39,7 @@ func main() {
 	serverAPI.CreateTable("B"+"_BACKUP")
 	serverAPI.CreateTable("C"+"_BACKUP")
 
-	// TODO when a new server joins, need to ask peers whether these tables are already locked
+	// when a new server joins, need to ask peers whether these tables are already locked
 	serverAPI.AllTblLocks.Lock()
 	serverAPI.AllTblLocks.All = map[string]bool{"A": false, "B": false, "C": false}
 	serverAPI.AllTblLocks.Unlock()
@@ -70,7 +70,7 @@ func main() {
 		tablesAndLocks[tableName] = false
 	}
 
-	// TODO are all tables unlocked at this point? if peer owns a lock, then I should also be locked
+	// are all tables unlocked at this point? if peer owns a lock, then I should also be locked
 	serverAPI.AllServers.Lock()
 	serverAPI.AllServers.All[serverAPI.SelfIP] = &serverAPI.Connection{
 		serverAPI.SelfIP,
@@ -158,19 +158,13 @@ func main() {
 
 		}
 
-		// TODO
-		//tablesAndLocks := make(map[string]bool)
-		//for _, tableName := range tableNames {
-		//	tablesAndLocks[tableName] = false
-		//}
-
-		// TODO are all tables unlocked at this point? if peer owns a lock, then set to true
+		// are all tables unlocked at this point? if peer owns a lock, then set to true
 		serverAPI.AllServers.All[neighbour] = &serverAPI.Connection{
 			neighbour,
 			time.Now().UnixNano(),
 			conn,
 			serverTables[neighbour],
-			0,		// TODO use channel to stop Monitor
+			0,		// use channel to stop Monitor
 
 		}
 
@@ -179,6 +173,8 @@ func main() {
 		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Second*2)
 
 		serverAPI.AllServers.Unlock()
+
+		// TODO Get table contents from peer
 	}
 
 	// Listens for other connections
