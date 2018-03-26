@@ -4,11 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"net/rpc"
+	"strings"
 	"sync"
 	"time"
+
 	"../shared"
 	"github.com/DistributedClocks/GoVector/govec"
-	"strings"
 )
 
 type ServerConn int
@@ -16,9 +17,9 @@ type ServerConn int
 type Connection struct {
 	Address         string
 	RecentHeartbeat int64
-	Handle 			*rpc.Client
+	Handle          *rpc.Client
 	TableMappings   map[string]bool // key:value = tableName:ownsLock
-	StopChannel 	int
+	StopChannel     int
 }
 
 type AllConnection struct {
@@ -29,7 +30,7 @@ type AllConnection struct {
 type AllTableLocks struct {
 	sync.RWMutex
 	All        map[string]bool // key:value = tableName:isLocked
-	TableNames []string	// not used
+	TableNames []string        // not used
 }
 
 var (
@@ -119,7 +120,7 @@ func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.
 	// TODO not all tables are unlocked at this point, how to communicate which tables are unavailable?
 	tablesAndLocks := make(map[string]bool)
 	for _, tableName := range args.TableNames {
-		tablesAndLocks[tableName] = false	//TODO can't assume this, this is incorrect
+		tablesAndLocks[tableName] = false //TODO can't assume this, this is incorrect
 	}
 
 	if _, exists := AllServers.All[toRegister]; exists {
@@ -207,7 +208,6 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 	shared.CheckErr(err)
 
 	AllClients.All[toRegister].Handle = conn
-
 
 	fmt.Printf("Established bi-directional RPC to client %s\n", toRegister)
 
@@ -363,14 +363,18 @@ func SendClientHeartbeats(conn *rpc.Client, localIP string, ignored bool) error 
 	return err
 }
 
-
 func handleClientCrash(clientIP string) error {
+	err := RollBackTableAndPeers(clientIP)
+	return err
+}
+
+//RollBackTableAndPeers - Roll back own table, and also notify peers to roll back
+func RollBackTableAndPeers(clientIP string) error {
 	AllServers.Lock()
 	defer AllServers.Unlock()
-
-	tablesContents := ""
 	tablesToUnlock := TransactionTables[clientIP]
-	fmt.Println("!!!start handleClientCrash tablesToUnlock=",tablesToUnlock)
+	fmt.Println("!!!start handleClientCrash tablesToUnlock=", tablesToUnlock)
+	tablesContents := ""
 	for _, tableName := range tablesToUnlock {
 		// Server rolls back transactions
 		RollBackTable(tableName)
@@ -385,11 +389,11 @@ func handleClientCrash(clientIP string) error {
 			// Tell peers to roll back
 			var msg string
 			buf := GoLogger.PrepareSend("Send TransactionManager.RollBackPeer table="+tableName, "msg")
-			args := shared.TableLockingArg{TableName:tableName, GoVector:buf}
-			reply := shared.TableLockingReply{Success:false}
+			args := shared.TableLockingArg{TableName: tableName, GoVector: buf}
+			reply := shared.TableLockingReply{Success: false}
 			err := conn.Handle.Call("TransactionManager.RollBackPeer", &args, &reply)
 			shared.CheckError(err)
-			if err != nil || !reply.Success{
+			if err != nil || !reply.Success {
 				fmt.Println("Error occurred at 1")
 			} else {
 				fmt.Println("RollBackPeer succeeded")
@@ -399,11 +403,11 @@ func handleClientCrash(clientIP string) error {
 			AllServers.Unlock()
 			// Tell peers to unlock
 			buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable table="+tableName, "msg")
-			args = shared.TableLockingArg{TableName:tableName, GoVector:buf, IpAddress:SelfIP}
-			reply = shared.TableLockingReply{Success:false}
+			args = shared.TableLockingArg{TableName: tableName, GoVector: buf, IpAddress: SelfIP}
+			reply = shared.TableLockingReply{Success: false}
 			err = conn.Handle.Call("ServerConn.TableAvailable", &args, &reply)
 			shared.CheckError(err)
-			if err != nil || !reply.Success{
+			if err != nil || !reply.Success {
 				fmt.Println("Error occurred at 2")
 			} else {
 				fmt.Println("TableAvailable succeeded")
@@ -414,8 +418,8 @@ func handleClientCrash(clientIP string) error {
 
 		// Server unlocks tables (i.e. Server detect Client crash, unlock table)
 		AllServers.All[SelfIP].TableMappings[tableName] = false // unsets the owner of the lock
-		AllTblLocks.All[tableName] = false // sets table to unlocked
-		GoLogger.LogLocalEvent("Unlocked table "+tableName)
+		AllTblLocks.All[tableName] = false                      // sets table to unlocked
+		GoLogger.LogLocalEvent("Unlocked table " + tableName)
 
 		_, tableString := shared.TableToString(tableName, Tables[tableName].Rows)
 		tablesContents = tablesContents + tableString
@@ -423,12 +427,12 @@ func handleClientCrash(clientIP string) error {
 	AllTblLocks.Lock()
 	defer AllTblLocks.Unlock()
 	currentLockedTables := []string{}
-	for table, locked := range AllTblLocks.All{
+	for table, locked := range AllTblLocks.All {
 		if locked == true {
 			currentLockedTables = append(currentLockedTables, table)
 		}
 	}
-	GoLogger.LogLocalEvent("Handled client crash " + clientIP + " LockedTables=" + strings.Join(currentLockedTables, ", ") + " TablesContents="+tablesContents)
+	GoLogger.LogLocalEvent("Handled client crash " + clientIP + " LockedTables=" + strings.Join(currentLockedTables, ", ") + " TablesContents=" + tablesContents)
 
 	// Remove all the tables in lockedTables list
 	TransactionTables[clientIP] = []string{}
@@ -453,11 +457,11 @@ func HandleServerCrash(k string) {
 
 			if AllTblLocks.All[tableName] {
 				fmt.Println("Unlocked table ", tableName)
-				GoLogger.LogLocalEvent("Unlocking Table "+ tableName + " for crashed server " + k)
+				GoLogger.LogLocalEvent("Unlocking Table " + tableName + " for crashed server " + k)
 
 				AllTblLocks.All[tableName] = false
 				for _, peer := range AllServers.All {
-					if peer.Address != k  && peer.Address != SelfIP{
+					if peer.Address != k && peer.Address != SelfIP {
 						conn := peer.Handle
 						if conn != nil {
 							buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable "+tableName, "msg")
@@ -471,14 +475,14 @@ func HandleServerCrash(k string) {
 							if err != nil {
 								GoLogger.UnpackReceive("Error "+tableName, reply.GoVector, &msg)
 							} else {
-								GoLogger.UnpackReceive("Received table available from server "+ peer.Address, reply.GoVector, &msg)
+								GoLogger.UnpackReceive("Received table available from server "+peer.Address, reply.GoVector, &msg)
 							}
 							fmt.Println("Sent table available to ", peer.Address)
 						}
 					}
 				}
 			}
-			AllServers.All[k].TableMappings[tableName] = false;
+			AllServers.All[k].TableMappings[tableName] = false
 		}
 	}
 
@@ -493,7 +497,7 @@ func HandleServerCrash(k string) {
 	buf = GoLogger.PrepareSend("Removing server mappings from LBS", "msg")
 	args := shared.TableNamesArg{
 		ServerIpAddress: k,
-		GoVector: buf,
+		GoVector:        buf,
 	}
 
 	err := LBSConn.Call("LBS.RemoveMappings", &args, &reply)
