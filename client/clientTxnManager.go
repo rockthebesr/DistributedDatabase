@@ -147,7 +147,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 
 func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
 	fmt.Println("Prepare servers to prepare transaction")
-	serverToTables := reverseMap(tableToServers)
+	serverToTables := reverseConnectionMap(tableToServers)
 	var msg string
 	for _, server := range tableToServers {
 		buf := Logger.PrepareSend("Send ServerConn.prepareCommit", &msg)
@@ -166,7 +166,7 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 
 func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint CrashPoint) (bool, error) {
 	fmt.Println("Tell servers to commit transaction")
-	serverToTables := reverseMap(tableToServers)
+	serverToTables := reverseConnectionMap(tableToServers)
 	var msg string
 
 	fmt.Println("crashPoint=", crashPoint)
@@ -190,8 +190,6 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 		}
 		Logger.UnpackReceive("ServerConn.CommitTransaction succeeded", reply.GoVector, &msg)
 	}
-
-
 
 	return true, nil
 }
@@ -324,7 +322,7 @@ func sendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 
 //Helper
 
-func reverseMap(m map[string]*rpc.Client) map[*rpc.Client][]string {
+func reverseConnectionMap(m map[string]*rpc.Client) map[*rpc.Client][]string {
 	n := make(map[*rpc.Client][]string)
 	for k, v := range m {
 		if _, ok := n[v]; ok {
