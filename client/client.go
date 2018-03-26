@@ -88,8 +88,10 @@ func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 		} else {
 			if _, ok := connectedIP[sAddr]; ok {
 				result[t] = connectedIP[sAddr]
+				Logger.UnpackReceive("Already established connection to server "+sAddr, succ.GoVector, &msg)
+			} else {
+				Logger.UnpackReceive("Cannot establish connection to server "+sAddr, succ.GoVector, &msg)
 			}
-			Logger.UnpackReceive("Cannot establish connection to server "+sAddr, succ.GoVector, &msg)
 		}
 	}
 
@@ -100,18 +102,25 @@ func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 
 // a server has crashed
 func handleServerCrash(serverIP string) error {
+	if _, ok := connectedIP[serverIP]; !ok {
+		fmt.Println("server already closed, does not need to handle server crash")
+		return nil
+	}
+	Logger.LogLocalEvent(serverIP + " has crashed")
 	var msg string
 	AllServers.Lock()
 	defer AllServers.Unlock()
-	fmt.Println("tell connected servers to roll back transaction")
 	delete(connectedIP, serverIP)
-	for _, sConn := range connectedIP {
-		buf := Logger.PrepareSend("Send RollBackPrimaryServer", &msg)
+
+	fmt.Println("tell connected servers to roll back transaction", connectedIP)
+	for sAddr, sConn := range connectedIP {
+		buf := Logger.PrepareSend("Send RollBackPrimaryServer to server "+sAddr, &msg)
 		args := shared.TableLockingArg{IpAddress: localAddr, GoVector: buf}
 		reply := shared.TableLockingReply{false, nil}
 		err := sConn.Call("TransactionManager.RollBackPrimaryServer", &args, &reply)
-		shared.CheckErr(err)
+		shared.CheckError(err)
 		if err != nil || !reply.Success {
+			fmt.Println(err)
 			Logger.UnpackReceive("Received RollBackPrimaryServer failure", reply.GoVector, &msg)
 		} else {
 			Logger.UnpackReceive("Received RollBackPrimaryServer success", reply.GoVector, &msg)
@@ -135,9 +144,9 @@ func MonitorServers(k string, HeartbeatInterval time.Duration) {
 		AllServers.Lock()
 		if time.Now().UnixNano()-AllServers.RecentHeartbeat[k] > int64(HeartbeatInterval) {
 			fmt.Printf("%s timed out\n", k)
-			handleServerCrash(k)
 			delete(AllServers.RecentHeartbeat, k)
 			AllServers.Unlock()
+			handleServerCrash(k)
 			return
 		}
 		fmt.Printf("%s is alive\n", k)
@@ -200,6 +209,11 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint CrashPoint) (bool, err
 	//Execute the transaction
 	result, err := ExecuteTransaction(txn, tablesToServerConns, crashPoint)
 
+	for s, sConn := range connectedIP {
+		Logger.LogLocalEvent("Close connection to " + s)
+		delete(connectedIP, s)
+		sConn.Close()
+	}
 	// at this point, Client crash does not affect the servers
 
 	return result, err
@@ -209,10 +223,11 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint CrashPoint) (bool, err
 type CrashPoint int
 
 const (
-	FailAfterClientSendsPrepareCommit CrashPoint = 1 //Server rolls back, unlocks tables
-	FailDuringTransaction  CrashPoint = 2 //Server rolls back, unlocks tables
-	FailAfterClientSendsCommit  CrashPoint = 3	//Server rolls back, unlocks tables
-	FailAfterClientReceivesAllOfCommitSucceeded  CrashPoint = 4	//Server should persist the commit, but unlocks tables
+	FailAfterClientSendsPrepareCommit           CrashPoint = 1 //Server rolls back, unlocks tables
+	FailDuringTransaction                       CrashPoint = 2 //Server rolls back, unlocks tables
+	FailAfterClientSendsCommit                  CrashPoint = 3 //Server rolls back, unlocks tables
+	FailAfterClientReceivesAllOfCommitSucceeded CrashPoint = 4 //Server should persist the commit, but unlocks tables
+	NoFail                                      CrashPoint = 5
 )
 
 func crashClient() {

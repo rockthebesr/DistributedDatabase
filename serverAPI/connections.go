@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/rpc"
-	"strings"
 	"sync"
 	"time"
 
@@ -242,8 +241,8 @@ func MonitorPeers(k string, HeartbeatInterval time.Duration) {
 			fmt.Printf("%s timed out\n", k)
 			fmt.Println(DisconnectedError(k))
 			GoLogger.LogLocalEvent("Server " + k + " crashed")
-			HandleServerCrash(k)
 			AllServers.Unlock()
+			HandleServerCrash(k)
 			return
 		}
 		fmt.Printf("%s is alive\n", k)
@@ -377,7 +376,7 @@ func RollBackTableAndPeers(clientIP string) error {
 			currentLockedTables = append(currentLockedTables, table)
 		}
 	}
-	GoLogger.LogLocalEvent("Handled client crash " + clientIP + " LockedTables=" + strings.Join(currentLockedTables, ", ") + " TablesContents=" + tablesContents)
+	GoLogger.LogLocalEvent("Handled roll back table, from " + clientIP)
 
 	// Remove all the tables in lockedTables list
 	TransactionTables[clientIP] = []string{}

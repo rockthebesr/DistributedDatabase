@@ -21,10 +21,9 @@ func (e NotSupportedOperationType) Error() string {
 
 var HeartbeatInterval = 2
 var currentTransaction dbStructs.Transaction
-var DeadlockTimeout = 2
-var DeadlockRetryInterval = 500 // in MilliSeconds
+var DeadlockTimeout = 5
+var DeadlockRetryInterval = 1000 // in MilliSeconds
 var SleepDuration = 3000
-
 
 func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rpc.Client, crashPoint CrashPoint) (bool, error) {
 	fmt.Println("ExecuteTransaction=", tableToServers)
@@ -122,7 +121,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 		}
 
 		err, tableString := shared.TableToString(op.TableName, reply.OneTableContents)
-		Logger.UnpackReceive("ServerConn.GetTableContents succeeded"+tableString, reply.GoVector, &msg)
+		Logger.UnpackReceive("TableCommands.GetTableContents succeeded"+tableString, reply.GoVector, &msg)
 		return reply.OneTableContents, err
 	case dbStructs.Select:
 
@@ -135,7 +134,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 		result := map[string]dbStructs.Row{}
 		result[op.Key] = reply.OneRow
 		err, tableString := shared.TableToString(op.TableName, result)
-		Logger.UnpackReceive("ServerConn.GetRow succeeded"+tableString, reply.GoVector, &msg)
+		Logger.UnpackReceive("TableCommands.GetRow succeeded"+tableString, reply.GoVector, &msg)
 		return result, err
 	case dbStructs.Set:
 
@@ -145,7 +144,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 			return nil, errors.New("failed op")
 		}
 
-		Logger.UnpackReceive("ServerConn.SetRow succeeded for table "+op.TableName, reply.GoVector, &msg)
+		Logger.UnpackReceive("TableCommands.SetRow succeeded for table "+op.TableName, reply.GoVector, &msg)
 		return nil, err
 	case dbStructs.Delete:
 
@@ -155,7 +154,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 			return nil, errors.New("failed op")
 		}
 
-		Logger.UnpackReceive("ServerConn.DeleteRow succeeded for table "+op.TableName, reply.GoVector, &msg)
+		Logger.UnpackReceive("TableCommands.DeleteRow succeeded for table "+op.TableName, reply.GoVector, &msg)
 		return nil, err
 	}
 	return nil, NotSupportedOperationType(op.Type)
@@ -172,7 +171,7 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 	i := 0
 	for _, server := range tableToServers {
 		i += 1
-		buf := Logger.PrepareSend("Send ServerConn.prepareCommit", &msg)
+		buf := Logger.PrepareSend("Send TransactionManager.prepareCommit", &msg)
 		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf}
 		reply := shared.TransactionReply{Success: false}
 
@@ -187,10 +186,10 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 		err := server.Call("TransactionManager.PrepareCommit", &arg, &reply)
 		//If server cannot prepare commit, return false
 		if !reply.Success || err != nil {
-			Logger.UnpackReceive("ServerConn.PrepareCommit failed", reply.GoVector, &msg)
+			Logger.UnpackReceive("TransactionManager.PrepareCommit failed", reply.GoVector, &msg)
 			return false, err
 		}
-		Logger.UnpackReceive("ServerConn.PrepareCommit succeeded", reply.GoVector, &msg)
+		Logger.UnpackReceive("TransactionManager.PrepareCommit succeeded", reply.GoVector, &msg)
 	}
 	return true, nil
 }
@@ -205,7 +204,7 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 	i := 0
 	for _, server := range tableToServers {
 		i += 1
-		buf := Logger.PrepareSend("Send ServerConn.CommitTransaction", &msg)
+		buf := Logger.PrepareSend("Send TransactionManager.CommitTransaction", &msg)
 		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf}
 		reply := shared.TransactionReply{Success: false}
 
@@ -224,10 +223,10 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 		if !reply.Success || err != nil {
 			fmt.Println(reply.Success)
 			fmt.Println(err)
-			Logger.UnpackReceive("ServerConn.CommitTransaction failed", reply.GoVector, &msg)
+			Logger.UnpackReceive("TransactionManager.CommitTransaction failed", reply.GoVector, &msg)
 			return false, err
 		}
-		Logger.UnpackReceive("ServerConn.CommitTransaction succeeded", reply.GoVector, &msg)
+		Logger.UnpackReceive("TransactionManager.CommitTransaction succeeded", reply.GoVector, &msg)
 	}
 
 	return true, nil
@@ -354,7 +353,10 @@ func sendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 			//return nil
 		}
 		err = conn.Call("ServerConn.ClientHeartbeatProtocol", &localIP, &ignored)
-		shared.CheckErr(err)
+		shared.CheckError(err)
+		if err != nil {
+			return err
+		}
 	}
 	return err
 }

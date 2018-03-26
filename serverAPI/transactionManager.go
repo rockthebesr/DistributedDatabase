@@ -108,15 +108,12 @@ func (t *TransactionManager) RollBackPeer(arg *shared.TableLockingArg, reply *sh
 // TODO how to check that the Client owns the lock?
 func (t *TransactionManager) RollBackPrimaryServer(args *shared.TableLockingArg, reply *shared.TableLockingReply) error {
 	var msg string
-	if _, ok := Tables[args.TableName]; !ok {
-		return nil
-	}
 	GoLogger.UnpackReceive("Received RollBackPrimaryServer from "+args.IpAddress, args.GoVector, &msg)
 
 	RollBackTableAndPeers(args.IpAddress)
 
-	buf := GoLogger.PrepareSend("Successfully rolled backed on this table and peers", &msg)
-	reply.Success = true
-	reply.GoVector = buf
+	buf := GoLogger.PrepareSend("Successfully rolled backed on this table and peers", "msg")
+	(*reply).Success = true
+	(*reply).GoVector = buf
 	return nil
 }
