@@ -53,6 +53,12 @@ func main() {
 	row2 := dbStructs.Row{"test2", m2}
 	op2 := dbStructs.Operation{Type: opType2, TableName: opTableName2, Key: opKey2, Value: row2}
 
+	if crashPoint == 5 {
+		txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op2}}
+		client.NewTransaction(txn, client.CrashPoint(crashPoint))
+		return
+	}
+
 	opType3 := dbStructs.Set
 	opTableName3 := "B"
 	opKey3 := "test2"

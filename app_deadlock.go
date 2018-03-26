@@ -42,7 +42,7 @@ func main() {
 	op2 := dbStructs.Operation{Type: opType2, TableName: opTableName2, Key: opKey2}
 
 	txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op, op2}}
-	client.NewTransaction(txn)
+	client.NewTransaction(txn, 0)
 }
 
 

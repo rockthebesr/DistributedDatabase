@@ -55,6 +55,8 @@ To test strict 2-phase locking protocol with deadlocks:
     go run lbs.go "127.0.0.1:54321" "false"
     go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
     go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
+
+    Run these together very quickly:
     go run app_deadlock.go "127.0.0.1:54321" "127.0.0.1:9999" "true" "true"
     go run app_deadlock.go "127.0.0.1:54321" "127.0.0.1:9998" "false" "false"
 
@@ -113,3 +115,10 @@ To test server crash (without recovery right now) comment out unlocking tables w
     sed -i 's/127.0.0.1:12346/Y/g' shiviz/govectorLog.txt
     sed -i 's/127.0.0.1:12347/Z/g' shiviz/govectorLog.txt
     sed -i 's/127.0.0.1:9999//g' shiviz/govectorLog.txt
+
+
+To test server recovery (server is not a primary server):
+    go run lbs.go "127.0.0.1:54321" "false"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
+    go run app.go "5"

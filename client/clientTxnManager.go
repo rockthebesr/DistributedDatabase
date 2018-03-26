@@ -54,6 +54,14 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 			}
 		}
 
+		if crashPoint == FailNonPrimaryServerDuringTransaction {
+			// only for the first operation
+			if j == 0 {
+				crashServer(tableToServers[op.TableName], crashPoint)
+				time.Sleep(time.Second * 3)
+			}
+		}
+
 		r, err := ExecuteOperation(op, tableToServers)
 		result = append(result, r)
 		if err != nil {
@@ -360,7 +368,6 @@ func sendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 }
 
 //Helper
-
 func reverseMap(m map[string]*rpc.Client) map[*rpc.Client][]string {
 	n := make(map[*rpc.Client][]string)
 	for k, v := range m {
@@ -371,4 +378,16 @@ func reverseMap(m map[string]*rpc.Client) map[*rpc.Client][]string {
 		}
 	}
 	return n
+}
+
+func crashServer(conn *rpc.Client, crashPoint CrashPoint) {
+	if crashPoint == FailNonPrimaryServerDuringTransaction {
+		args := shared.Crash{CrashNonPrimary:true}
+		err := conn.Call("ServerConn.CrashServer", &args, &args)
+		shared.CheckError(err)
+	} else if crashPoint == FailPrimaryServerDuringTransaction {
+		// args := shared.Crash{CrashPrimary:true}
+		// call RPC
+	}
+	// etc
 }

@@ -201,13 +201,13 @@ func (s *ServerConn) TableAvailable(args *shared.TableLockingArg, reply *shared.
 
 	AllTblLocks.All[args.TableName] = false
 
-	fmt.Println("TableAvailable 1 "+args.TableName)
+	//fmt.Println("TableAvailable 1 "+args.TableName)
 
 	AllServers.Lock()
 	AllServers.All[args.IpAddress].TableMappings[args.TableName] = false
 	AllServers.Unlock()
 
-	fmt.Println("TableAvailable 2 "+args.TableName)
+	fmt.Println("TableAvailable "+args.TableName)
 
 	buf = GoLogger.PrepareSend("Sending TableAvailable()", "msg")
 

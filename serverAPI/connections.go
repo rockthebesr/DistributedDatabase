@@ -43,6 +43,8 @@ var (
 	AllServers  = AllConnection{All: make(map[string]*Connection)}
 	AllTblLocks = AllTableLocks{All: make(map[string]bool)}
 
+	Crash = false
+
 	//TEMPORARY, REMOVE LATER
 	//AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
 )
@@ -222,6 +224,43 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 	return nil
 }
 
+func (s *ServerConn) CrashServer(args *shared.Crash, reply *shared.Crash) error {
+	AllClients.Lock()
+	lenClients := len(AllClients.All)
+	AllClients.Unlock()
+
+	if args.CrashNonPrimary {
+		if lenClients == 0 {
+			// not a primary server
+			GoLogger.LogLocalEvent("Server has crashed")
+			fmt.Println("Server has crashed")
+			crashServer()
+			recoverServer()
+			return nil
+		} else {
+			AllServers.Lock()
+			defer AllServers.Unlock()
+			for _, peer := range AllServers.All {
+				if peer.Address == SelfIP {
+					continue
+				}
+				conn := peer.Handle
+				// self is nil
+				fmt.Println("ServerConn.CrashServer")
+				if conn != nil {
+					err := conn.Call("ServerConn.CrashServer", &args, &reply)
+					shared.CheckErr(err)
+				}
+				fmt.Println("ServerConn.CrashServer 2")
+			}
+		}
+	} else if args.CrashPrimary {
+		// etc
+	}
+
+	return nil
+}
+
 /*
  Internal function for monitoring heartbeats from peers. If a peer has timed out, then the server
  deletes it from its list of connected servers.
@@ -237,6 +276,10 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 */
 func MonitorPeers(k string, HeartbeatInterval time.Duration) {
 	for {
+		if Crash {
+			fmt.Println("MonitorPeers stopped for ", k)
+			return
+		}
 		AllServers.Lock()
 		if time.Now().UnixNano()-AllServers.All[k].RecentHeartbeat > int64(HeartbeatInterval) {
 			fmt.Printf("%s timed out\n", k)
@@ -262,6 +305,10 @@ func MonitorPeers(k string, HeartbeatInterval time.Duration) {
 func MonitorClients(k string, HeartbeatInterval time.Duration, stop *int) {
 	fmt.Println("MonitorClients started for " + k)
 	for {
+		if Crash {
+			fmt.Println("MonitorClients stopped for ", k)
+			return
+		}
 		if *stop == 1 {
 			fmt.Println("MonitorClients stopped for " + k)
 			AllClients.Lock()
@@ -287,6 +334,10 @@ func MonitorClients(k string, HeartbeatInterval time.Duration, stop *int) {
 func SendServerHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 	var err error
 	for range time.Tick(time.Second * time.Duration(HeartbeatInterval)) {
+		if Crash {
+			fmt.Println("SendServerHeartbeats stopped for ", localIP)
+			return nil
+		}
 		err = conn.Call("ServerConn.ServerHeartbeatProtocol", &localIP, &ignored)
 		shared.CheckError(err)
 		if err != nil {
@@ -299,6 +350,10 @@ func SendServerHeartbeats(conn *rpc.Client, localIP string, ignored bool) error 
 func SendClientHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 	var err error
 	for range time.Tick(time.Second * time.Duration(HeartbeatInterval)) {
+		if Crash {
+			fmt.Println("SendServerHeartbeats stopped for ", localIP)
+			return nil
+		}
 		err = conn.Call("ClientConn.ReceiveServerIP", &localIP, &ignored)
 		shared.CheckError(err)
 		if err != nil {
@@ -450,3 +505,53 @@ func HandleServerCrash(k string) {
 	}
 }
 
+func crashServer() {
+	Crash = true
+	LBSConn = nil
+
+	AllClients.Lock()
+	fmt.Println("1")
+	AllServers.Lock()
+	fmt.Println("2")
+	AllTblLocks.Lock()
+	fmt.Println("3")
+	defer AllClients.Unlock()
+	defer AllServers.Unlock()
+	defer AllTblLocks.Unlock()
+
+	for key, _ := range AllClients.All{
+		delete(AllClients.All, key)
+	}
+	for key, _ := range AllServers.All{
+		delete(AllServers.All, key)
+	}
+	for key, _ := range AllTblLocks.All{
+		AllTblLocks.All[key] = false
+	}
+
+	TransactionTables = map[string][]string{}
+
+	// clear all table contents
+	for _, table := range Tables {
+		for key, _ := range table.Rows{
+			delete(table.Rows, key)
+		}
+	}
+
+	fmt.Println("Done crashing server")
+}
+func recoverServer() {
+
+	//Follow the same initialization procedures as in server.go :
+	// TODO Connect to the load balancer
+	// TODO Register the server & tables with the LBS
+	// TODO Send AddMappings
+	// TODO Retrieve neighbors
+	// TODO Connects to other servers
+		// TODO Get table contents from peer
+	// Listens for other connections (listener wasn't killed, so it's fine to skip this step)
+
+	fmt.Println("Done recovering server")
+
+	//Crash = false
+}

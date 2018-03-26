@@ -7,3 +7,8 @@ type ClientInfo struct {
 type ClientReply struct {
 	Reply bool
 }
+
+type Crash struct {
+	CrashPrimary bool
+	CrashNonPrimary bool
+}
