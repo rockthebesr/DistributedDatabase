@@ -25,7 +25,7 @@ var DeadlockTimeout = 2
 var DeadlockRetryInterval = 500 // in MilliSeconds
 var SleepDuration = 3000
 
-//TODO
+
 func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rpc.Client, crashPoint CrashPoint) (bool, error) {
 	fmt.Println("ExecuteTransaction=", tableToServers)
 
@@ -42,7 +42,18 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	var result []map[string]dbStructs.Row
 	//Tell servers to execute each operation
 	// TODO if the op is a JOIN, then do the op locally
-	for _, op := range txn.Operations {
+	fmt.Println("crashPoint=", crashPoint)
+	for j, op := range txn.Operations {
+
+		// crash before sending the last operation
+		if crashPoint == FailDuringTransaction {
+			if len(txn.Operations)-1 == j {
+				crashClient()
+				Logger.LogLocalEvent("Client has crashed during a Transaction")
+				return false, nil
+			}
+		}
+
 		r, err := ExecuteOperation(op, tableToServers)
 		result = append(result, r)
 		if err != nil {
@@ -51,7 +62,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 
 	//Tell servers to prepare commit
-	isPrepared, err := PrepareTransaction(tableToServers, txn)
+	isPrepared, err := PrepareTransaction(tableToServers, txn, crashPoint)
 	if !isPrepared {
 		fmt.Println("Cannot prepare transaction")
 		return false, err
@@ -73,6 +84,12 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 		return false, err
 	}
 	fmt.Println("done unlockTables")
+
+	if crashPoint == FailAfterClientReceivesAllOfCommitSucceeded {
+		crashClient()
+		Logger.LogLocalEvent("Client has crashed after receiving Commit Success from all Servers")
+		return false, nil
+	}
 
 	// TODO need to return result, distinguish between the operations
 	fmt.Println(result)
@@ -145,14 +162,28 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 
 }
 
-func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction) (bool, error) {
+func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint CrashPoint) (bool, error) {
 	fmt.Println("Prepare servers to prepare transaction")
 	serverToTables := reverseConnectionMap(tableToServers)
 	var msg string
+
+	fmt.Println("crashPoint=", crashPoint)
+	lenServers := len(shared.KeysToArray_2(tableToServers))
+	i := 0
 	for _, server := range tableToServers {
+		i += 1
 		buf := Logger.PrepareSend("Send ServerConn.prepareCommit", &msg)
 		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf}
 		reply := shared.TransactionReply{Success: false}
+
+		if crashPoint == FailAfterClientSendsPrepareCommit {
+			if lenServers == i {
+				crashClient()
+				Logger.LogLocalEvent("Client has crashed after client sends PrepareCommit")
+				return false, nil
+			}
+		}
+
 		err := server.Call("TransactionManager.PrepareCommit", &arg, &reply)
 		//If server cannot prepare commit, return false
 		if !reply.Success || err != nil {
@@ -170,16 +201,24 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 	var msg string
 
 	fmt.Println("crashPoint=", crashPoint)
-	if crashPoint == FailBeforeClientSendsCommit {
-		crashClient()
-		Logger.LogLocalEvent("Client has crashed")
-		return false, nil
-	}
-
+	lenServers := len(shared.KeysToArray_2(tableToServers))
+	i := 0
 	for _, server := range tableToServers {
+		i += 1
 		buf := Logger.PrepareSend("Send ServerConn.CommitTransaction", &msg)
 		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf}
 		reply := shared.TransactionReply{Success: false}
+
+		// crash before sending the last RPC
+		// we must make sure that the primary server is connected to 2 or more peers to make this work
+		if crashPoint == FailAfterClientSendsCommit {
+			if lenServers == i {
+				crashClient()
+				Logger.LogLocalEvent("Client has crashed after client sends CommitTransaction")
+				return false, nil
+			}
+		}
+
 		err := server.Call("TransactionManager.CommitTransaction", &arg, &reply)
 		//If server cannot commit transaction, return false
 		if !reply.Success || err != nil {

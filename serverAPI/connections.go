@@ -114,6 +114,7 @@ func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.
 
 	toRegister := args.IP
 
+	// assume a crashed server does not reconnect before the peers finished with handling the crash
 	// TODO not all tables are unlocked at this point, how to communicate which tables are unavailable?
 	tablesAndLocks := make(map[string]bool)
 	for _, tableName := range args.TableNames {
@@ -151,7 +152,18 @@ func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.
 	GoLogger.UnpackReceive("Received ConnectToPeer from Server", args.GoVector, &msg)
 	buf = GoLogger.PrepareSend("Sending ConnectToPeer back", "msg")
 
-	*success = shared.ConnectionReply{Success: true, GoVector: buf}
+	// replies which tables do I own lock for
+	ownsLocks := make(map[string]bool)
+	for tableName, owner := range AllServers.All[SelfIP].TableMappings {
+		inArray, _ := shared.InArray(tableName, args.TableNames)
+		if inArray {
+			ownsLocks[tableName] = owner
+		}
+	}
+
+	*success = shared.ConnectionReply{Success: true, GoVector: buf, TableOwners: ownsLocks}
+
+	//fmt.Println("ConnectToPeer RPC",  AllServers.All)
 
 	return nil
 }
@@ -213,6 +225,12 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 /*
  Internal function for monitoring heartbeats from peers. If a peer has timed out, then the server
  deletes it from its list of connected servers.
+ TODO handling crashed server
+	case 0: if server is not handling a transaction, then don't do anything else
+	case 1: server is currently handling a transaction, then unlock the tables owned by the crashed server (roll back just in case)
+	case 2: server has sent a new table to me, then I roll back and unlock the tables owned by the crashed server
+	case 3: server has sent commit, and I have already committed, then I roll back and unlock the tables owned by the crashed server
+	case 4: server has replied commit succeeded, then I still roll back and unlock the tables owned by the crashed server
 
  @Param k -> ip address to monitor
  @Param HeartbeatInterval -> time between heartbeats, before a peer is considered disconnected
@@ -319,27 +337,34 @@ func RollBackTableAndPeers(clientIP string) error {
 			args := shared.TableLockingArg{TableName: tableName, GoVector: buf}
 			reply := shared.TableLockingReply{Success: false}
 			err := conn.Handle.Call("TransactionManager.RollBackPeer", &args, &reply)
-			shared.CheckErr(err)
+			shared.CheckError(err)
 			if err != nil || !reply.Success {
-
+				fmt.Println("Error occurred at 1")
+			} else {
+				fmt.Println("RollBackPeer succeeded")
 			}
 			GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
 
+			AllServers.Unlock()
 			// Tell peers to unlock
 			buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable table="+tableName, "msg")
-			args = shared.TableLockingArg{TableName: tableName, GoVector: buf}
+			args = shared.TableLockingArg{TableName: tableName, GoVector: buf, IpAddress: SelfIP}
 			reply = shared.TableLockingReply{Success: false}
 			err = conn.Handle.Call("ServerConn.TableAvailable", &args, &reply)
 			shared.CheckError(err)
 			if err != nil || !reply.Success {
-
+				fmt.Println("Error occurred at 2")
+			} else {
+				fmt.Println("TableAvailable succeeded")
 			}
 			GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
+			AllServers.Lock()
 		}
 
 		// Server unlocks tables (i.e. Server detect Client crash, unlock table)
 		AllServers.All[SelfIP].TableMappings[tableName] = false // unsets the owner of the lock
 		AllTblLocks.All[tableName] = false                      // sets table to unlocked
+		GoLogger.LogLocalEvent("Unlocked table " + tableName)
 
 		_, tableString := shared.TableToString(tableName, Tables[tableName].Rows)
 		tablesContents = tablesContents + tableString
@@ -352,10 +377,12 @@ func RollBackTableAndPeers(clientIP string) error {
 			currentLockedTables = append(currentLockedTables, table)
 		}
 	}
-	GoLogger.LogLocalEvent("Handled client crash. LockedTables=" + strings.Join(currentLockedTables, ", ") + " TablesContents=" + tablesContents)
+	GoLogger.LogLocalEvent("Handled client crash " + clientIP + " LockedTables=" + strings.Join(currentLockedTables, ", ") + " TablesContents=" + tablesContents)
 
 	// Remove all the tables in lockedTables list
 	TransactionTables[clientIP] = []string{}
+
+	fmt.Println("finished handleClientCrash")
 
 	return nil
 }
@@ -363,6 +390,9 @@ func RollBackTableAndPeers(clientIP string) error {
 func HandleServerCrash(k string) {
 	var buf []byte
 	var msg string
+
+	AllServers.Lock()
+	defer AllServers.Unlock()
 
 	tablesAndLocks := AllServers.All[k].TableMappings
 	for tableName, ownsLock := range tablesAndLocks {

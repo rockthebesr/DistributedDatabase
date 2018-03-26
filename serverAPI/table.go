@@ -20,21 +20,6 @@ var (
 	Columns = [NumColumns]string{"name", "age", "gender"}
 )
 
-/*
- Errors
-*/
-
-type InvalidNumberOfColumns int
-
-func (e InvalidNumberOfColumns) Error() string {
-	return fmt.Sprintf("Table expected %d Columns. Got [%d]", NumColumns, e)
-}
-
-type InvalidColumnNames string
-
-func (e InvalidColumnNames) Error() string {
-	return fmt.Sprintf("Rows column names do not match table [%s] columns", string(e))
-}
 
 /*
  Functions
@@ -51,12 +36,12 @@ func (t *TableCommands) SetRow(args shared.TableAccessArgs, reply *shared.TableA
 	//}
 
 	if len(args.TableRow.Data) != NumColumns {
-		return InvalidNumberOfColumns(len(args.TableRow.Data))
+		return shared.InvalidNumberOfColumns{NumColumns, len(args.TableRow.Data)}
 	}
 
 	for _, column := range Columns {
 		if _, ok := args.TableRow.Data[column]; !ok {
-			return InvalidColumnNames(args.TableName)
+			return shared.InvalidColumnNames(args.TableName)
 		}
 	}
 
@@ -245,6 +230,8 @@ func RollBackTable(name string) error {
 	}
 
 	fmt.Println("RollBackTable", name, Tables[name])
+	_, str := shared.TableToString(name, table)
+	GoLogger.LogLocalEvent("Roll back Table "+ name + " TableContents: " +  str)
 
 	return nil
 }

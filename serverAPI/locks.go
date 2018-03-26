@@ -50,7 +50,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 						TableName: tableName,
 						GoVector:  buf,
 					}
-					fmt.Println("serverPeer.Handle", serverPeer.Address == ip, serverPeer.Handle)
+					fmt.Println("serverPeer.Handle", serverPeer.Address == SelfIP, serverPeer.Handle)
 					err := serverPeer.Handle.Call("ServerConn.TableUnavailable", &args, &reply)
 					shared.CheckError(err)
 					if err != nil {
@@ -182,6 +182,8 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
 
+	AllClients.All[args.IpAddress].StopChannel = 1	// once commit succeeds, stop listening for heartbeats
+
 	return nil
 }
 
@@ -198,7 +200,14 @@ func (s *ServerConn) TableAvailable(args *shared.TableLockingArg, reply *shared.
 	}
 
 	AllTblLocks.All[args.TableName] = false
-	fmt.Println("TableAvailable "+args.TableName)
+
+	fmt.Println("TableAvailable 1 "+args.TableName)
+
+	AllServers.Lock()
+	AllServers.All[args.IpAddress].TableMappings[args.TableName] = false
+	AllServers.Unlock()
+
+	fmt.Println("TableAvailable 2 "+args.TableName)
 
 	buf = GoLogger.PrepareSend("Sending TableAvailable()", "msg")
 
@@ -225,11 +234,16 @@ func (s *ServerConn) TableUnavailable(args *shared.TableLockingArg, reply *share
 
 	fmt.Println("TableUnavailable "+args.TableName)
 
+	AllServers.Lock()
 	AllServers.All[args.IpAddress].TableMappings[args.TableName] = true
-
+	AllServers.Unlock()
 
 	buf = GoLogger.PrepareSend("Sending TableUnavailable()", "msg")
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
+
+	// Copy the current contents of the table to BACKUP
+	err := BackupTable(args.TableName)
+	shared.CheckError(err)
 
 	return nil
 }

@@ -49,22 +49,29 @@ func main() {
 	opType2 := dbStructs.Set
 	opTableName2 := "B"
 	opKey2 := "test2"
-	m := map[string]string{"name":"Alice", "age":"30", "gender":"F"}
-	row := dbStructs.Row{"test2", m}
-	op2 := dbStructs.Operation{Type: opType2, TableName: opTableName2, Key: opKey2, Value: row}
+	m2 := map[string]string{"name":"Alice", "age":"30", "gender":"F"}
+	row2 := dbStructs.Row{"test2", m2}
+	op2 := dbStructs.Operation{Type: opType2, TableName: opTableName2, Key: opKey2, Value: row2}
 
 	opType3 := dbStructs.Set
 	opTableName3 := "B"
 	opKey3 := "test2"
-	m = map[string]string{"name":"Sam", "age":"60", "gender":"M"}
-	row = dbStructs.Row{"test2", m}
-	op3 := dbStructs.Operation{Type: opType3, TableName: opTableName3, Key: opKey3, Value: row}
+	m3 := map[string]string{"name":"Sam", "age":"60", "gender":"M"}
+	row3 := dbStructs.Row{"test2", m3}
+	op3 := dbStructs.Operation{Type: opType3, TableName: opTableName3, Key: opKey3, Value: row3}
+
+	opType4 := dbStructs.Set
+	opTableName4 := "C"
+	opKey4 := "test3"
+	m4 := map[string]string{"name":"Sam", "age":"60", "gender":"M"}
+	row4 := dbStructs.Row{"test3", m4}
+	op4 := dbStructs.Operation{Type: opType4, TableName: opTableName4, Key: opKey4, Value: row4}
 
 	txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op, op2}}
 	client.NewTransaction(txn, 0)
 
 	time.Sleep(time.Second * 3)
-	txn2 := dbStructs.Transaction{Operations: []dbStructs.Operation{op3}}
+	txn2 := dbStructs.Transaction{Operations: []dbStructs.Operation{op3, op4}}
 	client.NewTransaction(txn2, client.CrashPoint(crashPoint))
 
 	time.Sleep(time.Second * 3)

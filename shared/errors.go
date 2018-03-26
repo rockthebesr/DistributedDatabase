@@ -5,6 +5,22 @@ import "fmt"
 /*
  Errors
  */
+
+type InvalidNumberOfColumns struct {
+	Expected int
+	Actual int
+}
+
+func (e InvalidNumberOfColumns) Error() string {
+	return fmt.Sprintf("Table expected %d Columns. Got [%d]", e.Expected, e.Actual)
+}
+
+type InvalidColumnNames string
+
+func (e InvalidColumnNames) Error() string {
+	return fmt.Sprintf("Rows column names do not match table [%s] columns", string(e))
+}
+
 type RowDoesNotExistError string
 
 func (e RowDoesNotExistError) Error() string {
