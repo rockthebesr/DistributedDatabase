@@ -266,7 +266,7 @@ func (s *ServerConn) CrashServer(args *shared.Crash, reply *shared.Crash) error 
 
 /*
  Internal function for monitoring heartbeats from peers. If a peer has timed out, then the server
- deletes it from its list of connected servers.
+ deletes it from its list of connected servers & removes lbs mappings.
  TODO handling crashed server
 	case 0: if server is not handling a transaction, remove mappings, then don't do anything else
 	case 1: server is currently handling a transaction, then unlock the tables owned by the crashed server (roll back just in case)
@@ -466,13 +466,27 @@ func HandleServerCrash(k string) {
 					if peer.Address != k && peer.Address != SelfIP {
 						conn := peer.Handle
 						if conn != nil {
+							fmt.Println("Rolling back table " + tableName)
+							RollBackTable(tableName)
+							buf = GoLogger.PrepareSend("Send TransactionManager.RollBackPeer table="+tableName, "msg")
+							args := shared.TableLockingArg{TableName: tableName, GoVector: buf}
+							reply = shared.TableLockingReply{Success: false}
+							err := conn.Call("TransactionManager.RollBackPeer", &args, &reply)
+							shared.CheckError(err)
+							if err != nil || !reply.Success {
+								fmt.Println("Error occurred at 1")
+							} else {
+								fmt.Println("RollBackPeer succeeded")
+							}
+							GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
+
 							buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable "+tableName, "msg")
-							args := shared.TableLockingArg{
+							args = shared.TableLockingArg{
 								SelfIP,
 								tableName,
 								buf,
 							}
-							err := conn.Call("ServerConn.TableAvailable", &args, &reply)
+							err = conn.Call("ServerConn.TableAvailable", &args, &reply)
 							shared.CheckErr(err)
 							if err != nil {
 								GoLogger.UnpackReceive("Error "+tableName, reply.GoVector, &msg)
@@ -490,12 +504,12 @@ func HandleServerCrash(k string) {
 
 	AllServers.All[k].Handle.Close()
 
-	GoLogger.LogLocalEvent("Deleting server " + k + " from list of peers")
+	fmt.Println("Removing server " + k + "'s mappings from LBS")
 
+	GoLogger.LogLocalEvent("Deleting server " + k + " from list of peers")
 	delete(AllServers.All, k)
 
 	var reply shared.TableNamesReply
-
 	buf = GoLogger.PrepareSend("Removing server mappings from LBS", "msg")
 	args := shared.TableNamesArg{
 		ServerIpAddress: k,
@@ -509,5 +523,7 @@ func HandleServerCrash(k string) {
 	} else {
 		GoLogger.UnpackReceive("Received result from removing server mappings", reply.GoVector, &msg)
 	}
+
+	fmt.Println("Finished handling crash for server  " + k)
 }
 

@@ -16,6 +16,4 @@ type ServerPeers struct {
 	GoVector []byte
 }
 
-
-
 const DEGUGMODE bool = false

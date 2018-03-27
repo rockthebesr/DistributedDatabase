@@ -1,0 +1,266 @@
+(?<host>\w+) (?<clock>\{.*\})\n(?<event>.*)
+
+LBS {"LBS":1}
+Initialization Complete
+LBS {"LBS":2, "serverX":2}
+Received AddMappings()
+LBS {"LBS":3, "serverX":2}
+Sending AddMappings()
+LBS {"LBS":4, "serverX":4}
+Received GetPeers()
+LBS {"LBS":5, "serverX":4}
+Sending GetPeers()
+LBS {"LBS":6, "serverX":4, "serverY":2}
+Received AddMappings()
+LBS {"serverX":4, "serverY":2, "LBS":7}
+Sending AddMappings()
+LBS {"serverY":4, "LBS":8, "serverX":4}
+Received GetPeers()
+LBS {"serverY":4, "LBS":9, "serverX":4}
+Sending GetPeers()
+LBS {"LBS":10, "serverZ":2, "serverX":4, "serverY":4}
+Received AddMappings()
+LBS {"serverX":4, "serverY":4, "LBS":11, "serverZ":2}
+Sending AddMappings()
+LBS {"serverX":4, "serverY":4, "LBS":12, "serverZ":4}
+Received GetPeers()
+LBS {"serverZ":4, "serverX":4, "serverY":4, "LBS":13}
+Sending GetPeers()
+LBS {"client":2, "serverZ":4, "serverX":4, "serverY":4, "LBS":14}
+Received GetServers()
+LBS {"client":2, "serverZ":4, "serverX":4, "serverY":4, "LBS":15}
+Sending GetServers()
+LBS {"serverZ":18, "serverX":21, "serverY":30, "LBS":16, "client":14}
+Received RemoveMappings()
+LBS {"client":14, "serverZ":18, "serverX":21, "serverY":30, "LBS":17}
+Sending RemoveMappings()
+LBS {"serverY":30, "LBS":18, "client":14, "serverZ":21, "serverX":21}
+Received RemoveMappings()
+LBS {"serverZ":21, "serverX":21, "serverY":30, "LBS":19, "client":14}
+Sending RemoveMappings()
+serverX {"serverX":1}
+Initialization Complete
+serverX {"serverX":2}
+Sending AddMappings to LBS
+serverX {"serverX":3, "LBS":3}
+Received AddMappings from LBS
+serverX {"serverX":4, "LBS":3}
+Sending GetPeers to LBS
+serverX {"serverX":5, "LBS":5}
+Received GetPeers from LBS
+serverX {"serverY":6, "serverX":6, "LBS":9}
+Received ConnectToPeer from Server
+serverX {"LBS":9, "serverY":6, "serverX":7}
+Sending ConnectToPeer back
+serverX {"LBS":13, "serverY":6, "serverX":8, "serverZ":6}
+Received ConnectToPeer from Server
+serverX {"serverZ":6, "LBS":13, "serverY":6, "serverX":9}
+Sending ConnectToPeer back
+serverX {"serverY":6, "serverX":10, "serverZ":6, "LBS":15, "client":4}
+Received ClientConnect from Client
+serverX {"client":4, "serverY":6, "serverX":11, "serverZ":6, "LBS":15}
+Sending ClientConnect back
+serverX {"LBS":15, "client":8, "serverY":13, "serverX":12, "serverZ":8}
+Received TableUnavailable()
+serverX {"serverZ":8, "LBS":15, "client":8, "serverY":13, "serverX":13}
+Sending TableUnavailable()
+serverX {"serverZ":11, "LBS":15, "client":10, "serverY":17, "serverX":14}
+Received TableLock() B tablesLockedByClient=
+serverX {"serverX":15, "serverZ":11, "LBS":15, "client":10, "serverY":17}
+Sending TableUnavailable to server Y
+serverX {"LBS":15, "client":10, "serverY":19, "serverX":16, "serverZ":11}
+Received TableUnavailable from server Y
+serverX {"serverZ":11, "LBS":15, "client":10, "serverY":19, "serverX":17}
+Sending TableUnavailable to server Z
+serverX {"serverY":19, "serverX":18, "serverZ":13, "LBS":15, "client":10}
+Received TableUnavailable from server Z
+serverX {"client":10, "serverY":19, "serverX":19, "serverZ":13, "LBS":15}
+Sending TableLock() tablesLockedByClient=B
+serverX {"serverY":19, "serverX":20, "serverZ":13, "LBS":15, "client":12}
+Received SetRow 
+serverX {"LBS":15, "client":12, "serverY":19, "serverX":21, "serverZ":13}
+Sending SetRow added= Table: B{(  Key:test2 name:Alice age:30 gender:F )}
+serverX {"client":16, "serverY":21, "serverX":22, "serverZ":13, "LBS":15}
+Received PrepareCommit() from 
+serverX {"serverZ":13, "LBS":15, "client":16, "serverY":21, "serverX":23}
+Server has crashed after receiving prepare to commit from client
+serverY {"serverY":1}
+Initialization Complete
+serverY {"serverY":2}
+Sending AddMappings to LBS
+serverY {"serverY":3, "LBS":7, "serverX":4}
+Received AddMappings from LBS
+serverY {"serverY":4, "LBS":7, "serverX":4}
+Sending GetPeers to LBS
+serverY {"serverY":5, "LBS":9, "serverX":4}
+Received GetPeers from LBS
+serverY {"serverY":6, "LBS":9, "serverX":4}
+Sending ConnectToPeer to Server
+serverY {"LBS":9, "serverX":7, "serverY":7}
+Received ConnectToPeer from Server
+serverY {"LBS":13, "serverX":9, "serverY":8, "serverZ":8}
+Received ConnectToPeer from Server
+serverY {"serverZ":8, "LBS":13, "serverX":9, "serverY":9}
+Sending ConnectToPeer back
+serverY {"LBS":15, "serverX":11, "serverY":10, "serverZ":8, "client":6}
+Received ClientConnect from Client
+serverY {"serverZ":8, "client":6, "LBS":15, "serverX":11, "serverY":11}
+Sending ClientConnect back
+serverY {"serverY":12, "serverZ":8, "client":8, "LBS":15, "serverX":11}
+Received TableLock() A tablesLockedByClient=
+serverY {"serverZ":8, "client":8, "LBS":15, "serverX":11, "serverY":13}
+Sending TableUnavailable to server X
+serverY {"LBS":15, "serverX":13, "serverY":14, "serverZ":8, "client":8}
+Received TableUnavailable from server X
+serverY {"serverZ":8, "client":8, "LBS":15, "serverX":13, "serverY":15}
+Sending TableUnavailable to server Z
+serverY {"serverZ":11, "client":8, "LBS":15, "serverX":13, "serverY":16}
+Received TableUnavailable from server Z
+serverY {"client":8, "LBS":15, "serverX":13, "serverY":17, "serverZ":11}
+Sending TableLock() tablesLockedByClient=A
+serverY {"serverX":15, "serverY":18, "serverZ":11, "client":10, "LBS":15}
+Received TableUnavailable()
+serverY {"serverZ":11, "client":10, "LBS":15, "serverX":15, "serverY":19}
+Sending TableUnavailable()
+serverY {"serverX":21, "serverY":20, "serverZ":13, "client":14, "LBS":15}
+Received GetRow 
+serverY {"client":14, "LBS":15, "serverX":21, "serverY":21, "serverZ":13}
+Sending GetRow reply= Table: A{(  Key:test name:John age:30 gender:M )}
+serverY {"serverX":21, "serverY":22, "serverZ":13, "client":14, "LBS":15}
+Server X crashed
+serverY {"serverZ":13, "client":14, "LBS":15, "serverX":21, "serverY":23}
+Unlocking Table B for crashed server X
+serverY {"serverZ":13, "client":14, "LBS":15, "serverX":21, "serverY":24}
+Roll back Table B TableContents:  Table: B{(  Key:test gender:M name:John age:30 )}
+serverY {"serverX":21, "serverY":25, "serverZ":13, "client":14, "LBS":15}
+Send TransactionManager.RollBackPeer table=B
+serverY {"serverZ":16, "client":14, "LBS":15, "serverX":21, "serverY":26}
+Received result
+serverY {"client":14, "LBS":15, "serverX":21, "serverY":27, "serverZ":16}
+Send ServerConn.TableAvailable B
+serverY {"serverZ":18, "client":14, "LBS":15, "serverX":21, "serverY":28}
+Received table available from server Z
+serverY {"client":14, "LBS":15, "serverX":21, "serverY":29, "serverZ":18}
+Deleting server X from list of peers
+serverY {"serverY":30, "serverZ":18, "client":14, "LBS":15, "serverX":21}
+Removing server mappings from LBS
+serverY {"serverX":21, "serverY":31, "serverZ":18, "client":14, "LBS":17}
+Received result from removing server mappings
+serverY {"serverZ":18, "client":18, "LBS":17, "serverX":21, "serverY":32}
+Received RollBackPrimaryServer from 
+serverY {"LBS":17, "serverX":21, "serverY":33, "serverZ":18, "client":18}
+Roll back Table A TableContents:  Table: A{(  Key:test age:30 gender:M name:John )}
+serverY {"LBS":17, "serverX":21, "serverY":34, "serverZ":18, "client":18}
+Send TransactionManager.RollBackPeer table=A
+serverY {"LBS":19, "serverX":21, "serverY":35, "serverZ":25, "client":18}
+Received result
+serverY {"serverX":21, "serverY":36, "serverZ":25, "client":18, "LBS":19}
+Send ServerConn.TableAvailable table=A
+serverY {"serverY":37, "serverZ":27, "client":18, "LBS":19, "serverX":21}
+Received result
+serverY {"serverY":38, "serverZ":27, "client":18, "LBS":19, "serverX":21}
+Unlocked table A
+serverY {"client":18, "LBS":19, "serverX":21, "serverY":39, "serverZ":27}
+Handled roll back table, from 
+serverY {"serverX":21, "serverY":40, "serverZ":27, "client":18, "LBS":19}
+Successfully rolled backed on this table and peers
+serverZ {"serverZ":1}
+Initialization Complete
+serverZ {"serverZ":2}
+Sending AddMappings to LBS
+serverZ {"serverZ":3, "serverY":4, "LBS":11, "serverX":4}
+Received AddMappings from LBS
+serverZ {"serverZ":4, "serverY":4, "LBS":11, "serverX":4}
+Sending GetPeers to LBS
+serverZ {"serverY":4, "LBS":13, "serverX":4, "serverZ":5}
+Received GetPeers from LBS
+serverZ {"LBS":13, "serverX":4, "serverZ":6, "serverY":4}
+Sending ConnectToPeer to Server
+serverZ {"serverY":6, "LBS":13, "serverX":9, "serverZ":7}
+Received ConnectToPeer from Server
+serverZ {"serverY":6, "LBS":13, "serverX":9, "serverZ":8}
+Sending ConnectToPeer to Server
+serverZ {"serverY":9, "LBS":13, "serverX":9, "serverZ":9}
+Received ConnectToPeer from Server
+serverZ {"LBS":15, "serverX":13, "serverZ":10, "client":8, "serverY":15}
+Received TableUnavailable()
+serverZ {"serverY":15, "LBS":15, "serverX":13, "serverZ":11, "client":8}
+Sending TableUnavailable()
+serverZ {"serverZ":12, "client":10, "serverY":19, "LBS":15, "serverX":17}
+Received TableUnavailable()
+serverZ {"serverZ":13, "client":10, "serverY":19, "LBS":15, "serverX":17}
+Sending TableUnavailable()
+serverZ {"client":10, "serverY":19, "LBS":15, "serverX":17, "serverZ":14}
+Roll back Table B TableContents:  Table: B{(  Key:test name:John age:30 gender:M )}
+serverZ {"serverZ":15, "client":14, "serverY":25, "LBS":15, "serverX":21}
+Received RollBackPeer
+serverZ {"client":14, "serverY":25, "LBS":15, "serverX":21, "serverZ":16}
+Reply RollBackPeer table=B TableContents:  Table: B{(  Key:test gender:M name:John age:30 )}
+serverZ {"LBS":15, "serverX":21, "serverZ":17, "client":14, "serverY":27}
+Received TableAvailable()
+serverZ {"LBS":15, "serverX":21, "serverZ":18, "client":14, "serverY":27}
+Sending TableAvailable()
+serverZ {"serverX":21, "serverZ":19, "client":14, "serverY":27, "LBS":15}
+Server X crashed
+serverZ {"LBS":15, "serverX":21, "serverZ":20, "client":14, "serverY":27}
+Deleting server X from list of peers
+serverZ {"serverY":27, "LBS":15, "serverX":21, "serverZ":21, "client":14}
+Removing server mappings from LBS
+serverZ {"serverY":30, "LBS":19, "serverX":21, "serverZ":22, "client":14}
+Received result from removing server mappings
+serverZ {"serverZ":23, "client":14, "serverY":30, "LBS":19, "serverX":21}
+Roll back Table A TableContents:  Table: A{(  Key:test gender:M name:John age:30 )}
+serverZ {"serverY":34, "LBS":19, "serverX":21, "serverZ":24, "client":18}
+Received RollBackPeer
+serverZ {"LBS":19, "serverX":21, "serverZ":25, "client":18, "serverY":34}
+Reply RollBackPeer table=A TableContents:  Table: A{(  Key:test name:John age:30 gender:M )}
+serverZ {"serverX":21, "serverZ":26, "client":18, "serverY":36, "LBS":19}
+Received TableAvailable()
+serverZ {"LBS":19, "serverX":21, "serverZ":27, "client":18, "serverY":36}
+Sending TableAvailable()
+client {"client":1}
+Initialization Complete
+client {"client":2}
+Send LBS.GetServers
+client {"serverX":4, "serverY":4, "LBS":15, "client":3, "serverZ":4}
+Received LBS.GetServers
+client {"serverZ":4, "serverX":4, "serverY":4, "LBS":15, "client":4}
+Send ServerConn.ClientConnectX
+client {"client":5, "serverZ":6, "serverX":11, "serverY":6, "LBS":15}
+Established connection to server X
+client {"serverZ":6, "serverX":11, "serverY":6, "LBS":15, "client":6}
+Send ServerConn.ClientConnectY
+client {"LBS":15, "client":7, "serverZ":8, "serverX":11, "serverY":11}
+Established connection to server Y
+client {"LBS":15, "client":8, "serverZ":8, "serverX":11, "serverY":11}
+Send ServerConn.TableLock A
+client {"serverY":17, "LBS":15, "client":9, "serverZ":11, "serverX":13}
+Received result A
+client {"LBS":15, "client":10, "serverZ":11, "serverX":13, "serverY":17}
+Send ServerConn.TableLock B
+client {"serverX":19, "serverY":19, "LBS":15, "client":11, "serverZ":13}
+Received result B
+client {"LBS":15, "client":12, "serverZ":13, "serverX":19, "serverY":19}
+Send ExecuteOperation
+client {"LBS":15, "client":13, "serverZ":13, "serverX":21, "serverY":19}
+TableCommands.SetRow succeeded for table B
+client {"client":14, "serverZ":13, "serverX":21, "serverY":19, "LBS":15}
+Send ExecuteOperation
+client {"serverY":21, "LBS":15, "client":15, "serverZ":13, "serverX":21}
+TableCommands.GetRow succeeded Table: A{(  Key:test name:John age:30 gender:M )}
+client {"serverZ":13, "serverX":21, "serverY":21, "LBS":15, "client":16}
+Send TransactionManager.prepareCommit
+client {"client":17, "serverZ":13, "serverX":21, "serverY":21, "LBS":15}
+X has crashed
+client {"LBS":15, "client":18, "serverZ":13, "serverX":21, "serverY":21}
+Send RollBackPrimaryServer to server Y
+client {"client":19, "serverZ":27, "serverX":21, "serverY":40, "LBS":19}
+Received RollBackPrimaryServer success
+client {"client":20, "serverZ":27, "serverX":21, "serverY":40, "LBS":19}
+Handled server crash, server: X
+client {"serverZ":27, "serverX":21, "serverY":40, "LBS":19, "client":21}
+TransactionManager.PrepareCommit failed
+client {"serverX":21, "serverY":40, "LBS":19, "client":22, "serverZ":27}
+Close connection to Y
+client {"client":23, "serverZ":27, "serverX":21, "serverY":40, "LBS":19}
+Send LBS.GetServers

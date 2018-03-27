@@ -2,8 +2,8 @@ package serverAPI
 
 import (
 	"fmt"
-
 	"../shared"
+	"errors"
 )
 
 type TransactionManager int
@@ -14,16 +14,22 @@ var (
 	// therefore we can't just use AllServers
 	TransactionTables = map[string][]string{} // key:value = clientIP:listOfTablesLockedByClient
 
-	//New tables that will be comitted after 2pc has been done.
+	//New tables that will be committed after 2pc has been done.
 )
 
 func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *shared.TransactionReply) error {
-
 	AllServers.Lock()
 	defer AllServers.Unlock()
 	var msg string
 	GoLogger.UnpackReceive("Received PrepareCommit() from "+args.IPAddress, args.GoVector, &msg)
 	updatedTables := args.UpdatedTables
+
+	if shared.ServerCrashErr == shared.FailPrimaryServerAfterClientSendsPrepareCommit {
+		GoLogger.LogLocalEvent("Server has crashed after receiving prepare to commit from client")
+		crashServer()
+		return errors.New("Server has crashed after receiving prepare to commit from client")
+	}
+
 	//For each updated table, find peers who has it
 	for _, updatedTable := range updatedTables {
 		updatedTableContent := Tables[updatedTable]
@@ -41,7 +47,6 @@ func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *s
 				if err != nil {
 					return err
 				}
-
 			}
 		}
 	}
@@ -58,6 +63,13 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 	var msg string
 	GoLogger.UnpackReceive("Received CommitTransaction() from "+args.IPAddress, args.GoVector, &msg)
 	updatedTables := args.UpdatedTables
+
+	if shared.ServerCrashErr == shared.FailPrimaryServerAfterClientSendsCommit {
+		GoLogger.LogLocalEvent("Server has crashed after receiving commit from client" )
+		crashServer()
+		return errors.New("Server has crashed after receiving commit from client")
+	}
+
 	//For each updated table, find peers who has it
 	for _, updatedTable := range updatedTables {
 		//For each peer who has the updated table
@@ -74,7 +86,6 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 				if err != nil {
 					return err
 				}
-
 			}
 		}
 	}
@@ -82,7 +93,6 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 	_, str := shared.TableToString(args.UpdatedTables[0], Tables[args.UpdatedTables[0]].Rows)
 	buf := GoLogger.PrepareSend("Sending CommitTransction successful back to"+args.IPAddress +"Table="+str, &msg)
 	*reply = shared.TransactionReply{true, buf}
-
 	return nil
 }
 

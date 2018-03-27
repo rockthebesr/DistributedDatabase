@@ -2,10 +2,10 @@ package serverAPI
 
 import (
 	"fmt"
-
 	"strings"
 	"../dbStructs"
 	"../shared"
+	"errors"
 )
 
 type TableCommands int
@@ -18,7 +18,6 @@ var (
 	// TODO store a table schema for each table
 	Columns = [NumColumns]string{"name", "age", "gender"}
 )
-
 
 /*
  Functions
@@ -61,6 +60,13 @@ func (t *TableCommands) SetRow(args shared.TableAccessArgs, reply *shared.TableA
 }
 
 func (t *TableCommands) GetRow(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
+
+	if shared.ServerCrashErr == shared.FailDuringTransaction {
+		GoLogger.LogLocalEvent("Server " + SelfIP + " has crashed during GetRow")
+		crashServer()
+		return errors.New("Server " + SelfIP + " has crashed during GetRow")
+	}
+
 	if _, ok := Tables[args.TableName]; !ok {
 		return shared.TableDoesNotExistError(args.TableName)
 	}
@@ -86,6 +92,7 @@ func (t *TableCommands) GetRow(args shared.TableAccessArgs, reply *shared.TableA
 }
 
 func (t *TableCommands) DeleteRow(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
+
 	if _, ok := Tables[args.TableName]; !ok {
 		return shared.TableDoesNotExistError(args.TableName)
 	}
@@ -104,6 +111,7 @@ func (t *TableCommands) DeleteRow(args shared.TableAccessArgs, reply *shared.Tab
 }
 
 func (t *TableCommands) GetTableContents(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
+
 	if _, ok := Tables[args.TableName]; !ok {
 		return shared.TableDoesNotExistError(args.TableName)
 	}
@@ -184,10 +192,6 @@ func (t *TableCommands) CommitTable(args shared.TableAccessArgs, reply *shared.T
 }
 
 func UpdateTable(tableName string, table dbStructs.Table) (err error) {
-	return nil
-}
-
-func CommitTable() (err error) {
 	return nil
 }
 

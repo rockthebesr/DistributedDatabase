@@ -25,7 +25,7 @@ var DeadlockTimeout = 5
 var DeadlockRetryInterval = 1000 // in MilliSeconds
 var SleepDuration = 3000
 
-func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rpc.Client, crashPoint CrashPoint) (bool, error) {
+func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rpc.Client, crashPoint shared.CrashPoint) (bool, error) {
 	fmt.Println("ExecuteTransaction=", tableToServers)
 
 	stop = 0
@@ -45,7 +45,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	for j, op := range txn.Operations {
 
 		// crash before sending the last operation
-		if crashPoint == FailDuringTransaction {
+		if crashPoint == shared.FailDuringTransaction {
 			if len(txn.Operations)-1 == j {
 				crashClient()
 				Logger.LogLocalEvent("Client has crashed during a Transaction")
@@ -53,7 +53,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 			}
 		}
 
-		if crashPoint == FailNonPrimaryServerDuringTransaction {
+		if crashPoint == shared.FailNonPrimaryServerDuringTransaction {
 			// only for the first operation
 			if j == 0 {
 				crashServer(tableToServers[op.TableName], crashPoint)
@@ -92,7 +92,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 	fmt.Println("done unlockTables")
 
-	if crashPoint == FailAfterClientReceivesAllOfCommitSucceeded {
+	if crashPoint == shared.FailAfterClientReceivesAllOfCommitSucceeded {
 		crashClient()
 		Logger.LogLocalEvent("Client has crashed after receiving Commit Success from all Servers")
 		return false, nil
@@ -169,7 +169,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 
 }
 
-func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint CrashPoint) (bool, error) {
+func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bool, error) {
 	fmt.Println("Prepare servers to prepare transaction")
 	serverToTables := reverseMap(tableToServers)
 	var msg string
@@ -183,7 +183,7 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf}
 		reply := shared.TransactionReply{Success: false}
 
-		if crashPoint == FailAfterClientSendsPrepareCommit {
+		if crashPoint == shared.FailAfterClientSendsPrepareCommit {
 			if lenServers == i {
 				crashClient()
 				Logger.LogLocalEvent("Client has crashed after client sends PrepareCommit")
@@ -202,7 +202,7 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 	return true, nil
 }
 
-func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint CrashPoint) (bool, error) {
+func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bool, error) {
 	fmt.Println("Tell servers to commit transaction")
 	serverToTables := reverseMap(tableToServers)
 	var msg string
@@ -218,7 +218,7 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 
 		// crash before sending the last RPC
 		// we must make sure that the primary server is connected to 2 or more peers to make this work
-		if crashPoint == FailAfterClientSendsCommit {
+		if crashPoint == shared.FailAfterClientSendsCommit {
 			if lenServers == i {
 				crashClient()
 				Logger.LogLocalEvent("Client has crashed after client sends CommitTransaction")
@@ -382,12 +382,12 @@ func reverseMap(m map[string]*rpc.Client) map[*rpc.Client][]string {
 	return n
 }
 
-func crashServer(conn *rpc.Client, crashPoint CrashPoint) {
-	if crashPoint == FailNonPrimaryServerDuringTransaction {
+func crashServer(conn *rpc.Client, crashPoint shared.CrashPoint) {
+	if crashPoint == shared.FailNonPrimaryServerDuringTransaction {
 		args := shared.Crash{CrashNonPrimary:true}
 		err := conn.Call("ServerConn.CrashServer", &args, &args)
 		shared.CheckError(err)
-	} else if crashPoint == FailPrimaryServerDuringTransaction {
+	} else if crashPoint == shared.FailPrimaryServerDuringTransaction {
 		// args := shared.Crash{CrashPrimary:true}
 		// call RPC
 	}

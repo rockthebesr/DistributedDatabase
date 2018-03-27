@@ -3,7 +3,6 @@ package serverAPI
 import (
 	"errors"
 	"fmt"
-
 	"../shared"
 	"strings"
 )
@@ -84,6 +83,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 	inArray, _ := shared.InArray(args.TableName, TransactionTables[args.IpAddress])
 	if !inArray {
 		TransactionTables[args.IpAddress] = append(TransactionTables[args.IpAddress], args.TableName)
+		fmt.Println("Transaction tables, when locking = ", TransactionTables)
 	}
 
 
@@ -238,6 +238,7 @@ func (s *ServerConn) TableUnavailable(args *shared.TableLockingArg, reply *share
 	AllTblLocks.All[args.TableName] = true
 
 	fmt.Println("TableUnavailable "+args.TableName)
+
 
 	AllServers.Lock()
 	AllServers.All[args.IpAddress].TableMappings[args.TableName] = true

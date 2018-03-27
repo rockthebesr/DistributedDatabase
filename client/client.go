@@ -200,7 +200,7 @@ func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 // Return True if the Transaction has been completed successfully,
 // return False if the Transaction aborted.
 // Can return DisconnectedError if client is disconnected
-func NewTransaction(txn dbStructs.Transaction, crashPoint CrashPoint) (bool, error) {
+func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bool, error) {
 	AllServers.RecentHeartbeat = make(map[string]int64)
 	var msg string
 	//Get needed tables
@@ -260,23 +260,6 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint CrashPoint) (bool, err
 	Logger.LogLocalEvent("Transaction aborted : Cannot complete")
 	return false, nil
 }
-
-// Allows us to control when we want to crash
-type CrashPoint int
-
-const (
-	FailAfterClientSendsPrepareCommit           CrashPoint = 1 //Server rolls back, unlocks tables
-	FailDuringTransaction                       CrashPoint = 2 //Server rolls back, unlocks tables
-	FailAfterClientSendsCommit                  CrashPoint = 3 //Server rolls back, unlocks tables
-	FailAfterClientReceivesAllOfCommitSucceeded CrashPoint = 4 //Server should persist the commit, but unlocks tables
-
-	FailNonPrimaryServerDuringTransaction CrashPoint = 5 // The non-primary Server will crash during transaction, and will recover during transaction
-
-	FailPrimaryServerDuringTransaction                       CrashPoint = 6 // peers roll back, unlock tables, remove lbs mappings
-	FailPrimaryServerAfterClientSendsPrepareCommit           CrashPoint = 7 // peers roll back, unlock tables, remove lbs mappings
-	FailPrimaryServerAfterClientSendsCommit                  CrashPoint = 8 // peers roll back, unlock tables, remove lbs mappings
-	FailPrimaryServerAfterClientReceivesAllOfCommitSucceeded CrashPoint = 9 // peers roll back, unlock tables, remove lbs mappings
-)
 
 func crashClient() {
 	stop = 1
