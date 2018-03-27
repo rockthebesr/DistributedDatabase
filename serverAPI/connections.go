@@ -43,7 +43,7 @@ var (
 	AllServers  = AllConnection{All: make(map[string]*Connection)}
 	AllTblLocks = AllTableLocks{All: make(map[string]bool)}
 
-	Crash = false
+	Crash    = false
 	CrashPtr = &Crash
 
 	//TEMPORARY, REMOVE LATER
@@ -381,7 +381,6 @@ func RollBackTableAndPeers(clientIP string) error {
 	for _, tableName := range tablesToUnlock {
 		// Server rolls back transactions
 		RollBackTable(tableName)
-
 		for _, conn := range AllServers.All {
 			if _, ok := conn.TableMappings[tableName]; !ok {
 				continue
@@ -435,7 +434,7 @@ func RollBackTableAndPeers(clientIP string) error {
 			currentLockedTables = append(currentLockedTables, table)
 		}
 	}
-	GoLogger.LogLocalEvent("Handled roll back table, from " + clientIP)
+	GoLogger.LogLocalEvent("Handled RollBack, " + clientIP)
 
 	// Remove all the tables in lockedTables list
 	TransactionTables[clientIP] = []string{}
@@ -526,13 +525,13 @@ func crashServer() {
 	defer AllServers.Unlock()
 	defer AllTblLocks.Unlock()
 
-	for key, _ := range AllClients.All{
+	for key, _ := range AllClients.All {
 		delete(AllClients.All, key)
 	}
-	for key, _ := range AllServers.All{
+	for key, _ := range AllServers.All {
 		delete(AllServers.All, key)
 	}
-	for key, _ := range AllTblLocks.All{
+	for key, _ := range AllTblLocks.All {
 		AllTblLocks.All[key] = false
 	}
 
@@ -540,7 +539,7 @@ func crashServer() {
 
 	// clear all table contents
 	for _, table := range Tables {
-		for key, _ := range table.Rows{
+		for key, _ := range table.Rows {
 			delete(table.Rows, key)
 		}
 	}
@@ -555,7 +554,7 @@ func recoverServer() {
 	// TODO Send AddMappings
 	// TODO Retrieve neighbors
 	// TODO Connects to other servers
-		// TODO Get table contents from peer
+	// TODO Get table contents from peer
 	// Listens for other connections (listener wasn't killed, so it's fine to skip this step)
 
 	fmt.Println("Done recovering server")

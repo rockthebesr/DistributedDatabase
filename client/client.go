@@ -55,7 +55,7 @@ func GetNeededTables(txn dbStructs.Transaction) []string {
 }
 
 //ConnectToServers - connect to servers and return map of tableNames -> server conns
-func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
+func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, error) {
 	result := map[string]*rpc.Client{}
 
 	//fmt.Println("ServerConn", serverAPI.HeartbeatInterval)
@@ -64,15 +64,28 @@ func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 
 		buf := Logger.PrepareSend("Send ServerConn.ClientConnect"+sAddr, "msg")
 		conn, err := rpc.Dial("tcp", sAddr)
-		shared.CheckErr(err)
+		if err != nil {
+			for s, sConn := range connectedIP {
+				Logger.LogLocalEvent("Close connection to " + s)
+				delete(connectedIP, s)
+				sConn.Close()
+			}
+			return nil, err
+		}
 		var succ shared.ConnectionReply
 		args := shared.ConnectionArgs{IP: localAddr, GoVector: buf}
 		err = conn.Call("ServerConn.ClientConnect", &args, &succ)
 
-		shared.CheckError(err)
 		if err != nil {
 			if _, ok := connectedIP[sAddr]; ok {
 				result[t] = connectedIP[sAddr]
+			} else {
+				for s, sConn := range connectedIP {
+					Logger.LogLocalEvent("Close connection to " + s)
+					delete(connectedIP, s)
+					sConn.Close()
+				}
+				return nil, err
 			}
 		}
 
@@ -97,7 +110,7 @@ func ConnectToServers(tToServerIPs map[string]string) map[string]*rpc.Client {
 
 	fmt.Println("ConnectToServers done", result)
 	// TODO before returning, make sure all servers are still connected?
-	return result
+	return result, nil
 }
 
 // a server has crashed
@@ -200,23 +213,52 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint CrashPoint) (bool, err
 	args := shared.TableNamesArg{TableNames: tableNames, GoVector: buf}
 	reply := shared.TableNamesReply{}
 	err := lbs.Call("LBS.GetServers", &args, &reply)
-	shared.CheckErr(err)
+	if err != nil {
+		Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")
+		return false, err
+	}
 	Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
+	//Keep trying to execute transaction until lbs doesn't give us any servers
+	for len(reply.TableNameToServers) > 0 {
 
-	//Connect to needed servers
-	tablesToServerConns := ConnectToServers(reply.TableNameToServers)
+		//Connect to needed servers
+		tablesToServerConns, err := ConnectToServers(reply.TableNameToServers)
+		if err != nil {
+			continue
+		}
+		//Execute the transaction
+		result, err := ExecuteTransaction(txn, tablesToServerConns, crashPoint)
 
-	//Execute the transaction
-	result, err := ExecuteTransaction(txn, tablesToServerConns, crashPoint)
+		//if we transaction was successful, return it, if not, try again
+		if result {
+			for s, sConn := range connectedIP {
+				Logger.LogLocalEvent("Close connection to " + s)
+				delete(connectedIP, s)
+				sConn.Close()
+			}
+			Logger.LogLocalEvent("Transaction succeeded")
+			return result, err
+		} else {
+			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
+			args = shared.TableNamesArg{TableNames: tableNames, GoVector: buf}
+			reply = shared.TableNamesReply{}
+			err := lbs.Call("LBS.GetServers", &args, &reply)
+			if err != nil {
+				Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")
+				return false, err
+			}
+			Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
+		}
+	}
 
 	for s, sConn := range connectedIP {
 		Logger.LogLocalEvent("Close connection to " + s)
 		delete(connectedIP, s)
 		sConn.Close()
 	}
-	// at this point, Client crash does not affect the servers
 
-	return result, err
+	Logger.LogLocalEvent("Transaction aborted : Cannot complete")
+	return false, nil
 }
 
 // Allows us to control when we want to crash
