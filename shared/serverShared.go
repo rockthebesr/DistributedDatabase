@@ -44,6 +44,7 @@ type TableAccessArgs struct {
 	TableRow  dbStructs.Row
 	NewTable  dbStructs.Table
 	GoVector  []byte
+	IsRecovery	bool	// whether the request is sent by a recovering server
 }
 
 type TableAccessReply struct {

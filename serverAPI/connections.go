@@ -36,6 +36,7 @@ var (
 	SelfIP   string
 	GoLogger *govec.GoLog
 	LBSConn  *rpc.Client
+	LBSIP	 string
 
 	HeartbeatInterval = 2
 
@@ -44,7 +45,6 @@ var (
 	AllTblLocks = AllTableLocks{All: make(map[string]bool)}
 
 	Crash    = false
-	CrashPtr = &Crash
 
 	//TEMPORARY, REMOVE LATER
 	//AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
@@ -238,7 +238,7 @@ func (s *ServerConn) CrashServer(args *shared.Crash, reply *shared.Crash) error 
 			GoLogger.LogLocalEvent("Server has crashed")
 			fmt.Println("Server has crashed")
 			crashServer()
-			recoverServer()
+			go recoverServer()
 			return nil
 		} else {
 			AllServers.Lock()
@@ -254,7 +254,7 @@ func (s *ServerConn) CrashServer(args *shared.Crash, reply *shared.Crash) error 
 					err := conn.Call("ServerConn.CrashServer", &args, &reply)
 					shared.CheckErr(err)
 				}
-				fmt.Println("ServerConn.CrashServer 2")
+				//fmt.Println("ServerConn.CrashServer 2")
 			}
 		}
 	} else if args.CrashPrimary {
@@ -268,7 +268,7 @@ func (s *ServerConn) CrashServer(args *shared.Crash, reply *shared.Crash) error 
  Internal function for monitoring heartbeats from peers. If a peer has timed out, then the server
  deletes it from its list of connected servers.
  TODO handling crashed server
-	case 0: if server is not handling a transaction, then don't do anything else
+	case 0: if server is not handling a transaction, remove mappings, then don't do anything else
 	case 1: server is currently handling a transaction, then unlock the tables owned by the crashed server (roll back just in case)
 	case 2: server has sent a new table to me, then I roll back and unlock the tables owned by the crashed server
 	case 3: server has sent commit, and I have already committed, then I roll back and unlock the tables owned by the crashed server
@@ -511,53 +511,3 @@ func HandleServerCrash(k string) {
 	}
 }
 
-func crashServer() {
-	Crash = true
-	LBSConn = nil
-
-	AllClients.Lock()
-	fmt.Println("1")
-	AllServers.Lock()
-	fmt.Println("2")
-	AllTblLocks.Lock()
-	fmt.Println("3")
-	defer AllClients.Unlock()
-	defer AllServers.Unlock()
-	defer AllTblLocks.Unlock()
-
-	for key, _ := range AllClients.All {
-		delete(AllClients.All, key)
-	}
-	for key, _ := range AllServers.All {
-		delete(AllServers.All, key)
-	}
-	for key, _ := range AllTblLocks.All {
-		AllTblLocks.All[key] = false
-	}
-
-	TransactionTables = map[string][]string{}
-
-	// clear all table contents
-	for _, table := range Tables {
-		for key, _ := range table.Rows {
-			delete(table.Rows, key)
-		}
-	}
-
-	fmt.Println("Done crashing server")
-}
-func recoverServer() {
-
-	//Follow the same initialization procedures as in server.go :
-	// TODO Connect to the load balancer
-	// TODO Register the server & tables with the LBS
-	// TODO Send AddMappings
-	// TODO Retrieve neighbors
-	// TODO Connects to other servers
-	// TODO Get table contents from peer
-	// Listens for other connections (listener wasn't killed, so it's fine to skip this step)
-
-	fmt.Println("Done recovering server")
-
-	//Crash = false
-}

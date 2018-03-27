@@ -9,8 +9,10 @@ import (
 
 	"./serverAPI"
 	"./shared"
+	"./dbStructs"
 	"github.com/DistributedClocks/GoVector/govec"
 
+	"strings"
 )
 
 var (
@@ -44,6 +46,7 @@ func main() {
 	serverAPI.AllTblLocks.All = map[string]bool{"A": false, "B": false, "C": false}
 	serverAPI.AllTblLocks.Unlock()
 
+
 	//Open listener
 	listener, err := net.Listen("tcp", serverIP)
 	shared.CheckErr(err)
@@ -57,6 +60,7 @@ func main() {
 	shared.CheckErr(err)
 	serverAPI.LBSConn = lbsConn
 	defer serverAPI.LBSConn.Close()
+	serverAPI.LBSIP = lbsIP
 	fmt.Println("Connected to load balancer")
 
 	// TODO if LBS crashed at this point, then just reconnect to it
@@ -69,6 +73,7 @@ func main() {
 	for _, tableName := range tableNames {
 		tablesAndLocks[tableName] = false
 	}
+	serverAPI.GoLogger.LogLocalEvent("Server has tables: "+strings.Join(tableNames, ", "))
 
 	// are all tables unlocked at this point? if peer owns a lock, then I should also be locked
 	serverAPI.AllServers.Lock()
@@ -174,7 +179,26 @@ func main() {
 
 		serverAPI.AllServers.Unlock()
 
-		// TODO Get table contents from peer
+		// Get table contents from peer
+		var msg string
+
+		for tableName, _ := range serverTables[neighbour] {
+			buf := serverAPI.GoLogger.PrepareSend("Send GetTableContents", "msg")
+			args := shared.TableAccessArgs{TableName: tableName, GoVector: buf, IsRecovery: true}
+			reply := shared.TableAccessReply{Success: false}
+
+			err := conn.Call("TableCommands.GetTableContents", &args, &reply)
+			shared.CheckError(err)
+			if reply.Success == false {
+				continue
+			}
+
+			serverAPI.CopyTable(tableName, dbStructs.Table{tableName, reply.OneTableContents})
+
+			err, tableString := shared.TableToString(tableName, serverAPI.Tables[tableName].Rows)
+			serverAPI.GoLogger.UnpackReceive("TableCommands.GetTableContents succeeded "+tableString, reply.GoVector, &msg)
+		}
+
 	}
 
 	// Listens for other connections

@@ -112,7 +112,20 @@ func (t *TableCommands) GetTableContents(args shared.TableAccessArgs, reply *sha
 	var msg string
 	GoLogger.UnpackReceive("Received GetTableContents ", args.GoVector, &msg)
 
-	(*reply).OneTableContents = Tables[args.TableName].Rows
+	if args.IsRecovery == false {
+		(*reply).OneTableContents = Tables[args.TableName].Rows
+	} else {
+		AllTblLocks.Lock()
+		isLocked := AllTblLocks.All[args.TableName]
+		AllTblLocks.Unlock()
+
+		if isLocked {
+			(*reply).OneTableContents = Tables[args.TableName+"_BACKUP"].Rows
+		} else {
+			(*reply).OneTableContents = Tables[args.TableName].Rows
+		}
+	}
+
 	(*reply).Success = true
 
 	err, tableString := shared.TableToString(args.TableName, (*reply).OneTableContents)
