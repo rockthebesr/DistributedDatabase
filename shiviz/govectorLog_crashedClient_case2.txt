@@ -1,0 +1,390 @@
+(?<host>\w+) (?<clock>\{.*\})\n(?<event>.*)
+
+LBS {"LBS":1}
+Initialization Complete
+LBS {"LBS":2, "serverX":3}
+Received AddMappings()
+LBS {"serverX":3, "LBS":3}
+Sending AddMappings()
+LBS {"LBS":4, "serverX":5}
+Received GetPeers()
+LBS {"LBS":5, "serverX":5}
+Sending GetPeers()
+LBS {"serverY":3, "LBS":6, "serverX":5}
+Received AddMappings()
+LBS {"LBS":7, "serverX":5, "serverY":3}
+Sending AddMappings()
+LBS {"serverY":5, "LBS":8, "serverX":5}
+Received GetPeers()
+LBS {"LBS":9, "serverX":5, "serverY":5}
+Sending GetPeers()
+LBS {"client":2, "LBS":10, "serverX":5, "serverY":5}
+Received GetServers()
+LBS {"serverY":5, "client":2, "LBS":11, "serverX":5}
+Sending GetServers()
+LBS {"serverX":48, "serverY":48, "client":31, "LBS":12}
+Received GetServers()
+LBS {"serverX":48, "serverY":48, "client":31, "LBS":13}
+Sending GetServers()
+serverX {"serverX":1}
+Initialization Complete
+serverX {"serverX":2}
+Server has tables: A, B, C, A_BACKUP, B_BACKUP, C_BACKUP
+serverX {"serverX":3}
+Sending AddMappings to LBS
+serverX {"serverX":4, "LBS":3}
+Received AddMappings from LBS
+serverX {"serverX":5, "LBS":3}
+Sending GetPeers to LBS
+serverX {"serverX":6, "LBS":5}
+Received GetPeers from LBS
+serverX {"serverX":7, "LBS":9, "serverY":7}
+Received ConnectToPeer from Server
+serverX {"LBS":9, "serverY":7, "serverX":8}
+Sending ConnectToPeer back
+serverX {"LBS":9, "serverY":9, "serverX":9}
+Received GetTableContents 
+serverX {"serverX":10, "LBS":9, "serverY":9}
+Sending GetTableContents reply= Table: C_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":11, "LBS":9, "serverY":11}
+Received GetTableContents 
+serverX {"serverX":12, "LBS":9, "serverY":11}
+Sending GetTableContents reply= Table: A{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":13, "LBS":9, "serverY":13}
+Received GetTableContents 
+serverX {"serverX":14, "LBS":9, "serverY":13}
+Sending GetTableContents reply= Table: B{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":15, "LBS":9, "serverY":15}
+Received GetTableContents 
+serverX {"serverX":16, "LBS":9, "serverY":15}
+Sending GetTableContents reply= Table: C{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":17, "LBS":9, "serverY":17}
+Received GetTableContents 
+serverX {"serverX":18, "LBS":9, "serverY":17}
+Sending GetTableContents reply= Table: A_BACKUP{(  Key:test age:30 gender:M name:John )}
+serverX {"LBS":9, "serverY":19, "serverX":19}
+Received GetTableContents 
+serverX {"LBS":9, "serverY":19, "serverX":20}
+Sending GetTableContents reply= Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"serverY":19, "serverX":21, "LBS":11, "client":4}
+Received ClientConnect from Client
+serverX {"serverY":19, "serverX":22, "LBS":11, "client":4}
+Sending ClientConnect back
+serverX {"client":8, "serverY":22, "serverX":23, "LBS":11}
+Received TableLock() A tablesLockedByClient=
+serverX {"client":8, "serverY":22, "serverX":24, "LBS":11}
+Sending TableUnavailable to server Y
+serverX {"client":8, "serverY":24, "serverX":25, "LBS":11}
+Received TableUnavailable from server Y
+serverX {"client":8, "serverY":24, "serverX":26, "LBS":11}
+Sending TableLock() tablesLockedByClient=A
+serverX {"serverY":26, "serverX":27, "LBS":11, "client":10}
+Received TableUnavailable()
+serverX {"serverY":26, "serverX":28, "LBS":11, "client":10}
+Sending TableUnavailable()
+serverX {"client":12, "serverY":28, "serverX":29, "LBS":11}
+Received GetRow 
+serverX {"client":12, "serverY":28, "serverX":30, "LBS":11}
+Sending GetRow reply= Table: A{(  Key:test name:John age:30 gender:M )}
+serverX {"LBS":11, "client":16, "serverY":30, "serverX":31}
+Received PrepareCommit() from 
+serverX {"client":16, "serverY":30, "serverX":32, "LBS":11}
+Sending PrepareTableForCommit for table A
+serverX {"LBS":11, "client":16, "serverY":32, "serverX":33}
+Received PrepareTableForCommit reply
+serverX {"client":16, "serverY":32, "serverX":34, "LBS":11}
+Sending PrepareCommit successful back to
+serverX {"client":18, "serverY":34, "serverX":35, "LBS":11}
+Received PrepareTableForCommit for table B
+serverX {"client":18, "serverY":34, "serverX":36, "LBS":11}
+Sending PrepareTableForCommit result table =  Table: B{(  Key:test2 age:30 gender:F name:Alice )(  Key:test age:30 gender:M name:John )}
+serverX {"LBS":11, "client":20, "serverY":36, "serverX":37}
+Received CommitTransaction() from 
+serverX {"serverY":36, "serverX":38, "LBS":11, "client":20}
+Sending CommitTable for table A
+serverX {"serverX":39, "LBS":11, "client":20, "serverY":38}
+Received CommitTable reply
+serverX {"client":20, "serverY":38, "serverX":40, "LBS":11}
+Sending CommitTransction successful back toTable= Table: A{(  Key:test name:John age:30 gender:M )}
+serverX {"client":22, "serverY":40, "serverX":41, "LBS":11}
+Received CommitTable for table B
+serverX {"client":22, "serverY":40, "serverX":42, "LBS":11}
+Sending CommitTable result table =  Table: B{(  Key:test age:30 gender:M name:John )(  Key:test2 age:30 gender:F name:Alice )}
+serverX {"LBS":11, "client":24, "serverY":42, "serverX":43}
+Received TableUnlock()
+serverX {"client":24, "serverY":42, "serverX":44, "LBS":11}
+Sending TableAvailable to Y
+serverX {"serverY":44, "serverX":45, "LBS":11, "client":24}
+Received TableAvailable from server Y
+serverX {"client":24, "serverY":44, "serverX":46, "LBS":11}
+Sending TableUnlock() tablesLockedByClient=
+serverX {"LBS":11, "client":26, "serverY":46, "serverX":47}
+Received TableAvailable()
+serverX {"client":26, "serverY":46, "serverX":48, "LBS":11}
+Sending TableAvailable()
+serverX {"client":33, "serverY":48, "serverX":49, "LBS":13}
+Received ClientConnect from Client
+serverX {"LBS":13, "client":33, "serverY":48, "serverX":50}
+Sending ClientConnect back
+serverX {"client":37, "serverY":50, "serverX":51, "LBS":13}
+Received TableLock() B tablesLockedByClient=
+serverX {"serverX":52, "LBS":13, "client":37, "serverY":50}
+Sending TableUnavailable to server Y
+serverX {"client":37, "serverY":52, "serverX":53, "LBS":13}
+Received TableUnavailable from server Y
+serverX {"LBS":13, "client":37, "serverY":52, "serverX":54}
+Sending TableLock() tablesLockedByClient=B
+serverX {"LBS":13, "client":39, "serverY":54, "serverX":55}
+Received TableUnavailable()
+serverX {"client":39, "serverY":54, "serverX":56, "LBS":13}
+Sending TableUnavailable()
+serverX {"serverX":57, "LBS":13, "client":41, "serverY":56}
+Received SetRow 
+serverX {"client":41, "serverY":56, "serverX":58, "LBS":13}
+Sending SetRow added= Table: B{(  Key:test2 name:Sam age:60 gender:M )}
+serverX {"client":41, "serverY":56, "serverX":59, "LBS":13}
+Roll back Table B TableContents:  Table: B{(  Key:test2 age:30 gender:F name:Alice )(  Key:test gender:M name:John age:30 )}
+serverX {"client":41, "serverY":56, "serverX":60, "LBS":13}
+Send TransactionManager.RollBackPeer table=B
+serverX {"LBS":13, "client":41, "serverY":59, "serverX":61}
+Received result
+serverX {"client":41, "serverY":59, "serverX":62, "LBS":13}
+Send ServerConn.TableAvailable table=B
+serverX {"client":41, "serverY":59, "serverX":63, "LBS":13}
+Roll back Table C TableContents:  Table: C{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":64, "LBS":13, "client":41, "serverY":61}
+Received RollBackPeer
+serverX {"serverX":65, "LBS":13, "client":41, "serverY":61}
+Reply RollBackPeer table=C TableContents:  Table: C{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":66, "LBS":13, "client":41, "serverY":64}
+Received TableAvailable()
+serverX {"LBS":13, "client":41, "serverY":64, "serverX":67}
+Sending TableAvailable()
+serverX {"client":41, "serverY":65, "serverX":68, "LBS":13}
+Received result
+serverX {"serverY":65, "serverX":69, "LBS":13, "client":41}
+Unlocked table B
+serverX {"client":41, "serverY":65, "serverX":70, "LBS":13}
+Handled RollBack, 
+serverY {"serverY":1}
+Initialization Complete
+serverY {"serverY":2}
+Server has tables: C, A_BACKUP, B_BACKUP, C_BACKUP, A, B
+serverY {"serverY":3}
+Sending AddMappings to LBS
+serverY {"serverY":4, "LBS":7, "serverX":5}
+Received AddMappings from LBS
+serverY {"LBS":7, "serverX":5, "serverY":5}
+Sending GetPeers to LBS
+serverY {"LBS":9, "serverX":5, "serverY":6}
+Received GetPeers from LBS
+serverY {"LBS":9, "serverX":5, "serverY":7}
+Sending ConnectToPeer to Server
+serverY {"serverY":8, "LBS":9, "serverX":8}
+Received ConnectToPeer from Server
+serverY {"serverY":9, "LBS":9, "serverX":8}
+Send GetTableContents
+serverY {"LBS":9, "serverX":10, "serverY":10}
+TableCommands.GetTableContents succeeded  Table: C_BACKUP{(  Key:test gender:M name:John age:30 )}
+serverY {"LBS":9, "serverX":10, "serverY":11}
+Send GetTableContents
+serverY {"serverX":12, "serverY":12, "LBS":9}
+TableCommands.GetTableContents succeeded  Table: A{(  Key:test age:30 gender:M name:John )}
+serverY {"serverX":12, "serverY":13, "LBS":9}
+Send GetTableContents
+serverY {"serverX":14, "serverY":14, "LBS":9}
+TableCommands.GetTableContents succeeded  Table: B{(  Key:test age:30 gender:M name:John )}
+serverY {"serverX":14, "serverY":15, "LBS":9}
+Send GetTableContents
+serverY {"serverX":16, "serverY":16, "LBS":9}
+TableCommands.GetTableContents succeeded  Table: C{(  Key:test name:John age:30 gender:M )}
+serverY {"LBS":9, "serverX":16, "serverY":17}
+Send GetTableContents
+serverY {"serverX":18, "serverY":18, "LBS":9}
+TableCommands.GetTableContents succeeded  Table: A_BACKUP{(  Key:test age:30 gender:M name:John )}
+serverY {"serverX":18, "serverY":19, "LBS":9}
+Send GetTableContents
+serverY {"serverX":20, "serverY":20, "LBS":9}
+TableCommands.GetTableContents succeeded  Table: B_BACKUP{(  Key:test gender:M name:John age:30 )}
+serverY {"serverY":21, "LBS":11, "client":6, "serverX":22}
+Received ClientConnect from Client
+serverY {"LBS":11, "client":6, "serverX":22, "serverY":22}
+Sending ClientConnect back
+serverY {"client":8, "serverX":24, "serverY":23, "LBS":11}
+Received TableUnavailable()
+serverY {"client":8, "serverX":24, "serverY":24, "LBS":11}
+Sending TableUnavailable()
+serverY {"LBS":11, "client":10, "serverX":26, "serverY":25}
+Received TableLock() B tablesLockedByClient=
+serverY {"serverY":26, "LBS":11, "client":10, "serverX":26}
+Sending TableUnavailable to server X
+serverY {"client":10, "serverX":28, "serverY":27, "LBS":11}
+Received TableUnavailable from server X
+serverY {"client":10, "serverX":28, "serverY":28, "LBS":11}
+Sending TableLock() tablesLockedByClient=B
+serverY {"LBS":11, "client":14, "serverX":30, "serverY":29}
+Received SetRow 
+serverY {"LBS":11, "client":14, "serverX":30, "serverY":30}
+Sending SetRow added= Table: B{(  Key:test2 gender:F name:Alice age:30 )}
+serverY {"serverX":32, "serverY":31, "LBS":11, "client":16}
+Received PrepareTableForCommit for table A
+serverY {"client":16, "serverX":32, "serverY":32, "LBS":11}
+Sending PrepareTableForCommit result table =  Table: A{(  Key:test name:John age:30 gender:M )}
+serverY {"LBS":11, "client":18, "serverX":34, "serverY":33}
+Received PrepareCommit() from 
+serverY {"serverX":34, "serverY":34, "LBS":11, "client":18}
+Sending PrepareTableForCommit for table B
+serverY {"LBS":11, "client":18, "serverX":36, "serverY":35}
+Received PrepareTableForCommit reply
+serverY {"client":18, "serverX":36, "serverY":36, "LBS":11}
+Sending PrepareCommit successful back to
+serverY {"client":20, "serverX":38, "serverY":37, "LBS":11}
+Received CommitTable for table A
+serverY {"serverY":38, "LBS":11, "client":20, "serverX":38}
+Sending CommitTable result table =  Table: A{(  Key:test gender:M name:John age:30 )}
+serverY {"LBS":11, "client":22, "serverX":40, "serverY":39}
+Received CommitTransaction() from 
+serverY {"serverY":40, "LBS":11, "client":22, "serverX":40}
+Sending CommitTable for table B
+serverY {"LBS":11, "client":22, "serverX":42, "serverY":41}
+Received CommitTable reply
+serverY {"serverY":42, "LBS":11, "client":22, "serverX":42}
+Sending CommitTransction successful back toTable= Table: B{(  Key:test gender:M name:John age:30 )(  Key:test2 gender:F name:Alice age:30 )}
+serverY {"serverX":44, "serverY":43, "LBS":11, "client":24}
+Received TableAvailable()
+serverY {"LBS":11, "client":24, "serverX":44, "serverY":44}
+Sending TableAvailable()
+serverY {"LBS":11, "client":26, "serverX":46, "serverY":45}
+Received TableUnlock()
+serverY {"serverY":46, "LBS":11, "client":26, "serverX":46}
+Sending TableAvailable to X
+serverY {"LBS":11, "client":26, "serverX":48, "serverY":47}
+Received TableAvailable from server X
+serverY {"LBS":11, "client":26, "serverX":48, "serverY":48}
+Sending TableUnlock() tablesLockedByClient=
+serverY {"LBS":13, "client":35, "serverX":50, "serverY":49}
+Received ClientConnect from Client
+serverY {"serverY":50, "LBS":13, "client":35, "serverX":50}
+Sending ClientConnect back
+serverY {"serverY":51, "LBS":13, "client":37, "serverX":52}
+Received TableUnavailable()
+serverY {"serverY":52, "LBS":13, "client":37, "serverX":52}
+Sending TableUnavailable()
+serverY {"client":39, "serverX":54, "serverY":53, "LBS":13}
+Received TableLock() C tablesLockedByClient=
+serverY {"serverX":54, "serverY":54, "LBS":13, "client":39}
+Sending TableUnavailable to server X
+serverY {"LBS":13, "client":39, "serverX":56, "serverY":55}
+Received TableUnavailable from server X
+serverY {"serverX":56, "serverY":56, "LBS":13, "client":39}
+Sending TableLock() tablesLockedByClient=C
+serverY {"client":39, "serverX":56, "serverY":57, "LBS":13}
+Roll back Table B TableContents:  Table: B{(  Key:test gender:M name:John age:30 )(  Key:test2 name:Alice age:30 gender:F )}
+serverY {"LBS":13, "client":41, "serverX":60, "serverY":58}
+Received RollBackPeer
+serverY {"client":41, "serverX":60, "serverY":59, "LBS":13}
+Reply RollBackPeer table=B TableContents:  Table: B{(  Key:test gender:M name:John age:30 )(  Key:test2 name:Alice age:30 gender:F )}
+serverY {"serverX":60, "serverY":60, "LBS":13, "client":41}
+Roll back Table C TableContents:  Table: C{(  Key:test name:John age:30 gender:M )}
+serverY {"client":41, "serverX":60, "serverY":61, "LBS":13}
+Send TransactionManager.RollBackPeer table=C
+serverY {"serverY":62, "LBS":13, "client":41, "serverX":62}
+Received TableAvailable()
+serverY {"LBS":13, "client":41, "serverX":65, "serverY":63}
+Received result
+serverY {"serverX":65, "serverY":64, "LBS":13, "client":41}
+Send ServerConn.TableAvailable table=C
+serverY {"client":41, "serverX":65, "serverY":65, "LBS":13}
+Sending TableAvailable()
+serverY {"client":41, "serverX":67, "serverY":66, "LBS":13}
+Received result
+serverY {"serverX":67, "serverY":67, "LBS":13, "client":41}
+Unlocked table C
+serverY {"client":41, "serverX":67, "serverY":68, "LBS":13}
+Handled RollBack, 
+client {"client":1}
+Initialization Complete
+client {"client":2}
+Send LBS.GetServers
+client {"client":3, "serverX":5, "serverY":5, "LBS":11}
+Received LBS.GetServers
+client {"serverY":5, "LBS":11, "client":4, "serverX":5}
+Send ServerConn.ClientConnectX
+client {"client":5, "serverX":22, "serverY":19, "LBS":11}
+Established connection to server X
+client {"client":6, "serverX":22, "serverY":19, "LBS":11}
+Send ServerConn.ClientConnectY
+client {"serverY":22, "LBS":11, "client":7, "serverX":22}
+Established connection to server Y
+client {"LBS":11, "client":8, "serverX":22, "serverY":22}
+Send ServerConn.TableLock A
+client {"LBS":11, "client":9, "serverX":26, "serverY":24}
+Received result A
+client {"serverX":26, "serverY":24, "LBS":11, "client":10}
+Send ServerConn.TableLock B
+client {"LBS":11, "client":11, "serverX":28, "serverY":28}
+Received result B
+client {"LBS":11, "client":12, "serverX":28, "serverY":28}
+Send ExecuteOperation
+client {"serverY":28, "LBS":11, "client":13, "serverX":30}
+TableCommands.GetRow succeeded Table: A{(  Key:test age:30 gender:M name:John )}
+client {"client":14, "serverX":30, "serverY":28, "LBS":11}
+Send ExecuteOperation
+client {"LBS":11, "client":15, "serverX":30, "serverY":30}
+TableCommands.SetRow succeeded for table B
+client {"LBS":11, "client":16, "serverX":30, "serverY":30}
+Send TransactionManager.prepareCommit
+client {"serverY":32, "LBS":11, "client":17, "serverX":34}
+TransactionManager.PrepareCommit succeeded
+client {"client":18, "serverX":34, "serverY":32, "LBS":11}
+Send TransactionManager.prepareCommit
+client {"client":19, "serverX":36, "serverY":36, "LBS":11}
+TransactionManager.PrepareCommit succeeded
+client {"LBS":11, "client":20, "serverX":36, "serverY":36}
+Send TransactionManager.CommitTransaction
+client {"client":21, "serverX":40, "serverY":38, "LBS":11}
+TransactionManager.CommitTransaction succeeded
+client {"client":22, "serverX":40, "serverY":38, "LBS":11}
+Send TransactionManager.CommitTransaction
+client {"serverY":42, "LBS":11, "client":23, "serverX":42}
+TransactionManager.CommitTransaction succeeded
+client {"LBS":11, "client":24, "serverX":42, "serverY":42}
+Send ServerConn.TableUnlock A
+client {"client":25, "serverX":46, "serverY":44, "LBS":11}
+Received result A
+client {"client":26, "serverX":46, "serverY":44, "LBS":11}
+Send ServerConn.TableUnlock B
+client {"client":27, "serverX":48, "serverY":48, "LBS":11}
+Received result B
+client {"client":28, "serverX":48, "serverY":48, "LBS":11}
+Close connection to X
+client {"LBS":11, "client":29, "serverX":48, "serverY":48}
+Close connection to Y
+client {"client":30, "serverX":48, "serverY":48, "LBS":11}
+Transaction succeeded
+client {"serverX":48, "serverY":48, "LBS":11, "client":31}
+Send LBS.GetServers
+client {"client":32, "serverX":48, "serverY":48, "LBS":13}
+Received LBS.GetServers
+client {"LBS":13, "client":33, "serverX":48, "serverY":48}
+Send ServerConn.ClientConnectX
+client {"serverY":48, "LBS":13, "client":34, "serverX":50}
+Established connection to server X
+client {"client":35, "serverX":50, "serverY":48, "LBS":13}
+Send ServerConn.ClientConnectY
+client {"client":36, "serverX":50, "serverY":50, "LBS":13}
+Established connection to server Y
+client {"client":37, "serverX":50, "serverY":50, "LBS":13}
+Send ServerConn.TableLock B
+client {"client":38, "serverX":54, "serverY":52, "LBS":13}
+Received result B
+client {"client":39, "serverX":54, "serverY":52, "LBS":13}
+Send ServerConn.TableLock C
+client {"serverX":56, "serverY":56, "LBS":13, "client":40}
+Received result C
+client {"serverY":56, "LBS":13, "client":41, "serverX":56}
+Send ExecuteOperation
+client {"LBS":13, "client":42, "serverX":58, "serverY":56}
+TableCommands.SetRow succeeded for table B
+client {"LBS":13, "client":43, "serverX":58, "serverY":56}
+Client has crashed during a Transaction

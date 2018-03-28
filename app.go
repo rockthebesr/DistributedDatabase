@@ -54,7 +54,7 @@ func main() {
 
 	if crashPoint == 5 {
 		txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op2}}
-		client.NewTransaction(txn, client.CrashPoint(crashPoint))
+		client.NewTransaction(txn, shared.CrashPoint(crashPoint))
 		return
 	}
 
@@ -73,11 +73,11 @@ func main() {
 	op4 := dbStructs.Operation{Type: opType4, TableName: opTableName4, Key: opKey4, Value: row4}
 
 	txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op, op2}}
-	client.NewTransaction(txn, client.CrashPoint(crashPoint))
+	client.NewTransaction(txn, shared.CrashPoint(0))
 
 	time.Sleep(time.Second * 3)
 	txn2 := dbStructs.Transaction{Operations: []dbStructs.Operation{op3, op4}}
-	client.NewTransaction(txn2, client.CrashPoint(crashPoint))
+	client.NewTransaction(txn2, shared.CrashPoint(crashPoint))
 
 	time.Sleep(time.Second * 3)
 }

@@ -49,7 +49,8 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 			if len(txn.Operations)-1 == j {
 				crashClient()
 				Logger.LogLocalEvent("Client has crashed during a Transaction")
-				return false, nil
+				panic("FailDuringTransaction")
+				//return false, nil
 			}
 		}
 
@@ -95,7 +96,8 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	if crashPoint == shared.FailAfterClientReceivesAllOfCommitSucceeded {
 		crashClient()
 		Logger.LogLocalEvent("Client has crashed after receiving Commit Success from all Servers")
-		return false, nil
+		panic("FailAfterClientReceivesAllOfCommitSucceeded")
+		//return false, nil
 	}
 
 	// TODO need to return result, distinguish between the operations
@@ -187,7 +189,8 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 			if lenServers == i {
 				crashClient()
 				Logger.LogLocalEvent("Client has crashed after client sends PrepareCommit")
-				return false, nil
+				panic("FailAfterClientSendsPrepareCommit")
+				//return false, nil
 			}
 		}
 
@@ -222,7 +225,8 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 			if lenServers == i {
 				crashClient()
 				Logger.LogLocalEvent("Client has crashed after client sends CommitTransaction")
-				return false, nil
+				panic("FailAfterClientSendsCommit")
+				//return false, nil
 			}
 		}
 
