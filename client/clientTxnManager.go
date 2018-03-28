@@ -61,7 +61,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 			}
 		}
 
-		r, err := ExecuteOperation(op, tableToServers)
+		r, err := ExecuteOperation(op, tableToServers, crashPoint)
 		result = append(result, r)
 		if err != nil {
 			return false, err
@@ -113,11 +113,11 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 }
 
 // TODO need to test each operation
-func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Client) (map[string]dbStructs.Row, error) {
+func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Client, crashPoint shared.CrashPoint) (map[string]dbStructs.Row, error) {
 	conn := tableToServers[op.TableName]
 	var msg string
 	buf := Logger.PrepareSend("Send ExecuteOperation", "msg")
-	args := shared.TableAccessArgs{TableName: op.TableName, Key: op.Key, TableRow: op.Value, GoVector: buf}
+	args := shared.TableAccessArgs{TableName: op.TableName, Key: op.Key, TableRow: op.Value, GoVector: buf, ServerCrashErr: crashPoint}
 	reply := shared.TableAccessReply{Success: false}
 	switch op.Type {
 	case dbStructs.SelectAll:
@@ -180,7 +180,7 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 	for _, server := range tableToServers {
 		i += 1
 		buf := Logger.PrepareSend("Send TransactionManager.prepareCommit", &msg)
-		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf}
+		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf, ServerCrashErr: crashPoint}
 		reply := shared.TransactionReply{Success: false}
 
 		if crashPoint == shared.FailAfterClientSendsPrepareCommit {
@@ -213,7 +213,7 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 	for _, server := range tableToServers {
 		i += 1
 		buf := Logger.PrepareSend("Send TransactionManager.CommitTransaction", &msg)
-		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf}
+		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf, ServerCrashErr: crashPoint}
 		reply := shared.TransactionReply{Success: false}
 
 		// crash before sending the last RPC

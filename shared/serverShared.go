@@ -19,6 +19,8 @@ type TransactionArg struct {
 	IPAddress     string
 	UpdatedTables []string
 	GoVector      []byte
+	ServerCrashErr CrashPoint
+
 }
 
 type TransactionReply struct {
@@ -45,6 +47,7 @@ type TableAccessArgs struct {
 	NewTable  dbStructs.Table
 	GoVector  []byte
 	IsRecovery	bool	// whether the request is sent by a recovering server
+	ServerCrashErr CrashPoint
 }
 
 type TableAccessReply struct {

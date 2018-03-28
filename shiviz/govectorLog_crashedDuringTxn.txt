@@ -83,27 +83,27 @@ Received ConnectToPeer from Server
 serverX {"serverX":8, "LBS":9, "serverZ":7}
 Sending ConnectToPeer back
 serverX {"serverX":9, "LBS":9, "serverZ":9}
-Received GetTableContents 
+Received GetTableContents
 serverX {"serverZ":9, "serverX":10, "LBS":9}
 Sending GetTableContents reply= Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
 serverX {"serverZ":11, "serverX":11, "LBS":9}
-Received GetTableContents 
+Received GetTableContents
 serverX {"serverZ":11, "serverX":12, "LBS":9}
 Sending GetTableContents reply= Table: C_BACKUP{(  Key:test gender:M name:John age:30 )}
 serverX {"LBS":9, "serverZ":13, "serverX":13}
-Received GetTableContents 
+Received GetTableContents
 serverX {"serverZ":13, "serverX":14, "LBS":9}
 Sending GetTableContents reply= Table: A{(  Key:test age:30 gender:M name:John )}
 serverX {"serverZ":15, "serverX":15, "LBS":9}
-Received GetTableContents 
+Received GetTableContents
 serverX {"serverZ":15, "serverX":16, "LBS":9}
 Sending GetTableContents reply= Table: B{(  Key:test gender:M name:John age:30 )}
 serverX {"serverZ":17, "serverX":17, "LBS":9}
-Received GetTableContents 
+Received GetTableContents
 serverX {"serverZ":17, "serverX":18, "LBS":9}
 Sending GetTableContents reply= Table: C{(  Key:test age:30 gender:M name:John )}
 serverX {"serverZ":19, "serverX":19, "LBS":9}
-Received GetTableContents 
+Received GetTableContents
 serverX {"LBS":9, "serverZ":19, "serverX":20}
 Sending GetTableContents reply= Table: A_BACKUP{(  Key:test name:John age:30 gender:M )}
 serverX {"LBS":13, "serverZ":19, "serverX":21, "serverY":7}
@@ -111,27 +111,27 @@ Received ConnectToPeer from Server
 serverX {"serverZ":19, "serverX":22, "serverY":7, "LBS":13}
 Sending ConnectToPeer back
 serverX {"LBS":13, "serverZ":19, "serverX":23, "serverY":9}
-Received GetTableContents 
+Received GetTableContents
 serverX {"LBS":13, "serverZ":19, "serverX":24, "serverY":9}
 Sending GetTableContents reply= Table: B{(  Key:test name:John age:30 gender:M )}
 serverX {"LBS":13, "serverZ":19, "serverX":25, "serverY":11}
-Received GetTableContents 
+Received GetTableContents
 serverX {"LBS":13, "serverZ":19, "serverX":26, "serverY":11}
 Sending GetTableContents reply= Table: C{(  Key:test gender:M name:John age:30 )}
 serverX {"LBS":13, "serverZ":19, "serverX":27, "serverY":13}
-Received GetTableContents 
+Received GetTableContents
 serverX {"serverX":28, "serverY":13, "LBS":13, "serverZ":19}
 Sending GetTableContents reply= Table: A_BACKUP{(  Key:test name:John age:30 gender:M )}
 serverX {"serverX":29, "serverY":15, "LBS":13, "serverZ":19}
-Received GetTableContents 
+Received GetTableContents
 serverX {"serverZ":19, "serverX":30, "serverY":15, "LBS":13}
 Sending GetTableContents reply= Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
 serverX {"LBS":13, "serverZ":19, "serverX":31, "serverY":17}
-Received GetTableContents 
+Received GetTableContents
 serverX {"serverY":17, "LBS":13, "serverZ":19, "serverX":32}
 Sending GetTableContents reply= Table: C_BACKUP{(  Key:test age:30 gender:M name:John )}
 serverX {"serverY":19, "LBS":13, "serverZ":19, "serverX":33}
-Received GetTableContents 
+Received GetTableContents
 serverX {"LBS":13, "serverZ":19, "serverX":34, "serverY":19}
 Sending GetTableContents reply= Table: A{(  Key:test name:John age:30 gender:M )}
 serverX {"LBS":15, "serverZ":19, "serverX":35, "serverY":19, "client":4}
@@ -285,7 +285,7 @@ Received TableUnavailable from server Z
 serverY {"serverY":61, "LBS":23, "serverX":47, "client":41, "serverZ":72}
 Sending TableLock() tablesLockedByClient=B
 serverY {"serverZ":75, "serverY":62, "LBS":25, "serverX":47, "client":57}
-Received RollBackPrimaryServer from 
+Received RollBackPrimaryServer from
 serverY {"LBS":25, "serverX":47, "client":57, "serverZ":75, "serverY":63}
 Roll back Table B TableContents:  Table: B{(  Key:test gender:M name:John age:30 )}
 serverY {"client":57, "serverZ":75, "serverY":64, "LBS":25, "serverX":47}
@@ -299,7 +299,7 @@ Received result
 serverY {"client":57, "serverZ":75, "serverY":68, "LBS":25, "serverX":47}
 Unlocked table B
 serverY {"serverY":69, "LBS":25, "serverX":47, "client":57, "serverZ":75}
-Handled RollBack, 
+Handled RollBack,
 serverY {"LBS":25, "serverX":47, "client":57, "serverZ":75, "serverY":70}
 Successfully rolled backed on this table and peers
 serverY {"serverY":71, "LBS":25, "serverX":47, "client":57, "serverZ":75}
@@ -373,27 +373,27 @@ Received ConnectToPeer from Server
 serverZ {"serverX":34, "serverZ":22, "LBS":13, "serverY":21}
 Sending ConnectToPeer back
 serverZ {"serverX":34, "serverZ":23, "LBS":13, "serverY":23}
-Received GetTableContents 
+Received GetTableContents
 serverZ {"serverX":34, "serverZ":24, "LBS":13, "serverY":23}
 Sending GetTableContents reply= Table: A{(  Key:test name:John age:30 gender:M )}
 serverZ {"serverX":34, "serverZ":25, "LBS":13, "serverY":25}
-Received GetTableContents 
+Received GetTableContents
 serverZ {"serverX":34, "serverZ":26, "LBS":13, "serverY":25}
 Sending GetTableContents reply= Table: B{(  Key:test name:John age:30 gender:M )}
 serverZ {"serverX":34, "serverZ":27, "LBS":13, "serverY":27}
-Received GetTableContents 
+Received GetTableContents
 serverZ {"serverX":34, "serverZ":28, "LBS":13, "serverY":27}
 Sending GetTableContents reply= Table: C{(  Key:test age:30 gender:M name:John )}
 serverZ {"serverZ":29, "LBS":13, "serverY":29, "serverX":34}
-Received GetTableContents 
+Received GetTableContents
 serverZ {"LBS":13, "serverY":29, "serverX":34, "serverZ":30}
 Sending GetTableContents reply= Table: A_BACKUP{(  Key:test name:John age:30 gender:M )}
 serverZ {"serverZ":31, "LBS":13, "serverY":31, "serverX":34}
-Received GetTableContents 
+Received GetTableContents
 serverZ {"serverZ":32, "LBS":13, "serverY":31, "serverX":34}
 Sending GetTableContents reply= Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
 serverZ {"serverY":33, "serverX":34, "serverZ":33, "LBS":13}
-Received GetTableContents 
+Received GetTableContents
 serverZ {"serverZ":34, "LBS":13, "serverY":33, "serverX":34}
 Sending GetTableContents reply= Table: C_BACKUP{(  Key:test name:John age:30 gender:M )}
 serverZ {"LBS":15, "serverY":33, "serverX":36, "serverZ":35, "client":6}
@@ -427,7 +427,7 @@ Received TableAvailable()
 serverZ {"serverX":44, "serverZ":49, "client":10, "LBS":15, "serverY":44}
 Sending TableAvailable()
 serverZ {"serverY":44, "serverX":47, "serverZ":50, "client":28, "LBS":17}
-Received RollBackPrimaryServer from 
+Received RollBackPrimaryServer from
 serverZ {"serverX":47, "serverZ":51, "client":28, "LBS":17, "serverY":44}
 Roll back Table B TableContents:  Table: B{(  Key:test name:John age:30 gender:M )}
 serverZ {"LBS":17, "serverY":44, "serverX":47, "serverZ":52, "client":28}
@@ -449,7 +449,7 @@ Received result
 serverZ {"client":28, "LBS":19, "serverY":53, "serverX":47, "serverZ":60}
 Unlocked table B
 serverZ {"LBS":19, "serverY":53, "serverX":47, "serverZ":61, "client":28}
-Handled RollBack, 
+Handled RollBack,
 serverZ {"serverY":53, "serverX":47, "serverZ":62, "client":28, "LBS":19}
 Successfully rolled backed on this table and peers
 serverZ {"serverY":53, "serverX":47, "serverZ":63, "client":28, "LBS":19}

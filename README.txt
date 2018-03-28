@@ -97,10 +97,10 @@ To test server crash (without recovery right now) enter the following numbers to
 
     Example:
     go run lbs.go "127.0.0.1:54321" "false"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12345" "8"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12346" "8"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12347" "8"
-    go run app.go "0"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12347"
+    go run app.go "6"
 
     sed -i '3,$d' shiviz/govectorLog.txt
     sed -i '$r shiviz/ddbsLBS-Log.txt' shiviz/govectorLog.txt

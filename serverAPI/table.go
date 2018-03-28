@@ -61,7 +61,7 @@ func (t *TableCommands) SetRow(args shared.TableAccessArgs, reply *shared.TableA
 
 func (t *TableCommands) GetRow(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
 
-	if shared.ServerCrashErr == shared.FailDuringTransaction {
+	if args.ServerCrashErr == shared.FailPrimaryServerDuringTransaction {
 		GoLogger.LogLocalEvent("Server " + SelfIP + " has crashed during GetRow")
 		crashServer()
 		return errors.New("Server " + SelfIP + " has crashed during GetRow")

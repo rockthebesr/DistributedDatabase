@@ -1,0 +1,3344 @@
+(?<host>\w+) (?<clock>\{.*\})\n(?<event>.*)
+
+LBS {"LBS":1}
+Initialization Complete
+LBS {"LBS":2, "serverX":3}
+Received AddMappings()
+LBS {"LBS":3, "serverX":3}
+Sending AddMappings()
+LBS {"LBS":4, "serverX":5}
+Received GetPeers()
+LBS {"LBS":5, "serverX":5}
+Sending GetPeers()
+LBS {"serverX":5, "LBS":6, "serverY":3}
+Received AddMappings()
+LBS {"serverY":3, "serverX":5, "LBS":7}
+Sending AddMappings()
+LBS {"serverY":5, "serverX":5, "LBS":8}
+Received GetPeers()
+LBS {"serverY":5, "serverX":5, "LBS":9}
+Sending GetPeers()
+LBS {"serverZ":3, "LBS":10, "serverY":5, "serverX":5}
+Received AddMappings()
+LBS {"serverX":5, "serverZ":3, "LBS":11, "serverY":5}
+Sending AddMappings()
+LBS {"LBS":12, "serverY":5, "serverX":5, "serverZ":5}
+Received GetPeers()
+LBS {"serverZ":5, "LBS":13, "serverY":5, "serverX":5}
+Sending GetPeers()
+LBS {"serverZ":5, "LBS":14, "serverY":5, "client":2, "serverX":5}
+Received GetServers()
+LBS {"serverX":5, "serverZ":5, "LBS":15, "serverY":5, "client":2}
+Sending GetServers()
+LBS {"client":22, "serverX":42, "serverZ":54, "LBS":16, "serverY":54}
+Received GetServers()
+LBS {"serverY":54, "client":22, "serverX":42, "serverZ":54, "LBS":17}
+Sending GetServers()
+LBS {"serverY":58, "client":32, "serverX":55, "serverZ":63, "LBS":18}
+Received RemoveMappings()
+LBS {"client":32, "serverX":55, "serverZ":63, "LBS":19, "serverY":58}
+Sending RemoveMappings()
+LBS {"LBS":20, "serverY":58, "client":39, "serverX":67, "serverZ":69}
+Received RemoveMappings()
+LBS {"serverZ":69, "LBS":21, "serverY":58, "client":39, "serverX":67}
+Sending RemoveMappings()
+LBS {"LBS":22, "serverY":58, "client":44, "serverX":67, "serverZ":73}
+Received GetServers()
+LBS {"LBS":23, "serverY":58, "client":44, "serverX":67, "serverZ":73}
+Sending GetServers()
+LBS {"client":64, "serverX":82, "serverZ":87, "LBS":24, "serverY":58}
+Received GetServers()
+LBS {"client":64, "serverX":82, "serverZ":87, "LBS":25, "serverY":58}
+Sending GetServers()
+LBS {"serverX":86, "serverZ":100, "LBS":26, "serverY":58, "client":79}
+Received RemoveMappings()
+LBS {"serverZ":100, "LBS":27, "serverY":58, "client":79, "serverX":86}
+Sending RemoveMappings()
+LBS {"serverX":86, "serverZ":100, "LBS":28, "serverY":58, "client":84}
+Received GetServers()
+LBS {"client":84, "serverX":86, "serverZ":100, "LBS":29, "serverY":58}
+Sending GetServers()
+LBS {"LBS":30, "serverY":58, "client":104, "serverX":86, "serverZ":113}
+Received GetServers()
+LBS {"LBS":31, "serverY":58, "client":104, "serverX":86, "serverZ":113}
+Sending GetServers()
+LBS {"serverY":58, "client":122, "serverX":86, "serverZ":117, "LBS":32}
+Received GetServers()
+LBS {"serverZ":117, "LBS":33, "serverY":58, "client":122, "serverX":86}
+Sending GetServers()
+serverX {"serverX":1}
+Initialization Complete
+serverX {"serverX":2}
+Server has tables: B_BACKUP, C_BACKUP, A, B, C, A_BACKUP
+serverX {"serverX":3}
+Sending AddMappings to LBS
+serverX {"LBS":3, "serverX":4}
+Received AddMappings from LBS
+serverX {"serverX":5, "LBS":3}
+Sending GetPeers to LBS
+serverX {"serverX":6, "LBS":5}
+Received GetPeers from LBS
+serverX {"serverX":7, "LBS":9, "serverY":7}
+Received ConnectToPeer from Server
+serverX {"serverX":8, "LBS":9, "serverY":7}
+Sending ConnectToPeer back
+serverX {"serverX":9, "LBS":9, "serverY":9}
+Received GetTableContents
+serverX {"serverX":10, "LBS":9, "serverY":9}
+Sending GetTableContents reply= Table: A_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":11, "LBS":9, "serverY":11}
+Received GetTableContents
+serverX {"serverX":12, "LBS":9, "serverY":11}
+Sending GetTableContents reply= Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"serverY":13, "serverX":13, "LBS":9}
+Received GetTableContents
+serverX {"LBS":9, "serverY":13, "serverX":14}
+Sending GetTableContents reply= Table: C_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"serverY":15, "serverX":15, "LBS":9}
+Received GetTableContents
+serverX {"LBS":9, "serverY":15, "serverX":16}
+Sending GetTableContents reply= Table: A{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":17, "LBS":9, "serverY":17}
+Received GetTableContents
+serverX {"serverY":17, "serverX":18, "LBS":9}
+Sending GetTableContents reply= Table: B{(  Key:test name:John age:30 gender:M )}
+serverX {"serverY":19, "serverX":19, "LBS":9}
+Received GetTableContents
+serverX {"serverY":19, "serverX":20, "LBS":9}
+Sending GetTableContents reply= Table: C{(  Key:test name:John age:30 gender:M )}
+serverX {"serverZ":7, "serverY":19, "serverX":21, "LBS":13}
+Received ConnectToPeer from Server
+serverX {"serverX":22, "LBS":13, "serverZ":7, "serverY":19}
+Sending ConnectToPeer back
+serverX {"serverZ":9, "serverY":19, "serverX":23, "LBS":13}
+Received GetTableContents
+serverX {"serverX":24, "LBS":13, "serverZ":9, "serverY":19}
+Sending GetTableContents reply= Table: A_BACKUP{(  Key:test age:30 gender:M name:John )}
+serverX {"serverX":25, "LBS":13, "serverZ":11, "serverY":19}
+Received GetTableContents
+serverX {"serverX":26, "LBS":13, "serverZ":11, "serverY":19}
+Sending GetTableContents reply= Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":27, "LBS":13, "serverZ":13, "serverY":19}
+Received GetTableContents
+serverX {"serverX":28, "LBS":13, "serverZ":13, "serverY":19}
+Sending GetTableContents reply= Table: C_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"serverX":29, "LBS":13, "serverZ":15, "serverY":19}
+Received GetTableContents
+serverX {"serverX":30, "LBS":13, "serverZ":15, "serverY":19}
+Sending GetTableContents reply= Table: A{(  Key:test age:30 gender:M name:John )}
+serverX {"serverY":19, "serverX":31, "LBS":13, "serverZ":17}
+Received GetTableContents
+serverX {"serverZ":17, "serverY":19, "serverX":32, "LBS":13}
+Sending GetTableContents reply= Table: B{(  Key:test name:John age:30 gender:M )}
+serverX {"serverY":19, "serverX":33, "LBS":13, "serverZ":19}
+Received GetTableContents
+serverX {"serverX":34, "LBS":13, "serverZ":19, "serverY":19}
+Sending GetTableContents reply= Table: C{(  Key:test name:John age:30 gender:M )}
+serverX {"serverY":38, "serverX":35, "LBS":15, "serverZ":36, "client":8}
+Received TableUnavailable()
+serverX {"client":8, "serverY":38, "serverX":36, "LBS":15, "serverZ":36}
+Sending TableUnavailable()
+serverX {"LBS":15, "serverZ":40, "client":10, "serverY":42, "serverX":37}
+Received TableUnavailable()
+serverX {"client":10, "serverY":42, "serverX":38, "LBS":15, "serverZ":40}
+Sending TableUnavailable()
+serverX {"serverZ":46, "client":16, "serverY":48, "serverX":39, "LBS":15}
+Received PrepareTableForCommit for table A
+serverX {"serverZ":46, "client":16, "serverY":48, "serverX":40, "LBS":15}
+Sending PrepareTableForCommit result table =  Table: A{(  Key:test age:30 gender:M name:John )}
+serverX {"serverZ":50, "client":18, "serverY":52, "serverX":41, "LBS":15}
+Received PrepareTableForCommit for table B
+serverX {"serverY":52, "serverX":42, "LBS":15, "serverZ":50, "client":18}
+Sending PrepareTableForCommit result table =  Table: B{(  Key:test age:30 gender:M name:John )(  Key:test2 gender:F name:Alice age:30 )}
+serverX {"serverZ":54, "client":26, "serverY":58, "serverX":43, "LBS":17}
+Received ClientConnect from Client
+serverX {"serverY":58, "serverX":44, "LBS":17, "serverZ":54, "client":26}
+Sending ClientConnect back
+serverX {"serverX":45, "LBS":17, "serverZ":54, "client":28, "serverY":58}
+Received TableLock() A tablesLockedByClient=
+serverX {"serverX":46, "LBS":17, "serverZ":54, "client":28, "serverY":58}
+Error TableLock() table not available A
+serverX {"client":30, "serverY":58, "serverX":47, "LBS":17, "serverZ":54}
+Received TableLock() A tablesLockedByClient=
+serverX {"serverX":48, "LBS":17, "serverZ":54, "client":30, "serverY":58}
+Error TableLock() table not available A
+serverX {"serverY":58, "serverX":49, "LBS":17, "serverZ":54, "client":32}
+Received TableLock() A tablesLockedByClient=
+serverX {"serverY":58, "serverX":50, "LBS":17, "serverZ":54, "client":32}
+Error TableLock() table not available A
+serverX {"client":32, "serverY":58, "serverX":51, "LBS":17, "serverZ":54}
+Roll back Table A TableContents:  Table: A{(  Key:test gender:M name:John age:30 )}
+serverX {"serverY":58, "serverX":52, "LBS":17, "serverZ":58, "client":32}
+Received RollBackPeer
+serverX {"LBS":17, "serverZ":58, "client":32, "serverY":58, "serverX":53}
+Reply RollBackPeer table=A TableContents:  Table: A{(  Key:test age:30 gender:M name:John )}
+serverX {"serverX":54, "LBS":17, "serverZ":60, "client":32, "serverY":58}
+Received TableAvailable()
+serverX {"LBS":17, "serverZ":60, "client":32, "serverY":58, "serverX":55}
+Sending TableAvailable()
+serverX {"serverZ":60, "client":34, "serverY":58, "serverX":56, "LBS":17}
+Received TableLock() A tablesLockedByClient=
+serverX {"client":36, "serverY":58, "serverX":57, "LBS":17, "serverZ":60}
+Received RollBackPrimaryServer from
+serverX {"client":36, "serverY":58, "serverX":58, "LBS":17, "serverZ":60}
+Handled RollBack,
+serverX {"serverY":58, "serverX":59, "LBS":17, "serverZ":60, "client":36}
+Successfully rolled backed on this table and peers
+serverX {"serverY":58, "serverX":60, "LBS":17, "serverZ":60, "client":36}
+Roll back Table B TableContents:  Table: B{(  Key:test gender:M name:John age:30 )}
+serverX {"serverX":61, "LBS":19, "serverZ":67, "client":39, "serverY":58}
+Received RollBackPeer
+serverX {"serverY":58, "serverX":62, "LBS":19, "serverZ":67, "client":39}
+Reply RollBackPeer table=B TableContents:  Table: B{(  Key:test gender:M name:John age:30 )}
+serverX {"serverZ":69, "client":39, "serverY":58, "serverX":63, "LBS":19}
+Received TableAvailable()
+serverX {"LBS":19, "serverZ":69, "client":39, "serverY":58, "serverX":64}
+Sending TableAvailable()
+serverX {"client":39, "serverY":58, "serverX":65, "LBS":19, "serverZ":69}
+Server Y crashed
+serverX {"client":39, "serverY":58, "serverX":66, "LBS":19, "serverZ":69}
+Deleting server Y from list of peers
+serverX {"serverY":58, "serverX":67, "LBS":19, "serverZ":69, "client":39}
+Removing server mappings from LBS
+serverX {"client":39, "serverY":58, "serverX":68, "LBS":21, "serverZ":69}
+Received result from removing server mappings
+serverX {"serverY":58, "serverX":69, "LBS":23, "serverZ":75, "client":50}
+Received TableUnavailable()
+serverX {"serverY":58, "serverX":70, "LBS":23, "serverZ":75, "client":50}
+Sending TableUnavailable()
+serverX {"LBS":23, "serverZ":77, "client":52, "serverY":58, "serverX":71}
+Received TableLock() B tablesLockedByClient=
+serverX {"serverX":72, "LBS":23, "serverZ":77, "client":52, "serverY":58}
+Sending TableUnavailable to server Z
+serverX {"client":52, "serverY":58, "serverX":73, "LBS":23, "serverZ":79}
+Received TableUnavailable from server Z
+serverX {"LBS":23, "serverZ":79, "client":52, "serverY":58, "serverX":74}
+Sending TableLock() tablesLockedByClient=B
+serverX {"serverZ":81, "client":56, "serverY":58, "serverX":75, "LBS":23}
+Received SetRow
+serverX {"serverX":76, "LBS":23, "serverZ":81, "client":56, "serverY":58}
+Sending SetRow added= Table: B{(  Key:test2 gender:F name:Alice age:30 )}
+serverX {"client":58, "serverY":58, "serverX":77, "LBS":23, "serverZ":83}
+Received PrepareTableForCommit for table A
+serverX {"LBS":23, "serverZ":83, "client":58, "serverY":58, "serverX":78}
+Sending PrepareTableForCommit result table =  Table: A{(  Key:test name:John age:30 gender:M )}
+serverX {"LBS":23, "serverZ":85, "client":60, "serverY":58, "serverX":79}
+Received PrepareCommit() from
+serverX {"serverY":58, "serverX":80, "LBS":23, "serverZ":85, "client":60}
+Sending PrepareTableForCommit for table B
+serverX {"LBS":23, "serverZ":87, "client":60, "serverY":58, "serverX":81}
+Received PrepareTableForCommit reply
+serverX {"client":60, "serverY":58, "serverX":82, "LBS":23, "serverZ":87}
+Sending PrepareCommit successful back to
+serverX {"serverY":58, "serverX":83, "LBS":23, "serverZ":87, "client":62}
+Received CommitTransaction() from
+serverX {"LBS":23, "serverZ":87, "client":62, "serverY":58, "serverX":84}
+Server has crashed after receiving commit from client
+serverX {"serverY":58, "serverX":85, "LBS":25, "serverZ":87, "client":66}
+Received ClientConnect from Client
+serverX {"serverX":86, "LBS":25, "serverZ":87, "client":66, "serverY":58}
+Sending ClientConnect back
+serverX {"client":70, "serverY":58, "serverX":87, "LBS":25, "serverZ":87}
+Received TableLock() A tablesLockedByClient=
+serverY {"serverY":1}
+Initialization Complete
+serverY {"serverY":2}
+Server has tables: A, B, C, A_BACKUP, B_BACKUP, C_BACKUP
+serverY {"serverY":3}
+Sending AddMappings to LBS
+serverY {"LBS":7, "serverY":4, "serverX":5}
+Received AddMappings from LBS
+serverY {"LBS":7, "serverY":5, "serverX":5}
+Sending GetPeers to LBS
+serverY {"serverY":6, "serverX":5, "LBS":9}
+Received GetPeers from LBS
+serverY {"LBS":9, "serverY":7, "serverX":5}
+Sending ConnectToPeer to Server
+serverY {"serverX":8, "LBS":9, "serverY":8}
+Received ConnectToPeer from Server
+serverY {"serverX":8, "LBS":9, "serverY":9}
+Send GetTableContents
+serverY {"LBS":9, "serverY":10, "serverX":10}
+TableCommands.GetTableContents succeeded  Table: A_BACKUP{(  Key:test gender:M name:John age:30 )}
+serverY {"LBS":9, "serverY":11, "serverX":10}
+Send GetTableContents
+serverY {"serverX":12, "LBS":9, "serverY":12}
+TableCommands.GetTableContents succeeded  Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverY {"serverY":13, "serverX":12, "LBS":9}
+Send GetTableContents
+serverY {"LBS":9, "serverY":14, "serverX":14}
+TableCommands.GetTableContents succeeded  Table: C_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverY {"serverX":14, "LBS":9, "serverY":15}
+Send GetTableContents
+serverY {"serverY":16, "serverX":16, "LBS":9}
+TableCommands.GetTableContents succeeded  Table: A{(  Key:test name:John age:30 gender:M )}
+serverY {"LBS":9, "serverY":17, "serverX":16}
+Send GetTableContents
+serverY {"LBS":9, "serverY":18, "serverX":18}
+TableCommands.GetTableContents succeeded  Table: B{(  Key:test name:John age:30 gender:M )}
+serverY {"LBS":9, "serverY":19, "serverX":18}
+Send GetTableContents
+serverY {"LBS":9, "serverY":20, "serverX":20}
+TableCommands.GetTableContents succeeded  Table: C{(  Key:test name:John age:30 gender:M )}
+serverY {"LBS":13, "serverY":21, "serverX":34, "serverZ":21}
+Received ConnectToPeer from Server
+serverY {"LBS":13, "serverY":22, "serverX":34, "serverZ":21}
+Sending ConnectToPeer back
+serverY {"serverY":23, "serverX":34, "serverZ":23, "LBS":13}
+Received GetTableContents
+serverY {"LBS":13, "serverY":24, "serverX":34, "serverZ":23}
+Sending GetTableContents reply= Table: A{(  Key:test gender:M name:John age:30 )}
+serverY {"LBS":13, "serverY":25, "serverX":34, "serverZ":25}
+Received GetTableContents
+serverY {"serverZ":25, "LBS":13, "serverY":26, "serverX":34}
+Sending GetTableContents reply= Table: B{(  Key:test gender:M name:John age:30 )}
+serverY {"LBS":13, "serverY":27, "serverX":34, "serverZ":27}
+Received GetTableContents
+serverY {"LBS":13, "serverY":28, "serverX":34, "serverZ":27}
+Sending GetTableContents reply= Table: C{(  Key:test name:John age:30 gender:M )}
+serverY {"LBS":13, "serverY":29, "serverX":34, "serverZ":29}
+Received GetTableContents
+serverY {"serverX":34, "serverZ":29, "LBS":13, "serverY":30}
+Sending GetTableContents reply= Table: A_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverY {"serverX":34, "serverZ":31, "LBS":13, "serverY":31}
+Received GetTableContents
+serverY {"serverX":34, "serverZ":31, "LBS":13, "serverY":32}
+Sending GetTableContents reply= Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverY {"LBS":13, "serverY":33, "serverX":34, "serverZ":33}
+Received GetTableContents
+serverY {"serverZ":33, "LBS":13, "serverY":34, "serverX":34}
+Sending GetTableContents reply= Table: C_BACKUP{(  Key:test age:30 gender:M name:John )}
+serverY {"serverX":34, "serverZ":33, "LBS":15, "serverY":35, "client":4}
+Received ClientConnect from Client
+serverY {"client":4, "serverX":34, "serverZ":33, "LBS":15, "serverY":36}
+Sending ClientConnect back
+serverY {"serverX":34, "serverZ":36, "LBS":15, "serverY":37, "client":8}
+Received TableLock() A tablesLockedByClient=
+serverY {"serverX":34, "serverZ":36, "LBS":15, "serverY":38, "client":8}
+Sending TableUnavailable to server X
+serverY {"serverY":39, "client":8, "serverX":36, "serverZ":36, "LBS":15}
+Received TableUnavailable from server X
+serverY {"serverX":36, "serverZ":36, "LBS":15, "serverY":40, "client":8}
+Sending TableUnavailable to server Z
+serverY {"serverY":41, "client":8, "serverX":36, "serverZ":38, "LBS":15}
+Received TableUnavailable from server Z
+serverY {"serverX":36, "serverZ":38, "LBS":15, "serverY":42, "client":8}
+Sending TableLock() tablesLockedByClient=A
+serverY {"serverZ":42, "LBS":15, "serverY":43, "client":10, "serverX":38}
+Received TableUnavailable()
+serverY {"serverY":44, "client":10, "serverX":38, "serverZ":42, "LBS":15}
+Sending TableUnavailable()
+serverY {"LBS":15, "serverY":45, "client":12, "serverX":38, "serverZ":44}
+Received GetRow
+serverY {"serverX":38, "serverZ":44, "LBS":15, "serverY":46, "client":12}
+Sending GetRow reply= Table: A{(  Key:test gender:M name:John age:30 )}
+serverY {"client":16, "serverX":38, "serverZ":46, "LBS":15, "serverY":47}
+Received PrepareCommit() from
+serverY {"serverZ":46, "LBS":15, "serverY":48, "client":16, "serverX":38}
+Sending PrepareTableForCommit for table A
+serverY {"LBS":15, "serverY":49, "client":16, "serverX":40, "serverZ":46}
+Received PrepareTableForCommit reply
+serverY {"client":16, "serverX":40, "serverZ":46, "LBS":15, "serverY":50}
+Sending PrepareTableForCommit for table A
+serverY {"serverZ":48, "LBS":15, "serverY":51, "client":16, "serverX":40}
+Received PrepareTableForCommit reply
+serverY {"serverY":52, "client":16, "serverX":40, "serverZ":48, "LBS":15}
+Sending PrepareCommit successful back to
+serverY {"LBS":15, "serverY":53, "client":18, "serverX":42, "serverZ":52}
+Received PrepareTableForCommit for table B
+serverY {"serverX":42, "serverZ":52, "LBS":15, "serverY":54, "client":18}
+Sending PrepareTableForCommit result table =  Table: B{(  Key:test2 age:30 gender:F name:Alice )(  Key:test age:30 gender:M name:John )}
+serverY {"client":20, "serverX":42, "serverZ":54, "LBS":15, "serverY":55}
+Received CommitTransaction() from
+serverY {"serverZ":54, "LBS":15, "serverY":56, "client":20, "serverX":42}
+Server has crashed after receiving commit from client
+serverY {"serverX":42, "serverZ":54, "LBS":17, "serverY":57, "client":24}
+Received ClientConnect from Client
+serverY {"client":24, "serverX":42, "serverZ":54, "LBS":17, "serverY":58}
+Sending ClientConnect back
+serverY {"serverY":59, "client":42, "serverX":64, "serverZ":73, "LBS":19}
+Received TableUnlock()
+serverZ {"serverZ":1}
+Initialization Complete
+serverZ {"serverZ":2}
+Server has tables: A, B, C, A_BACKUP, B_BACKUP, C_BACKUP
+serverZ {"serverZ":3}
+Sending AddMappings to LBS
+serverZ {"serverY":5, "serverZ":4, "serverX":5, "LBS":11}
+Received AddMappings from LBS
+serverZ {"LBS":11, "serverY":5, "serverZ":5, "serverX":5}
+Sending GetPeers to LBS
+serverZ {"serverX":5, "LBS":13, "serverY":5, "serverZ":6}
+Received GetPeers from LBS
+serverZ {"serverX":5, "LBS":13, "serverY":5, "serverZ":7}
+Sending ConnectToPeer to Server
+serverZ {"LBS":13, "serverY":19, "serverZ":8, "serverX":22}
+Received ConnectToPeer from Server
+serverZ {"serverZ":9, "serverX":22, "LBS":13, "serverY":19}
+Send GetTableContents
+serverZ {"LBS":13, "serverY":19, "serverZ":10, "serverX":24}
+TableCommands.GetTableContents succeeded  Table: A_BACKUP{(  Key:test gender:M name:John age:30 )}
+serverZ {"LBS":13, "serverY":19, "serverZ":11, "serverX":24}
+Send GetTableContents
+serverZ {"LBS":13, "serverY":19, "serverZ":12, "serverX":26}
+TableCommands.GetTableContents succeeded  Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverZ {"serverX":26, "LBS":13, "serverY":19, "serverZ":13}
+Send GetTableContents
+serverZ {"serverY":19, "serverZ":14, "serverX":28, "LBS":13}
+TableCommands.GetTableContents succeeded  Table: C_BACKUP{(  Key:test gender:M name:John age:30 )}
+serverZ {"serverY":19, "serverZ":15, "serverX":28, "LBS":13}
+Send GetTableContents
+serverZ {"LBS":13, "serverY":19, "serverZ":16, "serverX":30}
+TableCommands.GetTableContents succeeded  Table: A{(  Key:test age:30 gender:M name:John )}
+serverZ {"serverY":19, "serverZ":17, "serverX":30, "LBS":13}
+Send GetTableContents
+serverZ {"LBS":13, "serverY":19, "serverZ":18, "serverX":32}
+TableCommands.GetTableContents succeeded  Table: B{(  Key:test name:John age:30 gender:M )}
+serverZ {"serverX":32, "LBS":13, "serverY":19, "serverZ":19}
+Send GetTableContents
+serverZ {"serverZ":20, "serverX":34, "LBS":13, "serverY":19}
+TableCommands.GetTableContents succeeded  Table: C{(  Key:test age:30 gender:M name:John )}
+serverZ {"serverY":19, "serverZ":21, "serverX":34, "LBS":13}
+Sending ConnectToPeer to Server
+serverZ {"serverY":22, "serverZ":22, "serverX":34, "LBS":13}
+Received ConnectToPeer from Server
+serverZ {"serverX":34, "LBS":13, "serverY":22, "serverZ":23}
+Send GetTableContents
+serverZ {"serverZ":24, "serverX":34, "LBS":13, "serverY":24}
+TableCommands.GetTableContents succeeded  Table: A{(  Key:test gender:M name:John age:30 )}
+serverZ {"serverZ":25, "serverX":34, "LBS":13, "serverY":24}
+Send GetTableContents
+serverZ {"serverZ":26, "serverX":34, "LBS":13, "serverY":26}
+TableCommands.GetTableContents succeeded  Table: B{(  Key:test name:John age:30 gender:M )}
+serverZ {"serverZ":27, "serverX":34, "LBS":13, "serverY":26}
+Send GetTableContents
+serverZ {"serverZ":28, "serverX":34, "LBS":13, "serverY":28}
+TableCommands.GetTableContents succeeded  Table: C{(  Key:test gender:M name:John age:30 )}
+serverZ {"serverZ":29, "serverX":34, "LBS":13, "serverY":28}
+Send GetTableContents
+serverZ {"serverX":34, "LBS":13, "serverY":30, "serverZ":30}
+TableCommands.GetTableContents succeeded  Table: A_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverZ {"serverX":34, "LBS":13, "serverY":30, "serverZ":31}
+Send GetTableContents
+serverZ {"serverY":32, "serverZ":32, "serverX":34, "LBS":13}
+TableCommands.GetTableContents succeeded  Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverZ {"LBS":13, "serverY":32, "serverZ":33, "serverX":34}
+Send GetTableContents
+serverZ {"LBS":13, "serverY":34, "serverZ":34, "serverX":34}
+TableCommands.GetTableContents succeeded  Table: C_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverZ {"serverZ":35, "serverX":34, "LBS":15, "client":6, "serverY":36}
+Received ClientConnect from Client
+serverZ {"LBS":15, "client":6, "serverY":36, "serverZ":36, "serverX":34}
+Sending ClientConnect back
+serverZ {"LBS":15, "client":8, "serverY":40, "serverZ":37, "serverX":36}
+Received TableUnavailable()
+serverZ {"serverX":36, "LBS":15, "client":8, "serverY":40, "serverZ":38}
+Sending TableUnavailable()
+serverZ {"serverY":42, "serverZ":39, "serverX":36, "LBS":15, "client":10}
+Received TableLock() B tablesLockedByClient=
+serverZ {"serverX":36, "LBS":15, "client":10, "serverY":42, "serverZ":40}
+Sending TableUnavailable to server X
+serverZ {"serverY":42, "serverZ":41, "serverX":38, "LBS":15, "client":10}
+Received TableUnavailable from server X
+serverZ {"serverZ":42, "serverX":38, "LBS":15, "client":10, "serverY":42}
+Sending TableUnavailable to server Y
+serverZ {"serverY":44, "serverZ":43, "serverX":38, "LBS":15, "client":10}
+Received TableUnavailable from server Y
+serverZ {"serverY":44, "serverZ":44, "serverX":38, "LBS":15, "client":10}
+Sending TableLock() tablesLockedByClient=B
+serverZ {"serverZ":45, "serverX":38, "LBS":15, "client":14, "serverY":46}
+Received SetRow
+serverZ {"serverY":46, "serverZ":46, "serverX":38, "LBS":15, "client":14}
+Sending SetRow added= Table: B{(  Key:test2 gender:F name:Alice age:30 )}
+serverZ {"client":16, "serverY":50, "serverZ":47, "serverX":40, "LBS":15}
+Received PrepareTableForCommit for table A
+serverZ {"client":16, "serverY":50, "serverZ":48, "serverX":40, "LBS":15}
+Sending PrepareTableForCommit result table =  Table: A{(  Key:test name:John age:30 gender:M )}
+serverZ {"client":18, "serverY":52, "serverZ":49, "serverX":40, "LBS":15}
+Received PrepareCommit() from
+serverZ {"serverZ":50, "serverX":40, "LBS":15, "client":18, "serverY":52}
+Sending PrepareTableForCommit for table B
+serverZ {"client":18, "serverY":52, "serverZ":51, "serverX":42, "LBS":15}
+Received PrepareTableForCommit reply
+serverZ {"client":18, "serverY":52, "serverZ":52, "serverX":42, "LBS":15}
+Sending PrepareTableForCommit for table B
+serverZ {"client":18, "serverY":54, "serverZ":53, "serverX":42, "LBS":15}
+Received PrepareTableForCommit reply
+serverZ {"serverZ":54, "serverX":42, "LBS":15, "client":18, "serverY":54}
+Sending PrepareCommit successful back to
+serverZ {"client":18, "serverY":54, "serverZ":55, "serverX":42, "LBS":15}
+Server Y crashed
+serverZ {"LBS":15, "client":18, "serverY":54, "serverZ":56, "serverX":42}
+Unlocking Table A for crashed server Y
+serverZ {"client":18, "serverY":54, "serverZ":57, "serverX":42, "LBS":15}
+Roll back Table A TableContents:  Table: A{(  Key:test age:30 gender:M name:John )}
+serverZ {"serverZ":58, "serverX":42, "LBS":15, "client":18, "serverY":54}
+Send TransactionManager.RollBackPeer table=A
+serverZ {"serverX":53, "LBS":17, "client":32, "serverY":58, "serverZ":59}
+Received result
+serverZ {"serverX":53, "LBS":17, "client":32, "serverY":58, "serverZ":60}
+Send ServerConn.TableAvailable A
+serverZ {"serverZ":61, "serverX":55, "LBS":17, "client":32, "serverY":58}
+Received table available from server X
+serverZ {"serverX":55, "LBS":17, "client":32, "serverY":58, "serverZ":62}
+Deleting server Y from list of peers
+serverZ {"serverX":55, "LBS":17, "client":32, "serverY":58, "serverZ":63}
+Removing server mappings from LBS
+serverZ {"serverZ":64, "serverX":55, "LBS":19, "client":32, "serverY":58}
+Received result from removing server mappings
+serverZ {"serverZ":65, "serverX":59, "LBS":19, "client":39, "serverY":58}
+Received RollBackPrimaryServer from
+serverZ {"LBS":19, "client":39, "serverY":58, "serverZ":66, "serverX":59}
+Roll back Table B TableContents:  Table: B{(  Key:test gender:M name:John age:30 )}
+serverZ {"client":39, "serverY":58, "serverZ":67, "serverX":59, "LBS":19}
+Send TransactionManager.RollBackPeer table=B
+serverZ {"serverX":62, "LBS":19, "client":39, "serverY":58, "serverZ":68}
+Received result
+serverZ {"serverY":58, "serverZ":69, "serverX":62, "LBS":19, "client":39}
+Send ServerConn.TableAvailable table=B
+serverZ {"client":39, "serverY":58, "serverZ":70, "serverX":64, "LBS":19}
+Received result
+serverZ {"LBS":19, "client":39, "serverY":58, "serverZ":71, "serverX":64}
+Unlocked table B
+serverZ {"LBS":19, "client":39, "serverY":58, "serverZ":72, "serverX":64}
+Handled RollBack,
+serverZ {"LBS":19, "client":39, "serverY":58, "serverZ":73, "serverX":64}
+Successfully rolled backed on this table and peers
+serverZ {"LBS":23, "client":50, "serverY":58, "serverZ":74, "serverX":67}
+Received TableLock() A tablesLockedByClient=
+serverZ {"serverY":58, "serverZ":75, "serverX":67, "LBS":23, "client":50}
+Sending TableUnavailable to server X
+serverZ {"serverX":70, "LBS":23, "client":50, "serverY":58, "serverZ":76}
+Received TableUnavailable from server X
+serverZ {"serverZ":77, "serverX":70, "LBS":23, "client":50, "serverY":58}
+Sending TableLock() tablesLockedByClient=A
+serverZ {"serverY":58, "serverZ":78, "serverX":72, "LBS":23, "client":52}
+Received TableUnavailable()
+serverZ {"serverX":72, "LBS":23, "client":52, "serverY":58, "serverZ":79}
+Sending TableUnavailable()
+serverZ {"serverX":74, "LBS":23, "client":54, "serverY":58, "serverZ":80}
+Received GetRow
+serverZ {"client":54, "serverY":58, "serverZ":81, "serverX":74, "LBS":23}
+Sending GetRow reply= Table: A{(  Key:test age:30 gender:M name:John )}
+serverZ {"LBS":23, "client":58, "serverY":58, "serverZ":82, "serverX":76}
+Received PrepareCommit() from
+serverZ {"serverX":76, "LBS":23, "client":58, "serverY":58, "serverZ":83}
+Sending PrepareTableForCommit for table A
+serverZ {"LBS":23, "client":58, "serverY":58, "serverZ":84, "serverX":78}
+Received PrepareTableForCommit reply
+serverZ {"serverZ":85, "serverX":78, "LBS":23, "client":58, "serverY":58}
+Sending PrepareCommit successful back to
+serverZ {"serverZ":86, "serverX":80, "LBS":23, "client":60, "serverY":58}
+Received PrepareTableForCommit for table B
+serverZ {"serverZ":87, "serverX":80, "LBS":23, "client":60, "serverY":58}
+Sending PrepareTableForCommit result table =  Table: B{(  Key:test gender:M name:John age:30 )(  Key:test2 gender:F name:Alice age:30 )}
+serverZ {"serverY":58, "serverZ":88, "serverX":86, "LBS":25, "client":79}
+Received RollBackPrimaryServer from
+serverZ {"client":79, "serverY":58, "serverZ":89, "serverX":86, "LBS":25}
+Roll back Table A TableContents:  Table: A{(  Key:test age:30 gender:M name:John )}
+serverZ {"client":79, "serverY":58, "serverZ":90, "serverX":86, "LBS":25}
+Send TransactionManager.RollBackPeer table=A
+serverZ {"serverX":86, "LBS":25, "client":79, "serverY":58, "serverZ":91}
+Received result
+serverZ {"serverZ":92, "serverX":86, "LBS":25, "client":79, "serverY":58}
+Send ServerConn.TableAvailable table=A
+serverZ {"serverX":86, "LBS":25, "client":79, "serverY":58, "serverZ":93}
+Received result
+serverZ {"LBS":25, "client":79, "serverY":58, "serverZ":94, "serverX":86}
+Unlocked table A
+serverZ {"LBS":25, "client":79, "serverY":58, "serverZ":95, "serverX":86}
+Handled RollBack,
+serverZ {"client":79, "serverY":58, "serverZ":96, "serverX":86, "LBS":25}
+Successfully rolled backed on this table and peers
+serverZ {"serverX":86, "LBS":25, "client":79, "serverY":58, "serverZ":97}
+Server X crashed
+serverZ {"LBS":25, "client":79, "serverY":58, "serverZ":98, "serverX":86}
+Unlocking Table B for crashed server X
+serverZ {"client":79, "serverY":58, "serverZ":99, "serverX":86, "LBS":25}
+Deleting server X from list of peers
+serverZ {"serverZ":100, "serverX":86, "LBS":25, "client":79, "serverY":58}
+Removing server mappings from LBS
+serverZ {"serverY":58, "serverZ":101, "serverX":86, "LBS":27, "client":79}
+Received result from removing server mappings
+serverZ {"LBS":29, "client":90, "serverY":58, "serverZ":102, "serverX":86}
+Received TableLock() A tablesLockedByClient=
+serverZ {"client":90, "serverY":58, "serverZ":103, "serverX":86, "LBS":29}
+Sending TableLock() tablesLockedByClient=A
+serverZ {"serverX":86, "LBS":29, "client":92, "serverY":58, "serverZ":104}
+Received TableLock() B tablesLockedByClient=A
+serverZ {"client":92, "serverY":58, "serverZ":105, "serverX":86, "LBS":29}
+Sending TableLock() tablesLockedByClient=A, B
+serverZ {"LBS":29, "client":94, "serverY":58, "serverZ":106, "serverX":86}
+Received GetRow
+serverZ {"serverY":58, "serverZ":107, "serverX":86, "LBS":29, "client":94}
+Sending GetRow reply= Table: A{(  Key:test age:30 gender:M name:John )}
+serverZ {"client":96, "serverY":58, "serverZ":108, "serverX":86, "LBS":29}
+Received SetRow
+serverZ {"client":96, "serverY":58, "serverZ":109, "serverX":86, "LBS":29}
+Sending SetRow added= Table: B{(  Key:test2 age:30 gender:F name:Alice )}
+serverZ {"serverY":58, "serverZ":110, "serverX":86, "LBS":29, "client":98}
+Received PrepareCommit() from
+serverZ {"client":98, "serverY":58, "serverZ":111, "serverX":86, "LBS":29}
+Sending PrepareCommit successful back to
+serverZ {"client":100, "serverY":58, "serverZ":112, "serverX":86, "LBS":29}
+Received PrepareCommit() from
+serverZ {"LBS":29, "client":100, "serverY":58, "serverZ":113, "serverX":86}
+Sending PrepareCommit successful back to
+serverZ {"LBS":29, "client":102, "serverY":58, "serverZ":114, "serverX":86}
+Received CommitTransaction() from
+serverZ {"LBS":29, "client":102, "serverY":58, "serverZ":115, "serverX":86}
+Server has crashed after receiving commit from client
+serverZ {"LBS":31, "client":106, "serverY":58, "serverZ":116, "serverX":86}
+Received ClientConnect from Client
+serverZ {"serverX":86, "LBS":31, "client":106, "serverY":58, "serverZ":117}
+Sending ClientConnect back
+serverZ {"serverX":86, "LBS":31, "client":110, "serverY":58, "serverZ":118}
+Received TableLock() A tablesLockedByClient=
+client {"client":1}
+Initialization Complete
+client {"client":2}
+Send LBS.GetServers
+client {"LBS":15, "client":3, "serverY":5, "serverX":5, "serverZ":5}
+Received LBS.GetServers
+client {"client":4, "serverY":5, "serverX":5, "serverZ":5, "LBS":15}
+Send ServerConn.ClientConnectY
+client {"serverX":34, "serverZ":33, "LBS":15, "client":5, "serverY":36}
+Established connection to server Y
+client {"serverX":34, "serverZ":33, "LBS":15, "client":6, "serverY":36}
+Send ServerConn.ClientConnectZ
+client {"client":7, "serverY":36, "serverX":34, "serverZ":36, "LBS":15}
+Established connection to server Z
+client {"serverX":34, "serverZ":36, "LBS":15, "client":8, "serverY":36}
+Send ServerConn.TableLock A
+client {"serverX":36, "serverZ":38, "LBS":15, "client":9, "serverY":42}
+Received result A
+client {"serverZ":38, "LBS":15, "client":10, "serverY":42, "serverX":36}
+Send ServerConn.TableLock B
+client {"serverX":38, "serverZ":44, "LBS":15, "client":11, "serverY":44}
+Received result B
+client {"serverY":44, "serverX":38, "serverZ":44, "LBS":15, "client":12}
+Send ExecuteOperation
+client {"serverY":46, "serverX":38, "serverZ":44, "LBS":15, "client":13}
+TableCommands.GetRow succeeded Table: A{(  Key:test name:John age:30 gender:M )}
+client {"LBS":15, "client":14, "serverY":46, "serverX":38, "serverZ":44}
+Send ExecuteOperation
+client {"LBS":15, "client":15, "serverY":46, "serverX":38, "serverZ":46}
+TableCommands.SetRow succeeded for table B
+client {"LBS":15, "client":16, "serverY":46, "serverX":38, "serverZ":46}
+Send TransactionManager.prepareCommit
+client {"serverZ":48, "LBS":15, "client":17, "serverY":52, "serverX":40}
+TransactionManager.PrepareCommit succeeded
+client {"serverX":40, "serverZ":48, "LBS":15, "client":18, "serverY":52}
+Send TransactionManager.prepareCommit
+client {"serverZ":54, "LBS":15, "client":19, "serverY":54, "serverX":42}
+TransactionManager.PrepareCommit succeeded
+client {"serverY":54, "serverX":42, "serverZ":54, "LBS":15, "client":20}
+Send TransactionManager.CommitTransaction
+client {"serverZ":54, "LBS":15, "client":21, "serverY":54, "serverX":42}
+TransactionManager.CommitTransaction failed
+client {"serverX":42, "serverZ":54, "LBS":15, "client":22, "serverY":54}
+Send LBS.GetServers
+client {"LBS":17, "client":23, "serverY":54, "serverX":42, "serverZ":54}
+Received LBS.GetServers
+client {"serverX":42, "serverZ":54, "LBS":17, "client":24, "serverY":54}
+Send ServerConn.ClientConnectY
+client {"serverZ":54, "LBS":17, "client":25, "serverY":58, "serverX":42}
+Established connection to server Y
+client {"LBS":17, "client":26, "serverY":58, "serverX":42, "serverZ":54}
+Send ServerConn.ClientConnectX
+client {"serverZ":54, "LBS":17, "client":27, "serverY":58, "serverX":44}
+Established connection to server X
+client {"serverX":44, "serverZ":54, "LBS":17, "client":28, "serverY":58}
+Send ServerConn.TableLock A
+client {"client":29, "serverY":58, "serverX":44, "serverZ":54, "LBS":17}
+Not successful A
+client {"LBS":17, "client":30, "serverY":58, "serverX":44, "serverZ":54}
+Send ServerConn.TableLock A
+client {"client":31, "serverY":58, "serverX":44, "serverZ":54, "LBS":17}
+Not successful A
+client {"LBS":17, "client":32, "serverY":58, "serverX":44, "serverZ":54}
+Send ServerConn.TableLock A
+client {"serverY":58, "serverX":44, "serverZ":54, "LBS":17, "client":33}
+Not successful A
+client {"LBS":17, "client":34, "serverY":58, "serverX":44, "serverZ":54}
+Send ServerConn.TableLock A
+client {"serverX":44, "serverZ":54, "LBS":17, "client":35, "serverY":58}
+Y has crashed
+client {"serverZ":54, "LBS":17, "client":36, "serverY":58, "serverX":44}
+Send RollBackPrimaryServer to server X
+client {"serverX":44, "serverZ":54, "LBS":17, "client":37, "serverY":58}
+Not successful A
+client {"client":38, "serverY":58, "serverX":59, "serverZ":60, "LBS":17}
+Received RollBackPrimaryServer success
+client {"serverX":59, "serverZ":60, "LBS":17, "client":39, "serverY":58}
+Send RollBackPrimaryServer to server Z
+client {"LBS":19, "client":40, "serverY":58, "serverX":64, "serverZ":73}
+Received RollBackPrimaryServer success
+client {"serverZ":73, "LBS":19, "client":41, "serverY":58, "serverX":64}
+Handled server crash, server: Y
+client {"serverY":58, "serverX":64, "serverZ":73, "LBS":19, "client":42}
+Send ServerConn.TableUnlock B
+client {"serverX":64, "serverZ":73, "LBS":19, "client":43, "serverY":58}
+Error B
+client {"LBS":19, "client":44, "serverY":58, "serverX":64, "serverZ":73}
+Send LBS.GetServers
+client {"serverZ":73, "LBS":23, "client":45, "serverY":58, "serverX":67}
+Received LBS.GetServers
+client {"serverY":58, "serverX":67, "serverZ":73, "LBS":23, "client":46}
+Send ServerConn.ClientConnectZ
+client {"serverZ":73, "LBS":23, "client":47, "serverY":58, "serverX":67}
+Already established connection to server Z
+client {"serverY":58, "serverX":67, "serverZ":73, "LBS":23, "client":48}
+Send ServerConn.ClientConnectX
+client {"LBS":23, "client":49, "serverY":58, "serverX":67, "serverZ":73}
+Already established connection to server X
+client {"LBS":23, "client":50, "serverY":58, "serverX":67, "serverZ":73}
+Send ServerConn.TableLock A
+client {"serverX":70, "serverZ":77, "LBS":23, "client":51, "serverY":58}
+Received result A
+client {"LBS":23, "client":52, "serverY":58, "serverX":70, "serverZ":77}
+Send ServerConn.TableLock B
+client {"LBS":23, "client":53, "serverY":58, "serverX":74, "serverZ":79}
+Received result B
+client {"LBS":23, "client":54, "serverY":58, "serverX":74, "serverZ":79}
+Send ExecuteOperation
+client {"serverZ":81, "LBS":23, "client":55, "serverY":58, "serverX":74}
+TableCommands.GetRow succeeded Table: A{(  Key:test age:30 gender:M name:John )}
+client {"serverX":74, "serverZ":81, "LBS":23, "client":56, "serverY":58}
+Send ExecuteOperation
+client {"serverZ":81, "LBS":23, "client":57, "serverY":58, "serverX":76}
+TableCommands.SetRow succeeded for table B
+client {"client":58, "serverY":58, "serverX":76, "serverZ":81, "LBS":23}
+Send TransactionManager.prepareCommit
+client {"client":59, "serverY":58, "serverX":78, "serverZ":85, "LBS":23}
+TransactionManager.PrepareCommit succeeded
+client {"LBS":23, "client":60, "serverY":58, "serverX":78, "serverZ":85}
+Send TransactionManager.prepareCommit
+client {"LBS":23, "client":61, "serverY":58, "serverX":82, "serverZ":87}
+TransactionManager.PrepareCommit succeeded
+client {"LBS":23, "client":62, "serverY":58, "serverX":82, "serverZ":87}
+Send TransactionManager.CommitTransaction
+client {"serverY":58, "serverX":82, "serverZ":87, "LBS":23, "client":63}
+TransactionManager.CommitTransaction failed
+client {"serverY":58, "serverX":82, "serverZ":87, "LBS":23, "client":64}
+Send LBS.GetServers
+client {"client":65, "serverY":58, "serverX":82, "serverZ":87, "LBS":25}
+Received LBS.GetServers
+client {"client":66, "serverY":58, "serverX":82, "serverZ":87, "LBS":25}
+Send ServerConn.ClientConnectX
+client {"serverX":86, "serverZ":87, "LBS":25, "client":67, "serverY":58}
+Established connection to server X
+client {"client":68, "serverY":58, "serverX":86, "serverZ":87, "LBS":25}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":87, "LBS":25, "client":69}
+Already established connection to server Z
+client {"LBS":25, "client":70, "serverY":58, "serverX":86, "serverZ":87}
+Send ServerConn.TableLock A
+client {"client":71, "serverY":58, "serverX":86, "serverZ":87, "LBS":25}
+Not successful A
+client {"client":72, "serverY":58, "serverX":86, "serverZ":87, "LBS":25}
+Send ServerConn.TableLock A
+client {"client":73, "serverY":58, "serverX":86, "serverZ":87, "LBS":25}
+Not successful A
+client {"serverX":86, "serverZ":87, "LBS":25, "client":74, "serverY":58}
+Send ServerConn.TableLock A
+client {"serverZ":87, "LBS":25, "client":75, "serverY":58, "serverX":86}
+Not successful A
+client {"serverY":58, "serverX":86, "serverZ":87, "LBS":25, "client":76}
+Send ServerConn.TableLock A
+client {"serverX":86, "serverZ":87, "LBS":25, "client":77, "serverY":58}
+X has crashed
+client {"serverX":86, "serverZ":87, "LBS":25, "client":78, "serverY":58}
+Not successful A
+client {"LBS":25, "client":79, "serverY":58, "serverX":86, "serverZ":87}
+Send RollBackPrimaryServer to server Z
+client {"serverZ":96, "LBS":25, "client":80, "serverY":58, "serverX":86}
+Received RollBackPrimaryServer success
+client {"LBS":25, "client":81, "serverY":58, "serverX":86, "serverZ":96}
+Handled server crash, server: X
+client {"LBS":25, "client":82, "serverY":58, "serverX":86, "serverZ":96}
+Send ServerConn.TableUnlock A
+client {"client":83, "serverY":58, "serverX":86, "serverZ":96, "LBS":25}
+Error A
+client {"serverZ":96, "LBS":25, "client":84, "serverY":58, "serverX":86}
+Send LBS.GetServers
+client {"LBS":29, "client":85, "serverY":58, "serverX":86, "serverZ":100}
+Received LBS.GetServers
+client {"serverY":58, "serverX":86, "serverZ":100, "LBS":29, "client":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":100, "LBS":29, "client":87}
+Already established connection to server Z
+client {"LBS":29, "client":88, "serverY":58, "serverX":86, "serverZ":100}
+Send ServerConn.ClientConnectZ
+client {"serverZ":100, "LBS":29, "client":89, "serverY":58, "serverX":86}
+Already established connection to server Z
+client {"serverY":58, "serverX":86, "serverZ":100, "LBS":29, "client":90}
+Send ServerConn.TableLock A
+client {"serverY":58, "serverX":86, "serverZ":103, "LBS":29, "client":91}
+Received result A
+client {"serverZ":103, "LBS":29, "client":92, "serverY":58, "serverX":86}
+Send ServerConn.TableLock B
+client {"serverZ":105, "LBS":29, "client":93, "serverY":58, "serverX":86}
+Received result B
+client {"serverX":86, "serverZ":105, "LBS":29, "client":94, "serverY":58}
+Send ExecuteOperation
+client {"serverX":86, "serverZ":107, "LBS":29, "client":95, "serverY":58}
+TableCommands.GetRow succeeded Table: A{(  Key:test age:30 gender:M name:John )}
+client {"serverY":58, "serverX":86, "serverZ":107, "LBS":29, "client":96}
+Send ExecuteOperation
+client {"serverY":58, "serverX":86, "serverZ":109, "LBS":29, "client":97}
+TableCommands.SetRow succeeded for table B
+client {"serverY":58, "serverX":86, "serverZ":109, "LBS":29, "client":98}
+Send TransactionManager.prepareCommit
+client {"serverY":58, "serverX":86, "serverZ":111, "LBS":29, "client":99}
+TransactionManager.PrepareCommit succeeded
+client {"serverX":86, "serverZ":111, "LBS":29, "client":100, "serverY":58}
+Send TransactionManager.prepareCommit
+client {"LBS":29, "client":101, "serverY":58, "serverX":86, "serverZ":113}
+TransactionManager.PrepareCommit succeeded
+client {"serverZ":113, "LBS":29, "client":102, "serverY":58, "serverX":86}
+Send TransactionManager.CommitTransaction
+client {"serverY":58, "serverX":86, "serverZ":113, "LBS":29, "client":103}
+TransactionManager.CommitTransaction failed
+client {"LBS":29, "client":104, "serverY":58, "serverX":86, "serverZ":113}
+Send LBS.GetServers
+client {"serverY":58, "serverX":86, "serverZ":113, "LBS":31, "client":105}
+Received LBS.GetServers
+client {"serverX":86, "serverZ":113, "LBS":31, "client":106, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":31, "client":107}
+Established connection to server Z
+client {"LBS":31, "client":108, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":31, "client":109, "serverY":58}
+Already established connection to server Z
+client {"LBS":31, "client":110, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.TableLock A
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":31, "client":111}
+Not successful A
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":31, "client":112}
+Send ServerConn.TableLock A
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":31, "client":113}
+Not successful A
+client {"serverZ":117, "LBS":31, "client":114, "serverY":58, "serverX":86}
+Send ServerConn.TableLock A
+client {"LBS":31, "client":115, "serverY":58, "serverX":86, "serverZ":117}
+Not successful A
+client {"serverZ":117, "LBS":31, "client":116, "serverY":58, "serverX":86}
+Z has crashed
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":31, "client":117}
+Handled server crash, server: Z
+client {"serverZ":117, "LBS":31, "client":118, "serverY":58, "serverX":86}
+Send ServerConn.TableLock A
+client {"serverX":86, "serverZ":117, "LBS":31, "client":119, "serverY":58}
+Not successful A
+client {"serverZ":117, "LBS":31, "client":120, "serverY":58, "serverX":86}
+Send ServerConn.TableUnlock B
+client {"serverZ":117, "LBS":31, "client":121, "serverY":58, "serverX":86}
+Error B
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":31, "client":122}
+Send LBS.GetServers
+client {"client":123, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Received LBS.GetServers
+client {"serverZ":117, "LBS":33, "client":124, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":125, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":126, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":127, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":128, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":129, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":130}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":131, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":132, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":133, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":134, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":135, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":136, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":137, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":138}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":139, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":140, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":141, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":142, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":143, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":144, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":145, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":146, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":147, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":148}
+Send ServerConn.ClientConnectZ
+client {"client":149, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":150, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":151, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":152, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":153, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":154, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":155, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":156, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":157, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":158, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":159, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":160, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":161, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":162}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":163, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":164, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":165, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":166, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":167, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":168}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":169}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":170, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":171, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":172}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":173, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":174}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":175, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":176, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":177, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":178, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":179, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":180, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":181, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":182, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":183, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":184, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":185, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":186, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":187, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":188, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":189, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":190, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":191, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":192}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":193, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":194}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":195}
+Send ServerConn.ClientConnectZ
+client {"client":196, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":197, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":198, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":199, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":200, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":201}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":202, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":203}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":204, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":205, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":206, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":207, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":208, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":209}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":210, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":211, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":212, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":213}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":214, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":215, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":216, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":217, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":218, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":219, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":220, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":221}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":222, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":223}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":224, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":225, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":226}
+Send ServerConn.ClientConnectZ
+client {"client":227, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":228, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":229, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":230, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":231, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":232, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":233, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":234, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":235, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":236, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":237, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":238, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":239, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":240, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":241, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":242, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":243, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":244}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":245}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":246, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":247, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":248, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":249, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":250, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":251, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":252, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":253, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":254, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":255, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":256, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":257, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":258, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":259, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":260, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":261, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":262, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":263, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":264, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":265, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":266}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":267}
+Send ServerConn.ClientConnectZ
+client {"client":268, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":269, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":270, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":271}
+Send ServerConn.ClientConnectZ
+client {"client":272, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":273, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":274, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":275, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":276}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":277, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":278, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":279, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":280, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":281, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":282, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":283, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":284, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":285, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":286, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":287}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":288}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":289, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":290, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":291, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":292, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":293, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":294, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":295, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":296, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":297}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":298, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":299, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":300, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":301, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":302, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":303, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":304, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":305, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":306, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":307, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":308, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":309, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":310, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":311}
+Send ServerConn.ClientConnectZ
+client {"client":312, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":313, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":314, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":315, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":316}
+Send ServerConn.ClientConnectZ
+client {"client":317, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":318}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":319, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":320, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":321}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":322}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":323}
+Send ServerConn.ClientConnectZ
+client {"client":324, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":325, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":326}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":327, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":328, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":329, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":330, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":331, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":332}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":333, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":334, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":335, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":336, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":337, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":338, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":339, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":340, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":341, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":342, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":343, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":344, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":345, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":346, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":347}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":348, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":349, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":350, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":351, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":352, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":353, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":354, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":355, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":356, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":357}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":358}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":359, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":360}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":361, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":362}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":363, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":364}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":365, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":366, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":367, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":368, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":369}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":370, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":371, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":372, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":373, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":374}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":375, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":376, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":377, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":378, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":379, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":380, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":381}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":382, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":383, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":384, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":385, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":386, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":387, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":388, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":389, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":390, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":391, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":392}
+Send ServerConn.ClientConnectZ
+client {"client":393, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":394}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":395, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":396, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":397}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":398, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":399, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":400, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":401}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":402, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":403, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":404, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":405, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":406, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":407, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":408, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":409}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":410}
+Send ServerConn.ClientConnectZ
+client {"client":411, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":412, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":413, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":414, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":415, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":416, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":417}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":418}
+Send ServerConn.ClientConnectZ
+client {"client":419, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":420, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":421, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":422, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":423}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":424, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":425}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":426, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":427}
+Send ServerConn.ClientConnectZ
+client {"client":428, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":429, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":430, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":431, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":432, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":433}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":434, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":435}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":436, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":437}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":438, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":439}
+Send ServerConn.ClientConnectZ
+client {"client":440, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":441}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":442, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":443, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":444, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":445, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":446, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":447, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":448, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":449, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":450, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":451, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":452}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":453, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":454, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":455, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":456}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":457, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":458, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":459, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":460, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":461, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":462, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":463, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":464, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":465, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":466, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":467}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":468, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":469, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":470}
+Send ServerConn.ClientConnectZ
+client {"client":471, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":472, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":473}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":474}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":475, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":476, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":477, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":478, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":479, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":480, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":481, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":482, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":483, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":484, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":485, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":486, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":487, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":488, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":489}
+Send ServerConn.ClientConnectZ
+client {"client":490, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":491, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":492}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":493, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":494}
+Send ServerConn.ClientConnectZ
+client {"client":495, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":496, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":497}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":498}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":499}
+Send ServerConn.ClientConnectZ
+client {"client":500, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":501, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":502, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":503, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":504, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":505}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":506}
+Send ServerConn.ClientConnectZ
+client {"client":507, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":508, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":509, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":510}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":511, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":512, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":513, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":514, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":515, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":516, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":517, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":518, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":519, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":520, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":521, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":522, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":523}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":524, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":525, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":526, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":527, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":528, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":529, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":530, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":531, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":532}
+Send ServerConn.ClientConnectZ
+client {"client":533, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":534}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":535}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":536}
+Send ServerConn.ClientConnectZ
+client {"client":537, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":538, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":539, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":540}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":541, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":542}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":543, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":544, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":545, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":546, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":547}
+Send ServerConn.ClientConnectZ
+client {"client":548, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":549, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":550, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":551}
+Send ServerConn.ClientConnectZ
+client {"client":552, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":553, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":554, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":555}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":556, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":557, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":558, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":559, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":560, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":561, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":562}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":563, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":564, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":565, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":566, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":567, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":568, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":569, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":570, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":571}
+Send ServerConn.ClientConnectZ
+client {"client":572, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":573, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":574, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":575, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":576, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":577, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":578, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":579, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":580}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":581, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":582}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":583}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":584}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":585, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":586, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":587, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":588, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":589, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":590, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":591, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":592, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":593, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":594, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":595, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":596, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":597}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":598, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":599, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":600}
+Send ServerConn.ClientConnectZ
+client {"client":601, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":602, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":603, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":604, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":605, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":606, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":607}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":608, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":609, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":610}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":611}
+Send ServerConn.ClientConnectZ
+client {"client":612, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":613, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":614, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":615, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":616, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":617}
+Send ServerConn.ClientConnectZ
+client {"client":618, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":619, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":620, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":621, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":622, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":623, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":624, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":625, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":626, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":627, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":628, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":629}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":630, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":631}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":632}
+Send ServerConn.ClientConnectZ
+client {"client":633, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":634, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":635, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":636, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":637}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":638}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":639, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":640, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":641, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":642, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":643, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":644, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":645}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":646, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":647, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":648, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":649, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":650, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":651, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":652, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":653, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":654, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":655, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":656}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":657, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":658, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":659, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":660, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":661, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":662, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":663, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":664, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":665, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":666, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":667}
+Send ServerConn.ClientConnectZ
+client {"client":668, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":669, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":670, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":671, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":672}
+Send ServerConn.ClientConnectZ
+client {"client":673, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":674, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":675, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":676, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":677, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":678}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":679}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":680, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":681}
+Send ServerConn.ClientConnectZ
+client {"client":682, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":683, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":684, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":685, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":686}
+Send ServerConn.ClientConnectZ
+client {"client":687, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":688}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":689, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":690, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":691, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":692}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":693}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":694, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":695}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":696}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":697}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":698, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":699, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":700, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":701, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":702, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":703, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":704, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":705, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":706, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":707, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":708, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":709, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":710, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":711}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":712, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":713, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":714, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":715, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":716, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":717}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":718}
+Send ServerConn.ClientConnectZ
+client {"client":719, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":720, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":721, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":722, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":723, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":724}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":725, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":726}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":727}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":728, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":729, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":730, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":731, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":732, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":733, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":734, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":735, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":736, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":737, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":738, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":739}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":740, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":741, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":742, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":743}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":744, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":745}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":746}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":747}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":748}
+Send ServerConn.ClientConnectZ
+client {"client":749, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":750, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":751, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":752, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":753}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":754, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":755, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":756, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":757}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":758}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":759}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":760}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":761}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":762, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":763, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":764, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":765, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":766, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":767}
+Send ServerConn.ClientConnectZ
+client {"client":768, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":769, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":770, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":771}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":772}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":773, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":774}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":775}
+Send ServerConn.ClientConnectZ
+client {"client":776, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":777, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":778, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":779, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":780, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":781}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":782, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":783, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":784, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":785, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":786, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":787, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":788, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":789, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":790}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":791, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":792}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":793}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":794}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":795, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":796, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":797, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":798, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":799}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":800}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":801, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":802, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":803, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":804, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":805, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":806, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":807, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":808, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":809, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":810, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":811, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":812, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":813, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":814, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":815, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":816, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":817, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":818, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":819, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":820, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":821, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":822, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":823, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":824, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":825, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":826}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":827, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":828, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":829, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":830, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":831, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":832, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":833, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":834, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":835}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":836, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":837, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":838, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":839, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":840}
+Send ServerConn.ClientConnectZ
+client {"client":841, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":842, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":843, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":844, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":845}
+Send ServerConn.ClientConnectZ
+client {"client":846, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":847, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":848, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":849, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":850}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":851, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":852, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":853, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":854, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":855, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":856, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":857, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":858, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":859, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":860}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":861}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":862, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":863, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":864, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":865, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":866, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":867}
+Send ServerConn.ClientConnectZ
+client {"client":868, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":869}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":870, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":871}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":872}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":873}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":874}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":875, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":876}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":877, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":878, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":879, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":880, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":881, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":882, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":883}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":884, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":885, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":886}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":887}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":888, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":889}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":890, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":891, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":892, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":893, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":894, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":895, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":896, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":897, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":898, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":899, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":900, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":901, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":902, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":903}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":904, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":905, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":906, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":907}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":908, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":909}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":910}
+Send ServerConn.ClientConnectZ
+client {"client":911, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":912}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":913}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":914}
+Send ServerConn.ClientConnectZ
+client {"client":915, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":916}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":917}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":918}
+Send ServerConn.ClientConnectZ
+client {"client":919, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":920, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":921, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":922, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":923, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":924, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":925, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":926, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":927, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":928, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":929, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":930, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":931, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":932, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":933, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":934}
+Send ServerConn.ClientConnectZ
+client {"client":935, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":936, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":937, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":938}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":939, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":940}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":941}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":942, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":943, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":944, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":945, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":946, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":947, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":948, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":949}
+Send ServerConn.ClientConnectZ
+client {"client":950, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":951}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":952, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":953}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":954}
+Send ServerConn.ClientConnectZ
+client {"client":955, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":956, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":957, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":958, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":959}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":960, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":961, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":962}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":963, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":964, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":965, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":966, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":967, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":968, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":969, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":970}
+Send ServerConn.ClientConnectZ
+client {"client":971, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":972}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":973}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":974}
+Send ServerConn.ClientConnectZ
+client {"client":975, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":976, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":977, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":978, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":979, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":980, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":981, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":982, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":983, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":984, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":985, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":986, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":987, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":988, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":989}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":990, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":991, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":992, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":993, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":994, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":995, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":996, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":997, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":998}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":999, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1000, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1001, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1002, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1003}
+Send ServerConn.ClientConnectZ
+client {"client":1004, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1005, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1006, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1007, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1008, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1009, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1010, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1011, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1012, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1013, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1014}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1015}
+Send ServerConn.ClientConnectZ
+client {"client":1016, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1017, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1018, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1019, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1020, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1021, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1022, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1023, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1024, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1025, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1026, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1027, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1028, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1029, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1030, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1031}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1032, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1033, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1034, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1035, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1036, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1037}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1038, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1039, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1040, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1041, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1042, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1043, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1044, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1045, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1046, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1047, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1048, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1049}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1050, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1051, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1052}
+Send ServerConn.ClientConnectZ
+client {"client":1053, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1054, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1055, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1056, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1057, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1058, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1059, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1060, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1061, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1062, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1063, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1064}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1065}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1066, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1067, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1068, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1069, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1070, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1071, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1072, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1073}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1074}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1075, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1076, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1077, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1078, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1079, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1080, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1081}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1082, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1083}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1084, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1085}
+Send ServerConn.ClientConnectZ
+client {"client":1086, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1087, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1088}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1089}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1090, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1091, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1092, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1093, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1094}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1095, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1096, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1097, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1098, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1099, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1100, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1101, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1102, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1103, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1104, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1105, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1106}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1107, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1108}
+Send ServerConn.ClientConnectZ
+client {"client":1109, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1110, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1111, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1112, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1113}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1114, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1115}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1116, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1117, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1118, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1119, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1120, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1121, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1122, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1123, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1124, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1125}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1126}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1127, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1128, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1129, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1130, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1131, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1132, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1133}
+Send ServerConn.ClientConnectZ
+client {"client":1134, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1135, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1136}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1137, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1138}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1139, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1140, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1141}
+Send ServerConn.ClientConnectZ
+client {"client":1142, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1143, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1144, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1145, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1146, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1147, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1148, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1149, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1150, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1151, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1152, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1153, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1154, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1155, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1156}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1157}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1158, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1159, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1160}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1161, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1162, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1163, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1164}
+Send ServerConn.ClientConnectZ
+client {"client":1165, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1166, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1167, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1168, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1169, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1170, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1171, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1172}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1173, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1174}
+Send ServerConn.ClientConnectZ
+client {"client":1175, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1176, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1177, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1178}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1179, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1180}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1181, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1182, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1183, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1184}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1185, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1186}
+Send ServerConn.ClientConnectZ
+client {"client":1187, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1188, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1189, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1190, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1191}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1192, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1193, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1194}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1195, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1196, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1197, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1198, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1199}
+Send ServerConn.ClientConnectZ
+client {"client":1200, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1201, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1202, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1203, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1204, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1205, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1206, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1207, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1208}
+Send ServerConn.ClientConnectZ
+client {"client":1209, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1210, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1211, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1212, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1213, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1214, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1215, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1216, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1217, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1218, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1219, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1220, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1221, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1222, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1223, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1224, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1225, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1226, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1227, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1228}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1229}
+Send ServerConn.ClientConnectZ
+client {"client":1230, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1231, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1232, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1233, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1234, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1235}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1236}
+Send ServerConn.ClientConnectZ
+client {"client":1237, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1238, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1239, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1240, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1241, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1242, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1243, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1244, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1245, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1246}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1247, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1248}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1249, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1250, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1251, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1252}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1253}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1254, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1255, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1256, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1257, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1258, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1259}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1260, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1261, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1262, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1263, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1264, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1265, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1266, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1267, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1268}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1269, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1270}
+Send ServerConn.ClientConnectZ
+client {"client":1271, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1272}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1273, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1274, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1275, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1276, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1277, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1278, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1279, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1280, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1281, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1282, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1283, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1284, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1285, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1286, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1287}
+Send ServerConn.ClientConnectZ
+client {"client":1288, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1289, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1290, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1291, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1292, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1293}
+Send ServerConn.ClientConnectZ
+client {"client":1294, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1295}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1296, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1297, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1298, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1299, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1300}
+Send ServerConn.ClientConnectZ
+client {"client":1301, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1302, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1303}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1304, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1305, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1306, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1307, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1308, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1309}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1310, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1311}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1312, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1313, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1314, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1315, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1316, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1317, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1318, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1319}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1320, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1321, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1322, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1323, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1324, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"client":1325, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1326, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1327, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"client":1328, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1329, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1330, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1331}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1332, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1333, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1334}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1335, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1336, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1337, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1338, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1339, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1340}
+Send ServerConn.ClientConnectZ
+client {"client":1341, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1342, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1343, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1344, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1345}
+Send ServerConn.ClientConnectZ
+client {"client":1346, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1347}
+Send ServerConn.ClientConnectZ
+client {"client":1348, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1349, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1350, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1351, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1352}
+Send ServerConn.ClientConnectZ
+client {"client":1353, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1354, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1355, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1356, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1357}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1358, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1359, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1360, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1361, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"serverX":86, "serverZ":117, "LBS":33, "client":1362, "serverY":58}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1363, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1364, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1365, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1366, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverZ":117, "LBS":33, "client":1367, "serverY":58, "serverX":86}
+Send ServerConn.ClientConnectZ
+client {"client":1368, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1369, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1370}
+Send ServerConn.ClientConnectZ
+client {"LBS":33, "client":1371, "serverY":58, "serverX":86, "serverZ":117}
+Send ServerConn.ClientConnectZ
+client {"serverY":58, "serverX":86, "serverZ":117, "LBS":33, "client":1372}
+Send ServerConn.ClientConnectZ
+client {"client":1373, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ
+client {"client":1374, "serverY":58, "serverX":86, "serverZ":117, "LBS":33}
+Send ServerConn.ClientConnectZ

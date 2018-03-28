@@ -25,32 +25,12 @@ func main() {
 
 	fmt.Println("Starting server")
 
-	if len(os.Args[1:]) < 3 {
+	if len(os.Args[1:]) < 2 {
 		panic("Incorrect number of arguments given")
 	}
 
 	lbsIP := os.Args[1]
 	serverIP := os.Args[2]
-
-	error := os.Args[3]
-
-	switch error {
-	case "5":
-		shared.ServerCrashErr = shared.FailNonPrimaryServerDuringTransaction
-		break;
-	case "6":
-		shared.ServerCrashErr = shared.FailDuringTransaction
-		break;
-	case "7":
-		shared.ServerCrashErr = shared.FailPrimaryServerAfterClientSendsPrepareCommit
-		break;
-	case "8":
-		shared.ServerCrashErr = shared.FailPrimaryServerAfterClientSendsCommit
-		break;
-	case "9":
-		shared.ServerCrashErr = shared.FailPrimaryServerAfterClientReceivesAllOfCommitSucceeded
-		break;
-	}
 
 	// TODO provide as cmd arguments
 	serverAPI.CreateTable("A")
