@@ -1,10 +1,10 @@
 package shared
 
 import (
+	"../dbStructs"
 	"fmt"
 	"net/rpc"
 	"os"
-	"../dbStructs"
 )
 
 func Contains(s []string, e string) bool {

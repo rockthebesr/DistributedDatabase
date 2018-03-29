@@ -1,9 +1,9 @@
 package serverAPI
 
 import (
+	"../shared"
 	"errors"
 	"fmt"
-	"../shared"
 	"strings"
 )
 
@@ -13,7 +13,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 
 	var buf []byte
 	var msg string
-	GoLogger.UnpackReceive("Received TableLock() "+args.TableName + " tablesLockedByClient="+strings.Join(TransactionTables[args.IpAddress], ", "), args.GoVector, &msg)
+	GoLogger.UnpackReceive("Received TableLock() "+args.TableName+" tablesLockedByClient="+strings.Join(TransactionTables[args.IpAddress], ", "), args.GoVector, &msg)
 
 	if _, ok := AllTblLocks.All[args.TableName]; !ok {
 		buf = GoLogger.PrepareSend("Error TableLock() table does not exist "+args.TableName, "msg")
@@ -22,7 +22,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 
 	if AllTblLocks.All[args.TableName] == true {
 		buf = GoLogger.PrepareSend("Error TableLock() table not available "+args.TableName, "msg")
-		return errors.New("Table not available")
+		return errors.New("Table not available :" + args.TableName)
 	}
 
 	AllServers.Lock()
@@ -86,7 +86,6 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 		fmt.Println("Transaction tables, when locking = ", TransactionTables)
 	}
 
-
 	// Copy the current contents of the table to BACKUP
 	err := BackupTable(args.TableName)
 	shared.CheckError(err)
@@ -136,7 +135,7 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 			if tableName == args.TableName {
 				// at this point, all tables with tableName are unavailable (must do: if a peer crashes, remove the server from AllServers)
 				if ownLock == false {
-					buf = GoLogger.PrepareSend("Sending TableAvailable to " + ip, "msg")
+					buf = GoLogger.PrepareSend("Sending TableAvailable to "+ip, "msg")
 					var reply shared.TableLockingReply
 					args := shared.TableLockingArg{
 						IpAddress: SelfIP,
@@ -175,7 +174,7 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 		TransactionTables[args.IpAddress] = append(TransactionTables[args.IpAddress][:i], TransactionTables[args.IpAddress][i+1:]...)
 	} else {
 		// the table being unlocked does not appear in the lockedTables list
-		fmt.Println("Something weird has happened 3 table=" + args.TableName)		// TODO: why handleClientCrash has 2 tables of same name?
+		fmt.Println("Something weird has happened 3 table=" + args.TableName) // TODO: why handleClientCrash has 2 tables of same name?
 		//return errors.New("Something weird has happened 3")
 	}
 
@@ -183,7 +182,7 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
 
-	AllClients.All[args.IpAddress].StopChannel = 1	// once commit succeeds, stop listening for heartbeats
+	AllClients.All[args.IpAddress].StopChannel = 1 // once commit succeeds, stop listening for heartbeats
 
 	return nil
 }
@@ -201,7 +200,7 @@ func (s *ServerConn) TableAvailable(args *shared.TableLockingArg, reply *shared.
 	GoLogger.UnpackReceive("Received TableAvailable()", args.GoVector, &msg)
 
 	if AllTblLocks.All[args.TableName] == false {
-		return errors.New("Something weird has happened table="+ args.TableName + " selfIP="+SelfIP)
+		return errors.New("Something weird has happened table=" + args.TableName + " selfIP=" + SelfIP)
 	}
 
 	AllTblLocks.All[args.TableName] = false
@@ -212,7 +211,7 @@ func (s *ServerConn) TableAvailable(args *shared.TableLockingArg, reply *shared.
 	AllServers.All[args.IpAddress].TableMappings[args.TableName] = false
 	AllServers.Unlock()
 
-	fmt.Println("TableAvailable "+args.TableName)
+	fmt.Println("TableAvailable " + args.TableName)
 
 	buf = GoLogger.PrepareSend("Sending TableAvailable()", "msg")
 
@@ -237,8 +236,7 @@ func (s *ServerConn) TableUnavailable(args *shared.TableLockingArg, reply *share
 
 	AllTblLocks.All[args.TableName] = true
 
-	fmt.Println("TableUnavailable "+args.TableName)
-
+	fmt.Println("TableUnavailable " + args.TableName)
 
 	AllServers.Lock()
 	AllServers.All[args.IpAddress].TableMappings[args.TableName] = true

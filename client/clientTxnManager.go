@@ -3,11 +3,11 @@ package client
 import (
 	"net/rpc"
 	//"sync"
+	"errors"
 	"fmt"
 	"sort"
+	"strings"
 	"time"
-
-	"errors"
 
 	"../dbStructs"
 	"../shared"
@@ -38,7 +38,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 	fmt.Println("done lockTables")
 
-	var result []map[string]dbStructs.Row
+	result := []dbStructs.Table{}
 	//Tell servers to execute each operation
 	// TODO if the op is a JOIN, then do the op locally
 	fmt.Println("crashPoint=", crashPoint)
@@ -62,8 +62,8 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 			}
 		}
 
-		r, err := ExecuteOperation(op, tableToServers, crashPoint)
-		result = append(result, r)
+		result, err = ExecuteOperation(op, tableToServers, result, crashPoint)
+
 		if err != nil {
 			return false, err
 		}
@@ -101,7 +101,15 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 
 	// TODO need to return result, distinguish between the operations
-	fmt.Println(result)
+	resultStrings := []string{}
+	for _, table := range result {
+		_, resultString := shared.TableToString(table.Name, table.Rows)
+		resultStrings = append(resultStrings, resultString)
+	}
+	Logger.LogLocalEvent("Transaction finished, result :" + strings.Join(resultStrings, ","))
+	fmt.Println("-------------Transaction finished, fetched result:----------")
+	fmt.Println(strings.Join(resultStrings, ",\n"))
+	fmt.Println("------------------------------------------------------------")
 
 	AllServers.Lock()
 	for ip := range AllServers.RecentHeartbeat {
@@ -115,24 +123,80 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 }
 
 // TODO need to test each operation
-func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Client, crashPoint shared.CrashPoint) (map[string]dbStructs.Row, error) {
+func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Client, currentResult []dbStructs.Table, crashPoint shared.CrashPoint) ([]dbStructs.Table, error) {
 	conn := tableToServers[op.TableName]
 	var msg string
+	//Join is a special case. It is executed locally
+	if op.Type == dbStructs.Join {
+		fmt.Println(currentResult)
+		Logger.LogLocalEvent("Locally joining tables : " + op.TableName + " and " + op.SecondTableName)
+		if op.TableName == op.SecondTableName {
+			fmt.Println("Can't join on the same tables")
+			return nil, errors.New("Cannot join on the same tables")
+		}
+		firstTableExists := false
+		secondTableExists := false
+		firstTable := dbStructs.Table{}
+		secondTable := dbStructs.Table{}
+		for _, table := range currentResult {
+			if table.Name == op.TableName {
+				firstTable = table
+				firstTableExists = true
+			}
+			if table.Name == op.SecondTableName {
+				fmt.Println("tableName : " + table.Name + ", SecondTableName: " + op.SecondTableName)
+				secondTable = table
+				secondTableExists = true
+			}
+		}
+		if !(firstTableExists) {
+			fmt.Println("Join failed, don't have table:" + op.TableName)
+			return nil, errors.New("Join failed, table has not been fetched yet: " + op.TableName)
+		}
+		if !(secondTableExists) {
+			fmt.Println("Join failed, don't have table:" + op.SecondTableName)
+			return nil, errors.New("Join failed, table has not been fetched yet: " + op.SecondTableName)
+		}
+
+		firstTableRows := firstTable.Rows
+		secondTableRows := secondTable.Rows
+		fmt.Println("Join: start mering")
+		newTable := dbStructs.Table{Name: op.TableName + " + " + op.SecondTableName}
+		newRows := map[string]dbStructs.Row{}
+		for _, firstTableRow := range firstTableRows {
+			if firstTableRow.Key != op.Key {
+				continue
+			}
+			for _, secondTableRow := range secondTableRows {
+				if secondTableRow.Key != op.Key {
+					continue
+				}
+				if firstTableRow.Key == secondTableRow.Key {
+					newRow := mergeRows(firstTableRow, secondTableRow)
+					newRows[op.Key] = newRow
+				}
+			}
+		}
+		newTable.Rows = newRows
+		currentResult = append(currentResult, newTable)
+		fmt.Println("finished join")
+		Logger.LogLocalEvent("Local join finished")
+		return currentResult, nil
+	}
 	buf := Logger.PrepareSend("Send ExecuteOperation", "msg")
 	args := shared.TableAccessArgs{TableName: op.TableName, Key: op.Key, TableRow: op.Value, GoVector: buf, ServerCrashErr: crashPoint}
 	reply := shared.TableAccessReply{Success: false}
 	switch op.Type {
 	case dbStructs.SelectAll:
-
 		err := conn.Call("TableCommands.GetTableContents", &args, &reply)
 		shared.CheckError(err)
 		if reply.Success == false {
 			return nil, errors.New("failed op")
 		}
-
 		err, tableString := shared.TableToString(op.TableName, reply.OneTableContents)
 		Logger.UnpackReceive("TableCommands.GetTableContents succeeded"+tableString, reply.GoVector, &msg)
-		return reply.OneTableContents, err
+		currentResult = append(currentResult, dbStructs.Table{Name: op.TableName, Rows: reply.OneTableContents})
+		return currentResult, err
 	case dbStructs.Select:
 
 		err := conn.Call("TableCommands.GetRow", &args, &reply)
@@ -145,19 +209,17 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 		result[op.Key] = reply.OneRow
 		err, tableString := shared.TableToString(op.TableName, result)
 		Logger.UnpackReceive("TableCommands.GetRow succeeded"+tableString, reply.GoVector, &msg)
-		return result, err
+		currentResult = append(currentResult, dbStructs.Table{Name: op.TableName, Rows: result})
+		return currentResult, err
 	case dbStructs.Set:
-
 		err := conn.Call("TableCommands.SetRow", &args, &reply)
 		shared.CheckError(err)
 		if reply.Success == false {
 			return nil, errors.New("failed op")
 		}
-
 		Logger.UnpackReceive("TableCommands.SetRow succeeded for table "+op.TableName, reply.GoVector, &msg)
-		return nil, err
+		return currentResult, err
 	case dbStructs.Delete:
-
 		err := conn.Call("TableCommands.DeleteRow", &args, &reply)
 		shared.CheckError(err)
 		if reply.Success == false {
@@ -165,9 +227,9 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 		}
 
 		Logger.UnpackReceive("TableCommands.DeleteRow succeeded for table "+op.TableName, reply.GoVector, &msg)
-		return nil, err
+		return currentResult, err
 	}
-	return nil, NotSupportedOperationType(op.Type)
+	return currentResult, NotSupportedOperationType(op.Type)
 
 }
 
@@ -388,7 +450,7 @@ func reverseMap(m map[string]*rpc.Client) map[*rpc.Client][]string {
 
 func crashServer(conn *rpc.Client, crashPoint shared.CrashPoint) {
 	if crashPoint == shared.FailNonPrimaryServerDuringTransaction {
-		args := shared.Crash{CrashNonPrimary:true}
+		args := shared.Crash{CrashNonPrimary: true}
 		err := conn.Call("ServerConn.CrashServer", &args, &args)
 		shared.CheckError(err)
 	} else if crashPoint == shared.FailPrimaryServerDuringTransaction {
@@ -396,4 +458,21 @@ func crashServer(conn *rpc.Client, crashPoint shared.CrashPoint) {
 		// call RPC
 	}
 	// etc
+}
+
+func mergeRows(row1 dbStructs.Row, row2 dbStructs.Row) dbStructs.Row {
+	newRow := dbStructs.Row{Key: row1.Key}
+	newRowData := map[string]string{}
+	for column, data := range row1.Data {
+		newRowData[column] = data
+	}
+	for column2, data2 := range row2.Data {
+		if _, ok := newRowData[column2]; ok {
+			newRowData[column2] = newRowData[column2] + " + " + data2
+		} else {
+			newRowData[column2] = data2
+		}
+	}
+	newRow.Data = newRowData
+	return newRow
 }

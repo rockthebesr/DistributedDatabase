@@ -42,12 +42,16 @@ const (
 
 	//Delete key-row pair
 	Delete
+
+	//Join to tables
+	Join
 )
 
 //Operation -  A database operation
 type Operation struct {
-	Type      OperationType
-	TableName string
-	Key       string
-	Value     Row
+	Type            OperationType
+	TableName       string
+	SecondTableName string
+	Key             string
+	Value           Row
 }

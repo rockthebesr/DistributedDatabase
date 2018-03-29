@@ -80,4 +80,20 @@ func main() {
 	client.NewTransaction(txn2, shared.CrashPoint(crashPoint))
 
 	time.Sleep(time.Second * 3)
+
+	opType5 := dbStructs.SelectAll
+	opTableName5 := "B"
+	op5 := dbStructs.Operation{Type: opType5, TableName: opTableName5}
+
+	opType6 := dbStructs.SelectAll
+	opTableName6 := "C"
+	op6 := dbStructs.Operation{Type: opType6, TableName: opTableName6}
+
+	opType7 := dbStructs.Join
+	opTableName7_1 := "B"
+	opTableName7_2 := "C"
+	op7 := dbStructs.Operation{Type: opType7, TableName: opTableName7_1, SecondTableName: opTableName7_2, Key: "test"}
+	txn3 := dbStructs.Transaction{Operations: []dbStructs.Operation{op5, op6, op7}}
+	client.NewTransaction(txn3, shared.CrashPoint(crashPoint))
+	time.Sleep(time.Second * 3)
 }

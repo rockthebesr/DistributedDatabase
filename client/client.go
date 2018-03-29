@@ -224,11 +224,21 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		//Connect to needed servers
 		tablesToServerConns, err := ConnectToServers(reply.TableNameToServers)
 		if err != nil {
+			for s, sConn := range connectedIP {
+				Logger.LogLocalEvent("Close connection to " + s)
+				delete(connectedIP, s)
+				sConn.Close()
+			}
+			fmt.Println("Transaction failed, error :" + err.Error())
+			Logger.LogLocalEvent("Transaction failed, error :" + err.Error())
 			continue
 		}
 		//Execute the transaction
 		result, err := ExecuteTransaction(txn, tablesToServerConns, crashPoint)
 
+		if err != nil {
+			return false, err
+		}
 		//if we transaction was successful, return it, if not, try again
 		if result {
 			for s, sConn := range connectedIP {
