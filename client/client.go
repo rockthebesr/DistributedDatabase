@@ -61,14 +61,20 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 	//fmt.Println("ServerConn", serverAPI.HeartbeatInterval)
 	// TODO do not connect to same server more than once
 	for t, sAddr := range tToServerIPs {
-
+		if _, ok := connectedIP[sAddr]; ok {
+			Logger.LogLocalEvent(sAddr + " is already connected")
+			result[t] = connectedIP[sAddr]
+			continue
+		}
 		buf := Logger.PrepareSend("Send ServerConn.ClientConnect"+sAddr, "msg")
+
 		conn, err := rpc.Dial("tcp", sAddr)
 		if err != nil {
 			for s, sConn := range connectedIP {
-				Logger.LogLocalEvent("Close connection to " + s)
+				err := sConn.Close()
+				shared.CheckError(err)
 				delete(connectedIP, s)
-				sConn.Close()
+				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			return nil, err
 		}
@@ -77,16 +83,13 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 		err = conn.Call("ServerConn.ClientConnect", &args, &succ)
 
 		if err != nil {
-			if _, ok := connectedIP[sAddr]; ok {
-				result[t] = connectedIP[sAddr]
-			} else {
-				for s, sConn := range connectedIP {
-					Logger.LogLocalEvent("Close connection to " + s)
-					delete(connectedIP, s)
-					sConn.Close()
-				}
-				return nil, err
+			for s, sConn := range connectedIP {
+				err := sConn.Close()
+				shared.CheckError(err)
+				delete(connectedIP, s)
+				Logger.LogLocalEvent("Close connection to " + s)
 			}
+			return nil, err
 		}
 
 		var msg string
@@ -225,12 +228,14 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		tablesToServerConns, err := ConnectToServers(reply.TableNameToServers)
 		//if connection successful
 		if err != nil {
+			fmt.Println(err)
 			fmt.Println("Cannot connect to servers, Retry txn")
 			Logger.LogLocalEvent("Cannot connect to servers, Retry txn")
 			for s, sConn := range connectedIP {
-				Logger.LogLocalEvent("Close connection to " + s)
+				err := sConn.Close()
+				shared.CheckError(err)
 				delete(connectedIP, s)
-				sConn.Close()
+				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
 			err = lbs.Call("LBS.GetServers", &args, &reply)
@@ -247,9 +252,10 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			fmt.Println("ExecuteTransaction err: " + err.Error() + ", Retry txn")
 			Logger.LogLocalEvent("ExecuteTransaction err: " + err.Error() + ", Retry txn")
 			for s, sConn := range connectedIP {
-				Logger.LogLocalEvent("Close connection to " + s)
+				err := sConn.Close()
+				shared.CheckError(err)
 				delete(connectedIP, s)
-				sConn.Close()
+				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
 			err = lbs.Call("LBS.GetServers", &args, &reply)
@@ -264,9 +270,10 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		//if we transaction was successful, return it, if not, try again
 		if result {
 			for s, sConn := range connectedIP {
-				Logger.LogLocalEvent("Close connection to " + s)
+				err := sConn.Close()
+				shared.CheckError(err)
 				delete(connectedIP, s)
-				sConn.Close()
+				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			Logger.LogLocalEvent("Transaction succeeded")
 			return result, err
@@ -274,9 +281,10 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			fmt.Println("Transaction failed, retry txn")
 			Logger.LogLocalEvent("Transaction failed, retry txn")
 			for s, sConn := range connectedIP {
-				Logger.LogLocalEvent("Close connection to " + s)
+				err := sConn.Close()
+				shared.CheckError(err)
 				delete(connectedIP, s)
-				sConn.Close()
+				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
 			err = lbs.Call("LBS.GetServers", &args, &reply)
@@ -290,9 +298,9 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 	}
 
 	for s, sConn := range connectedIP {
-		Logger.LogLocalEvent("Close connection to " + s)
-		delete(connectedIP, s)
 		sConn.Close()
+		delete(connectedIP, s)
+		Logger.LogLocalEvent("Close connection to " + s)
 	}
 
 	Logger.LogLocalEvent("Transaction aborted : Cannot complete")
