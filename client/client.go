@@ -223,22 +223,44 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 
 		//Connect to needed servers
 		tablesToServerConns, err := ConnectToServers(reply.TableNameToServers)
+		//if connection successful
 		if err != nil {
+			fmt.Println("Cannot connect to servers, Retry txn")
+			Logger.LogLocalEvent("Cannot connect to servers, Retry txn")
 			for s, sConn := range connectedIP {
 				Logger.LogLocalEvent("Close connection to " + s)
 				delete(connectedIP, s)
 				sConn.Close()
 			}
-			fmt.Println("Transaction failed, error :" + err.Error())
-			Logger.LogLocalEvent("Transaction failed, error :" + err.Error())
+			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
+			err = lbs.Call("LBS.GetServers", &args, &reply)
+			if err != nil {
+				Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")
+				return false, err
+			}
+			Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
 			continue
 		}
 		//Execute the transaction
 		result, err := ExecuteTransaction(txn, tablesToServerConns, crashPoint)
-
 		if err != nil {
-			return false, err
+			fmt.Println("ExecuteTransaction err: " + err.Error() + ", Retry txn")
+			Logger.LogLocalEvent("ExecuteTransaction err: " + err.Error() + ", Retry txn")
+			for s, sConn := range connectedIP {
+				Logger.LogLocalEvent("Close connection to " + s)
+				delete(connectedIP, s)
+				sConn.Close()
+			}
+			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
+			err = lbs.Call("LBS.GetServers", &args, &reply)
+			if err != nil {
+				Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")
+				return false, err
+			}
+			Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
+			continue
 		}
+
 		//if we transaction was successful, return it, if not, try again
 		if result {
 			for s, sConn := range connectedIP {
@@ -249,15 +271,21 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			Logger.LogLocalEvent("Transaction succeeded")
 			return result, err
 		} else {
+			fmt.Println("Transaction failed, retry txn")
+			Logger.LogLocalEvent("Transaction failed, retry txn")
+			for s, sConn := range connectedIP {
+				Logger.LogLocalEvent("Close connection to " + s)
+				delete(connectedIP, s)
+				sConn.Close()
+			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
-			args = shared.TableNamesArg{TableNames: tableNames, GoVector: buf}
-			reply = shared.TableNamesReply{}
-			err := lbs.Call("LBS.GetServers", &args, &reply)
+			err = lbs.Call("LBS.GetServers", &args, &reply)
 			if err != nil {
 				Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")
 				return false, err
 			}
 			Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
+			continue
 		}
 	}
 
