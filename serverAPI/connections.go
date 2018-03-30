@@ -454,7 +454,6 @@ func HandleServerCrash(k string) {
 	tablesAndLocks := AllServers.All[k].TableMappings
 	for tableName, ownsLock := range tablesAndLocks {
 		if ownsLock {
-			var buf []byte
 			var reply shared.TableLockingReply
 
 			if AllTblLocks.All[tableName] {
@@ -501,7 +500,6 @@ func HandleServerCrash(k string) {
 			AllServers.All[k].TableMappings[tableName] = false
 		}
 	}
-
 	AllServers.All[k].Handle.Close()
 
 	fmt.Println("Removing server " + k + "'s mappings from LBS")
@@ -523,6 +521,7 @@ func HandleServerCrash(k string) {
 	} else {
 		GoLogger.UnpackReceive("Received result from removing server mappings", reply.GoVector, &msg)
 	}
+	fmt.Println("Server " + k + "'s mappings successfully removed")
 
 	fmt.Println("Finished handling crash for server  " + k)
 }

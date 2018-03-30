@@ -15,13 +15,11 @@ go run app.go
 
 package main
 
-import "./client"
-
-import "fmt"
-import "./dbStructs"
 import (
+	"./client"
+	"fmt"
+	"./dbStructs"
 	"./shared"
-
 	"os"
 	"strconv"
 	"time"
@@ -75,7 +73,10 @@ func main() {
 	op4 := dbStructs.Operation{Type: opType4, TableName: opTableName4, Key: opKey4, Value: row4}
 
 	txn := dbStructs.Transaction{Operations: []dbStructs.Operation{op, op2}}
-	client.NewTransaction(txn, shared.CrashPoint(0))
+	_, err = client.NewTransaction(txn, shared.CrashPoint(crashPoint))
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	time.Sleep(time.Second * 3)
 	txn2 := dbStructs.Transaction{Operations: []dbStructs.Operation{op3, op4}}
@@ -98,4 +99,6 @@ func main() {
 	txn3 := dbStructs.Transaction{Operations: []dbStructs.Operation{op5, op6, op7}}
 	client.NewTransaction(txn3, shared.CrashPoint(crashPoint))
 	time.Sleep(time.Second * 3)
+
+	fmt.Println("Finished transactions")
 }

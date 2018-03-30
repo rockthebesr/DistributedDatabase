@@ -5,7 +5,6 @@ import (
 	"strings"
 	"../dbStructs"
 	"../shared"
-	"errors"
 )
 
 type TableCommands int
@@ -61,10 +60,9 @@ func (t *TableCommands) SetRow(args shared.TableAccessArgs, reply *shared.TableA
 
 func (t *TableCommands) GetRow(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
 
-	if args.ServerCrashErr == shared.FailPrimaryServerDuringTransaction {
+	if args.ServerCrashErr == shared.FailPrimaryServerDuringTransaction && shared.CrashServer {
 		GoLogger.LogLocalEvent("Server " + SelfIP + " has crashed during GetRow")
-		crashServer()
-		return errors.New("Server " + SelfIP + " has crashed during GetRow")
+		panic("Server " + SelfIP + " has crashed during GetRow")
 	}
 
 	if _, ok := Tables[args.TableName]; !ok {
@@ -233,7 +231,6 @@ func CopyTable(destinationTableName string, fromTable dbStructs.Table) error {
 	return nil
 }
 
-
 func RollBackTable(name string) error {
 	table := Tables[name].Rows
 	backup := Tables[name+"_BACKUP"].Rows
@@ -253,11 +250,10 @@ func RollBackTable(name string) error {
 
 	fmt.Println("RollBackTable", name, Tables[name])
 	_, str := shared.TableToString(name, table)
-	GoLogger.LogLocalEvent("Roll back Table "+ name + " TableContents: " +  str)
+	GoLogger.LogLocalEvent("Roll back Table " + name + " TableContents: " + str)
 
 	return nil
 }
-
 
 func CreateTable(name string) (err error) {
 	Tables[name] = dbStructs.Table{name, map[string]dbStructs.Row{}}

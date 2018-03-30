@@ -3,7 +3,6 @@ package serverAPI
 import (
 	"fmt"
 	"../shared"
-	"errors"
 )
 
 type TransactionManager int
@@ -24,10 +23,9 @@ func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *s
 	GoLogger.UnpackReceive("Received PrepareCommit() from "+args.IPAddress, args.GoVector, &msg)
 	updatedTables := args.UpdatedTables
 
-	if args.ServerCrashErr == shared.FailPrimaryServerAfterClientSendsPrepareCommit {
+	if args.ServerCrashErr == shared.FailPrimaryServerAfterClientSendsPrepareCommit && shared.CrashServer {
 		GoLogger.LogLocalEvent("Server has crashed after receiving prepare to commit from client")
-		crashServer()
-		return errors.New("Server has crashed after receiving prepare to commit from client")
+		panic("Server has crashed after receiving prepare to commit from client")
 	}
 
 	//For each updated table, find peers who has it
@@ -64,10 +62,9 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 	GoLogger.UnpackReceive("Received CommitTransaction() from "+args.IPAddress, args.GoVector, &msg)
 	updatedTables := args.UpdatedTables
 
-	if args.ServerCrashErr == shared.FailPrimaryServerAfterClientSendsCommit {
+	if args.ServerCrashErr == shared.FailPrimaryServerAfterClientSendsCommit && shared.CrashServer {
 		GoLogger.LogLocalEvent("Server has crashed after receiving commit from client" )
-		crashServer()
-		return errors.New("Server has crashed after receiving commit from client")
+		panic("Server has crashed after receiving commit from client")
 	}
 
 	//For each updated table, find peers who has it

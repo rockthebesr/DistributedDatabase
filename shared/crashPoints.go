@@ -5,6 +5,7 @@ type CrashPoint int
 
 var (
 	ServerCrashErr CrashPoint
+	CrashServer	   bool
 )
 
 const (

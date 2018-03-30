@@ -25,12 +25,19 @@ func main() {
 
 	fmt.Println("Starting server")
 
-	if len(os.Args[1:]) < 2 {
+	if len(os.Args[1:]) < 3 {
 		panic("Incorrect number of arguments given")
 	}
 
 	lbsIP := os.Args[1]
 	serverIP := os.Args[2]
+	crashServer := os.Args[3]
+
+	if crashServer == "true" {
+		shared.CrashServer = true
+	} else {
+		shared.CrashServer = false
+	}
 
 	// TODO provide as cmd arguments
 	serverAPI.CreateTable("A")
