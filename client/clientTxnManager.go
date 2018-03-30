@@ -318,6 +318,7 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 	if TxnManagerSession.TestDeadLock_ReverseTableList {
 		sort.Sort(sort.Reverse(sort.StringSlice(tables)))
 	} else {
+		// acquire locks in alphabetical order
 		sort.Strings(tables)
 	}
 
@@ -349,7 +350,8 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 			//replies <- reply.Success
 			if reply.Success == false {
 				Logger.UnpackReceive("Not successful "+table, reply.GoVector, &msg)
-				continue
+				//continue
+				panic("Cannot acquire all locks")	// if cannot acquire locks in sequential order, then cannot proceed
 			} else {
 				TxnManagerSession.AcquiredLocks[table] = true
 				Logger.UnpackReceive("Received result "+table, reply.GoVector, &msg)

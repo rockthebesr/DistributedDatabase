@@ -67,7 +67,13 @@ To test on VM:
     ssh -i ~/.ssh/id_rsa haoran@52.151.14.52
 
     VM5: app1
-    ssh -i ~/.ssh/id_rsa haoran@52.151.43.245
+    ssh -i ~/.ssh/id_rsa haoran@52.158.234.124
+
+    VM6: server4
+    ssh -i ~/.ssh/id_rsa haoran@52.175.252.217
+
+    VM7: app2
+    ssh -i ~/.ssh/id_rsa haoran@52.151.8.223
 
     VM1:
     go run lbs.go "10.0.0.4:54321" "false"
@@ -79,6 +85,10 @@ To test on VM:
     go run server.go "40.125.70.162:54321" "10.0.0.7:12347" "false"
     VM5:
     go run app.go "40.125.70.162:54321" "10.0.0.8:12348" "0"
+    VM6:
+    go run server.go "40.125.70.162:54321" "10.0.0.9:12349" "false"
+    VM7:
+    go run app.go "40.125.70.162:54321" "10.0.0.10:12350" "0"
 
     Local:
     sed -i '3,$d' shiviz/govectorLog.txt
@@ -86,7 +96,7 @@ To test on VM:
     scp haoran@52.151.36.31:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsServer10.0.0.5:12345-Log.txt shiviz/ddbsServer10.0.0.5:12345-Log.txt
     scp haoran@40.125.70.74:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsServer10.0.0.6:12346-Log.txt shiviz/ddbsServer10.0.0.6:12346-Log.txt
     scp haoran@52.151.14.52:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsServer10.0.0.7:12347-Log.txt shiviz/ddbsServer10.0.0.7:12347-Log.txt
-    scp haoran@52.151.43.245:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsClient10.0.0.8:12348-Log.txt shiviz/ddbsClient10.0.0.8:12348-Log.txt
+    scp haoran@52.158.234.124:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsClient10.0.0.8:12348-Log.txt shiviz/ddbsClient10.0.0.8:12348-Log.txt
     sed -i '$r shiviz/ddbsLBS-Log.txt' shiviz/govectorLog.txt
     sed -i '$r shiviz/ddbsServer10.0.0.5:12345-Log.txt' shiviz/govectorLog.txt
     sed -i '$r shiviz/ddbsServer10.0.0.6:12346-Log.txt' shiviz/govectorLog.txt
@@ -98,38 +108,46 @@ To test on VM:
     sed -i 's/10.0.0.8:12348//g' shiviz/govectorLog.txt
 
 To test strict 2-phase locking protocol with deadlocks:
-    go run lbs.go "127.0.0.1:54321" "false"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
+    go run lbs.go "10.0.0.4:54321" "false"
+    go run server.go "40.125.70.162:54321" "10.0.0.5:12345" "false"
+    go run server.go "40.125.70.162:54321" "10.0.0.6:12346" "false"
 
     Run these together very quickly:
-    go run app_deadlock.go "127.0.0.1:54321" "127.0.0.1:9999" "true" "true"
-    go run app_deadlock.go "127.0.0.1:54321" "127.0.0.1:9998" "false" "false"
+    go run app_deadlock.go "40.125.70.162:54321" "10.0.0.8:12348" "true" "true"
+    go run app_deadlock.go "40.125.70.162:54321" "10.0.0.10:12350" "false" "false"
 
     sed -i '3,$d/' shiviz/govectorLog.txt
+    scp haoran@40.125.70.162:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsLBS-Log.txt shiviz/ddbsLBS-Log.txt
+    scp haoran@52.151.36.31:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsServer10.0.0.5:12345-Log.txt shiviz/ddbsServer10.0.0.5:12345-Log.txt
+    scp haoran@40.125.70.74:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsServer10.0.0.6:12346-Log.txt shiviz/ddbsServer10.0.0.6:12346-Log.txt
+    scp haoran@52.158.234.124:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsClient10.0.0.8:12348-Log.txt shiviz/ddbsClient10.0.0.8:12348-Log.txt
+    scp haoran@52.151.8.223:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsClient10.0.0.10:12350-Log.txt shiviz/ddbsClient10.0.0.10:12350-Log.txt
     sed -i '$r shiviz/ddbsLBS-Log.txt' shiviz/govectorLog.txt
-    sed -i '$r shiviz/ddbsServer127.0.0.1:12345-Log.txt' shiviz/govectorLog.txt
-    sed -i '$r shiviz/ddbsServer127.0.0.1:12346-Log.txt' shiviz/govectorLog.txt
-    sed -i '$r shiviz/ddbsClient127.0.0.1:9999-Log.txt' shiviz/govectorLog.txt
-    sed -i '$r shiviz/ddbsClient127.0.0.1:9998-Log.txt' shiviz/govectorLog.txt
-    sed -i 's/127.0.0.1:12345/X/g' shiviz/govectorLog.txt
-    sed -i 's/127.0.0.1:12346/Y/g' shiviz/govectorLog.txt
-    sed -i 's/127.0.0.1:9999/M/g' shiviz/govectorLog.txt
-    sed -i 's/127.0.0.1:9998/N/g' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer10.0.0.5:12345-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer10.0.0.6:12346-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsClient10.0.0.8:12348-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsClient10.0.0.10:12350-Log.txt' shiviz/govectorLog.txt
+    sed -i 's/10.0.0.5:12345/X/g' shiviz/govectorLog.txt
+    sed -i 's/10.0.0.6:12346/Y/g' shiviz/govectorLog.txt
+    sed -i 's/10.0.0.8:12348/M/g' shiviz/govectorLog.txt
+    sed -i 's/10.0.0.10:12350/N/g' shiviz/govectorLog.txt
 
     shiviz using shiviz/govectorLog.txt
 
 To test LBS crash recovery:
-    go run lbs.go "127.0.0.1:54321" "true"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
+    go run lbs.go "10.0.0.4:54321" "true"
+    go run server.go "40.125.70.162:54321" "10.0.0.5:12345" "false"
+    go run server.go "40.125.70.162:54321" "10.0.0.6:12346" "false"
 
     sed -i '3,$d' shiviz/govectorLog.txt
+    scp haoran@40.125.70.162:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsLBS-Log.txt shiviz/ddbsLBS-Log.txt
+    scp haoran@52.151.36.31:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsServer10.0.0.5:12345-Log.txt shiviz/ddbsServer10.0.0.5:12345-Log.txt
+    scp haoran@40.125.70.74:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsServer10.0.0.6:12346-Log.txt shiviz/ddbsServer10.0.0.6:12346-Log.txt
     sed -i '$r shiviz/ddbsLBS-Log.txt' shiviz/govectorLog.txt
-    sed -i '$r shiviz/ddbsServer127.0.0.1:12345-Log.txt' shiviz/govectorLog.txt
-    sed -i '$r shiviz/ddbsServer127.0.0.1:12346-Log.txt' shiviz/govectorLog.txt
-    sed -i 's/127.0.0.1:12345/X/g/' shiviz/govectorLog.txt
-    sed -i 's/127.0.0.1:12346/Y/g/' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer10.0.0.5:12345-Log.txt' shiviz/govectorLog.txt
+    sed -i '$r shiviz/ddbsServer10.0.0.6:12346-Log.txt' shiviz/govectorLog.txt
+    sed -i 's/10.0.0.5:12345/X/g' shiviz/govectorLog.txt
+    sed -i 's/10.0.0.6:12346/Y/g' shiviz/govectorLog.txt
 
     shiviz using shiviz/govectorLog.txt
 
