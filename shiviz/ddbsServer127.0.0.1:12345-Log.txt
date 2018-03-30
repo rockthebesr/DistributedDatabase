@@ -1,0 +1,58 @@
+server127.0.0.1:12345 {"server127.0.0.1:12345":1}
+Initialization Complete
+server127.0.0.1:12345 {"server127.0.0.1:12345":2}
+Server has tables: C, A_BACKUP, B_BACKUP, C_BACKUP, A, B
+server127.0.0.1:12345 {"server127.0.0.1:12345":3}
+Sending AddMappings to LBS
+server127.0.0.1:12345 {"server127.0.0.1:12345":4, "LBS":3}
+Received AddMappings from LBS
+server127.0.0.1:12345 {"server127.0.0.1:12345":5, "LBS":3}
+Sending GetPeers to LBS
+server127.0.0.1:12345 {"server127.0.0.1:12345":6, "LBS":5}
+Received GetPeers from LBS
+server127.0.0.1:12345 {"server127.0.0.1:12346":7, "LBS":9, "server127.0.0.1:12345":7}
+Received ConnectToPeer from Server
+server127.0.0.1:12345 {"server127.0.0.1:12345":8, "server127.0.0.1:12346":7, "LBS":9}
+Sending ConnectToPeer back
+server127.0.0.1:12345 {"server127.0.0.1:12345":9, "server127.0.0.1:12346":9, "LBS":9}
+Received GetTableContents 
+server127.0.0.1:12345 {"server127.0.0.1:12345":10, "server127.0.0.1:12346":9, "LBS":9}
+Sending GetTableContents reply= Table: A{(  Key:test name:John age:30 gender:M )}
+server127.0.0.1:12345 {"LBS":9, "server127.0.0.1:12345":11, "server127.0.0.1:12346":11}
+Received GetTableContents 
+server127.0.0.1:12345 {"server127.0.0.1:12345":12, "server127.0.0.1:12346":11, "LBS":9}
+Sending GetTableContents reply= Table: B{(  Key:test name:John age:30 gender:M )}
+server127.0.0.1:12345 {"LBS":9, "server127.0.0.1:12345":13, "server127.0.0.1:12346":13}
+Received GetTableContents 
+server127.0.0.1:12345 {"LBS":9, "server127.0.0.1:12345":14, "server127.0.0.1:12346":13}
+Sending GetTableContents reply= Table: C{(  Key:test gender:M name:John age:30 )}
+server127.0.0.1:12345 {"LBS":9, "server127.0.0.1:12345":15, "server127.0.0.1:12346":15}
+Received GetTableContents 
+server127.0.0.1:12345 {"server127.0.0.1:12345":16, "server127.0.0.1:12346":15, "LBS":9}
+Sending GetTableContents reply= Table: A_BACKUP{(  Key:test name:John age:30 gender:M )}
+server127.0.0.1:12345 {"server127.0.0.1:12345":17, "server127.0.0.1:12346":17, "LBS":9}
+Received GetTableContents 
+server127.0.0.1:12345 {"LBS":9, "server127.0.0.1:12345":18, "server127.0.0.1:12346":17}
+Sending GetTableContents reply= Table: B_BACKUP{(  Key:test age:30 gender:M name:John )}
+server127.0.0.1:12345 {"LBS":9, "server127.0.0.1:12345":19, "server127.0.0.1:12346":19}
+Received GetTableContents 
+server127.0.0.1:12345 {"server127.0.0.1:12346":19, "LBS":9, "server127.0.0.1:12345":20}
+Sending GetTableContents reply= Table: C_BACKUP{(  Key:test age:30 gender:M name:John )}
+server127.0.0.1:12345 {"LBS":11, "server127.0.0.1:12345":21, "client127.0.0.1:9999":4, "server127.0.0.1:12346":19}
+Received ClientConnect from Client
+server127.0.0.1:12345 {"client127.0.0.1:9999":4, "server127.0.0.1:12346":19, "LBS":11, "server127.0.0.1:12345":22}
+Sending ClientConnect back
+server127.0.0.1:12345 {"server127.0.0.1:12345":23, "client127.0.0.1:9999":8, "server127.0.0.1:12346":22, "LBS":11}
+Received TableLock() A tablesLockedByClient=
+server127.0.0.1:12345 {"client127.0.0.1:9999":8, "server127.0.0.1:12346":22, "LBS":11, "server127.0.0.1:12345":24}
+Sending TableUnavailable to server 127.0.0.1:12346
+server127.0.0.1:12345 {"LBS":11, "server127.0.0.1:12345":25, "client127.0.0.1:9999":8, "server127.0.0.1:12346":24}
+Received TableUnavailable from server 127.0.0.1:12346
+server127.0.0.1:12345 {"server127.0.0.1:12345":26, "client127.0.0.1:9999":8, "server127.0.0.1:12346":24, "LBS":11}
+Sending TableLock() tablesLockedByClient=A
+server127.0.0.1:12345 {"LBS":11, "server127.0.0.1:12345":27, "client127.0.0.1:9999":10, "server127.0.0.1:12346":26}
+Received TableUnavailable()
+server127.0.0.1:12345 {"server127.0.0.1:12346":26, "LBS":11, "server127.0.0.1:12345":28, "client127.0.0.1:9999":10}
+Sending TableUnavailable()
+server127.0.0.1:12345 {"server127.0.0.1:12346":26, "LBS":11, "server127.0.0.1:12345":29, "client127.0.0.1:9999":10}
+Server 127.0.0.1:12345 has crashed during GetRow
