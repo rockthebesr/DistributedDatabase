@@ -74,6 +74,7 @@ func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableName
 	allMappings.Lock()
 	defer allMappings.Unlock()
 
+	fmt.Println("Removing mappings from LBS -> ", args.ServerIpAddress)
 	for tableName, listOfIps := range allMappings.all {
 		for ip, active := range listOfIps {
 			if ip != args.ServerIpAddress {

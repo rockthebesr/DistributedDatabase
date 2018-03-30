@@ -517,6 +517,7 @@ func HandleServerCrash(k string) {
 	err := LBSConn.Call("LBS.RemoveMappings", &args, &reply)
 	shared.CheckError(err)
 	if err != nil {
+		fmt.Println("Error removing server mappings -> ", err)
 		GoLogger.UnpackReceive("Error removing server mappings ", reply.GoVector, &msg)
 	} else {
 		GoLogger.UnpackReceive("Received result from removing server mappings", reply.GoVector, &msg)

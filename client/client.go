@@ -61,6 +61,7 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 	//fmt.Println("ServerConn", serverAPI.HeartbeatInterval)
 	// TODO do not connect to same server more than once
 	for t, sAddr := range tToServerIPs {
+		fmt.Println("Client connected to servers -> ", connectedIP)
 		if _, ok := connectedIP[sAddr]; ok {
 			Logger.LogLocalEvent(sAddr + " is already connected")
 			result[t] = connectedIP[sAddr]
@@ -228,8 +229,8 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		tablesToServerConns, err := ConnectToServers(reply.TableNameToServers)
 		//if connection successful
 		if err != nil {
-			fmt.Println(err)
-			fmt.Println("Cannot connect to servers, Retry txn")
+			fmt.Println("Cannot connect to servers, Retry txn. Given error -> ", err)
+			time.Sleep(2*time.Second)
 			Logger.LogLocalEvent("Cannot connect to servers, Retry txn")
 			for s, sConn := range connectedIP {
 				err := sConn.Close()
@@ -246,6 +247,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
 			continue
 		}
+
 		//Execute the transaction
 		result, err := ExecuteTransaction(txn, tablesToServerConns, crashPoint)
 		if err != nil {
