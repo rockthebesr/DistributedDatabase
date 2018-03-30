@@ -230,7 +230,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		//if connection successful
 		if err != nil {
 			fmt.Println("Cannot connect to servers, Retry txn. Given error -> ", err)
-			time.Sleep(2*time.Second)
+			time.Sleep(3 * time.Second)
 			Logger.LogLocalEvent("Cannot connect to servers, Retry txn")
 			for s, sConn := range connectedIP {
 				err := sConn.Close()
