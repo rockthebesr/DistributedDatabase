@@ -29,10 +29,12 @@ import (
 
 func main() {
 	// TODO provide as cmd arguments
-	lbsAddr := "127.0.0.1:54321"
-	localIP := "127.0.0.1:9999"
-
-	crashPointArg := os.Args[1]
+	if len(os.Args[1:]) < 2 {
+		panic("Incorrect number of arguments given")
+	}
+	lbsAddr := os.Args[1]
+	localIP := os.Args[2]
+	crashPointArg := os.Args[3]
 	crashPoint, _ := strconv.Atoi(crashPointArg)
 
 	_, err := client.StartClient(lbsAddr, localIP)
