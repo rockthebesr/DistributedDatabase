@@ -116,7 +116,7 @@ To test strict 2-phase locking protocol with deadlocks:
     go run app_deadlock.go "40.125.70.162:54321" "10.0.0.8:12348" "true" "true"
     go run app_deadlock.go "40.125.70.162:54321" "10.0.0.10:12350" "false" "false"
 
-    sed -i '3,$d/' shiviz/govectorLog.txt
+    sed -i '3,$d' shiviz/govectorLog.txt
     scp haoran@40.125.70.162:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsLBS-Log.txt shiviz/ddbsLBS-Log.txt
     scp haoran@52.151.36.31:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsServer10.0.0.5:12345-Log.txt shiviz/ddbsServer10.0.0.5:12345-Log.txt
     scp haoran@40.125.70.74:~/proj2_c4w9a_k0a9_k7y8/shiviz/ddbsServer10.0.0.6:12346-Log.txt shiviz/ddbsServer10.0.0.6:12346-Log.txt

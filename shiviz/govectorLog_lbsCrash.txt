@@ -1,0 +1,118 @@
+(?<host>\w+) (?<clock>\{.*\})\n(?<event>.*)
+
+LBS {"LBS":1}
+Initialization Complete
+LBS {"LBS":2, "serverX":3}
+Received AddMappings()
+LBS {"serverX":3, "LBS":3}
+Sending AddMappings()
+LBS {"LBS":4, "serverX":5}
+Received GetPeers()
+LBS {"LBS":5, "serverX":5}
+Sending GetPeers()
+LBS {"serverX":5, "serverY":3, "LBS":6}
+Received AddMappings()
+LBS {"LBS":7, "serverX":5, "serverY":3}
+Sending AddMappings()
+LBS {"LBS":8, "serverX":5, "serverY":5}
+Received GetPeers()
+LBS {"serverY":5, "LBS":9, "serverX":5}
+Sending GetPeers()
+LBS {"serverY":5, "LBS":10, "serverX":5}
+LBS crashed
+LBS {"serverX":5, "serverY":5, "LBS":11}
+Sending GetTableNames ip=X
+LBS {"serverX":22, "serverY":19, "LBS":12}
+Received GetTableNames reply=A, B, C
+LBS {"serverX":22, "serverY":19, "LBS":13}
+Sending GetTableNames ip=Y
+LBS {"serverY":22, "LBS":14, "serverX":22}
+Received GetTableNames reply=B, C, A
+serverX {"serverX":1}
+Initialization Complete
+serverX {"serverX":2}
+Server has tables: A, B, C, A_BACKUP, B_BACKUP, C_BACKUP
+serverX {"serverX":3}
+Sending AddMappings to LBS
+serverX {"serverX":4, "LBS":3}
+Received AddMappings from LBS
+serverX {"serverX":5, "LBS":3}
+Sending GetPeers to LBS
+serverX {"serverX":6, "LBS":5}
+Received GetPeers from LBS
+serverX {"serverX":7, "LBS":9, "serverY":7}
+Received ConnectToPeer from Server
+serverX {"serverX":8, "LBS":9, "serverY":7}
+Sending ConnectToPeer back
+serverX {"serverY":9, "serverX":9, "LBS":9}
+Received GetTableContents 
+serverX {"serverX":10, "LBS":9, "serverY":9}
+Sending GetTableContents reply= Table: C_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"LBS":9, "serverY":11, "serverX":11}
+Received GetTableContents 
+serverX {"serverY":11, "serverX":12, "LBS":9}
+Sending GetTableContents reply= Table: A{(  Key:test name:John age:30 gender:M )}
+serverX {"serverY":13, "serverX":13, "LBS":9}
+Received GetTableContents 
+serverX {"serverY":13, "serverX":14, "LBS":9}
+Sending GetTableContents reply= Table: B{(  Key:test name:John age:30 gender:M )}
+serverX {"serverY":15, "serverX":15, "LBS":9}
+Received GetTableContents 
+serverX {"serverY":15, "serverX":16, "LBS":9}
+Sending GetTableContents reply= Table: C{(  Key:test gender:M name:John age:30 )}
+serverX {"serverY":17, "serverX":17, "LBS":9}
+Received GetTableContents 
+serverX {"serverY":17, "serverX":18, "LBS":9}
+Sending GetTableContents reply= Table: A_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"serverY":19, "serverX":19, "LBS":9}
+Received GetTableContents 
+serverX {"serverX":20, "LBS":9, "serverY":19}
+Sending GetTableContents reply= Table: B_BACKUP{(  Key:test name:John age:30 gender:M )}
+serverX {"LBS":11, "serverY":19, "serverX":21}
+Received GetTableNames 
+serverX {"serverX":22, "LBS":11, "serverY":19}
+Sending GetTableNames reply=A, B, C
+serverY {"serverY":1}
+Initialization Complete
+serverY {"serverY":2}
+Server has tables: B_BACKUP, C_BACKUP, A, B, C, A_BACKUP
+serverY {"serverY":3}
+Sending AddMappings to LBS
+serverY {"serverX":5, "serverY":4, "LBS":7}
+Received AddMappings from LBS
+serverY {"LBS":7, "serverX":5, "serverY":5}
+Sending GetPeers to LBS
+serverY {"LBS":9, "serverX":5, "serverY":6}
+Received GetPeers from LBS
+serverY {"LBS":9, "serverX":5, "serverY":7}
+Sending ConnectToPeer to Server
+serverY {"LBS":9, "serverX":8, "serverY":8}
+Received ConnectToPeer from Server
+serverY {"LBS":9, "serverX":8, "serverY":9}
+Send GetTableContents
+serverY {"LBS":9, "serverX":10, "serverY":10}
+TableCommands.GetTableContents succeeded  Table: C_BACKUP{(  Key:test gender:M name:John age:30 )}
+serverY {"LBS":9, "serverX":10, "serverY":11}
+Send GetTableContents
+serverY {"serverX":12, "serverY":12, "LBS":9}
+TableCommands.GetTableContents succeeded  Table: A{(  Key:test gender:M name:John age:30 )}
+serverY {"LBS":9, "serverX":12, "serverY":13}
+Send GetTableContents
+serverY {"LBS":9, "serverX":14, "serverY":14}
+TableCommands.GetTableContents succeeded  Table: B{(  Key:test name:John age:30 gender:M )}
+serverY {"serverY":15, "LBS":9, "serverX":14}
+Send GetTableContents
+serverY {"LBS":9, "serverX":16, "serverY":16}
+TableCommands.GetTableContents succeeded  Table: C{(  Key:test name:John age:30 gender:M )}
+serverY {"serverY":17, "LBS":9, "serverX":16}
+Send GetTableContents
+serverY {"LBS":9, "serverX":18, "serverY":18}
+TableCommands.GetTableContents succeeded  Table: A_BACKUP{(  Key:test age:30 gender:M name:John )}
+serverY {"serverY":19, "LBS":9, "serverX":18}
+Send GetTableContents
+serverY {"serverY":20, "LBS":9, "serverX":20}
+TableCommands.GetTableContents succeeded  Table: B_BACKUP{(  Key:test age:30 gender:M name:John )}
+serverY {"LBS":13, "serverX":22, "serverY":21}
+Received GetTableNames 
+serverY {"serverY":22, "LBS":13, "serverX":22}
+Sending GetTableNames reply=B, C, A
