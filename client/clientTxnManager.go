@@ -144,7 +144,6 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 				firstTableExists = true
 			}
 			if table.Name == op.SecondTableName {
-				fmt.Println("tableName : " + table.Name + ", SecondTableName: " + op.SecondTableName)
 				secondTable = table
 				secondTableExists = true
 			}
@@ -161,22 +160,19 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 		firstTableRows := firstTable.Rows
 		secondTableRows := secondTable.Rows
 		fmt.Println("Join: start mering")
-		newTable := dbStructs.Table{Name: op.TableName + " + " + op.SecondTableName}
+		newTable := dbStructs.Table{Name: op.TableName + " joined with " + op.SecondTableName}
 		newRows := map[string]dbStructs.Row{}
 		for _, firstTableRow := range firstTableRows {
-			if firstTableRow.Key != op.Key {
-				continue
-			}
 			for _, secondTableRow := range secondTableRows {
-				if secondTableRow.Key != op.Key {
-					continue
-				}
-				if firstTableRow.Key == secondTableRow.Key {
-					newRow := mergeRows(firstTableRow, secondTableRow)
-					newRows[op.Key] = newRow
+				succ, newRow := mergeRows(firstTableRow, secondTableRow, op.FirstTableColumn, op.SecondTableColumn)
+				if succ {
+					newRows[newRow.Key] = newRow
 				}
 			}
 		}
+		fmt.Println("merged table: ")
+		fmt.Println(newRows)
+
 		newTable.Rows = newRows
 		currentResult = append(currentResult, newTable)
 		fmt.Println("finished join")
@@ -351,7 +347,7 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 			if reply.Success == false {
 				Logger.UnpackReceive("Not successful "+table, reply.GoVector, &msg)
 				//continue
-				panic("Cannot acquire all locks")	// if cannot acquire locks in sequential order, then cannot proceed
+				panic("Cannot acquire all locks") // if cannot acquire locks in sequential order, then cannot proceed
 			} else {
 				TxnManagerSession.AcquiredLocks[table] = true
 				Logger.UnpackReceive("Received result "+table, reply.GoVector, &msg)
@@ -462,19 +458,45 @@ func crashServer(conn *rpc.Client, crashPoint shared.CrashPoint) {
 	// etc
 }
 
-func mergeRows(row1 dbStructs.Row, row2 dbStructs.Row) dbStructs.Row {
-	newRow := dbStructs.Row{Key: row1.Key}
-	newRowData := map[string]string{}
-	for column, data := range row1.Data {
-		newRowData[column] = data
-	}
-	for column2, data2 := range row2.Data {
-		if _, ok := newRowData[column2]; ok {
-			newRowData[column2] = newRowData[column2] + " + " + data2
-		} else {
-			newRowData[column2] = data2
+func mergeRows(row1 dbStructs.Row, row2 dbStructs.Row, row1Column string, row2Column string) (bool, dbStructs.Row) {
+	newRow := dbStructs.Row{}
+	if strings.ToLower(row1Column) == "key" {
+		newRow.Key = row2.Key + " + " + row1.Key
+		newRowData := map[string]string{}
+		targetValue := row2.Data[row2Column]
+		if row1.Key == targetValue {
+
+			fmt.Println("merge row succ")
+			fmt.Println(row1.Key)
+			fmt.Println(row2)
+			for k, v := range row2.Data {
+				newRowData[k] = v
+			}
+
+			for k, v := range row1.Data {
+				newRowData[k] = v
+			}
+			newRow.Data = newRowData
+			return true, newRow
 		}
+		return false, newRow
+
+	} else {
+		newRow.Key = row1.Key + " + " + row2.Key
+		newRowData := map[string]string{}
+		targetValue := row1.Data[row1Column]
+		if row2.Key == targetValue {
+			for k, v := range row1.Data {
+				newRowData[k] = v
+			}
+
+			for k, v := range row2.Data {
+				newRowData[k] = v
+			}
+			newRow.Data = newRowData
+			fmt.Println("merge row succ")
+			return true, newRow
+		}
+		return false, newRow
 	}
-	newRow.Data = newRowData
-	return newRow
 }

@@ -1,10 +1,10 @@
 package serverAPI
 
 import (
-	"fmt"
-	"strings"
 	"../dbStructs"
 	"../shared"
+	"fmt"
+	"strings"
 )
 
 type TableCommands int
@@ -256,11 +256,37 @@ func RollBackTable(name string) error {
 }
 
 func CreateTable(name string) (err error) {
-	Tables[name] = dbStructs.Table{name, map[string]dbStructs.Row{}}
+	tableName := name[0]
+	switch tableName {
+	case "A"[0]:
+		Tables[name] = dbStructs.Table{Name: name, Rows: map[string]dbStructs.Row{}}
 
-	// TODO for testing only, remove later
-	m := map[string]string{"name": "John", "age": "30", "gender": "M"}
-	Tables[name].Rows["test"] = dbStructs.Row{"test", m}
+		// TODO for testing only, remove later
+		m0 := map[string]string{"name": "John", "age": "20", "gender": "M"}
+		m1 := map[string]string{"name": "Alice", "age": "30", "gender": "F"}
+		m2 := map[string]string{"name": "Bob", "age": "50", "gender": "M"}
+		Tables[name].Rows["test0"] = dbStructs.Row{Key: "test0", Data: m0}
+		Tables[name].Rows["test1"] = dbStructs.Row{Key: "test1", Data: m1}
+		Tables[name].Rows["test2"] = dbStructs.Row{Key: "test2", Data: m2}
+		return nil
+	case "B"[0]:
+		Tables[name] = dbStructs.Table{Name: name, Rows: map[string]dbStructs.Row{}}
 
+		// TODO for testing only, remove later
+		m0 := map[string]string{"company": "Facebook", "emp_id": "test0"}
+		m1 := map[string]string{"company": "Amazon", "emp_id": "test1"}
+		m2 := map[string]string{"company": "Microsoft", "emp_id": "test2"}
+		Tables[name].Rows["k0"] = dbStructs.Row{Key: "k0", Data: m0}
+		Tables[name].Rows["k1"] = dbStructs.Row{Key: "k1", Data: m1}
+		Tables[name].Rows["k2"] = dbStructs.Row{Key: "k2", Data: m2}
+		return nil
+	case "C"[0]:
+		Tables[name] = dbStructs.Table{Name: name, Rows: map[string]dbStructs.Row{}}
+		m0 := map[string]string{"tv_show": "Friends"}
+		m1 := map[string]string{"tv_show": "Simpsons"}
+		Tables[name].Rows["t0"] = dbStructs.Row{Key: "t0", Data: m0}
+		Tables[name].Rows["t1"] = dbStructs.Row{Key: "t1", Data: m1}
+		return nil
+	}
 	return nil
 }

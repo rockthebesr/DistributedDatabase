@@ -49,9 +49,11 @@ const (
 
 //Operation -  A database operation
 type Operation struct {
-	Type            OperationType
-	TableName       string
-	SecondTableName string
-	Key             string
-	Value           Row
+	Type              OperationType
+	TableName         string
+	SecondTableName   string
+	Key               string
+	FirstTableColumn  string
+	SecondTableColumn string
+	Value             Row
 }
