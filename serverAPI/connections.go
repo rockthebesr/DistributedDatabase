@@ -461,12 +461,13 @@ func HandleServerCrash(k string) {
 				GoLogger.LogLocalEvent("Unlocking Table " + tableName + " for crashed server " + k)
 
 				AllTblLocks.All[tableName] = false
+				fmt.Println("Rolling back table " + tableName)
+				RollBackTable(tableName)
 				for _, peer := range AllServers.All {
 					if peer.Address != k && peer.Address != SelfIP {
 						conn := peer.Handle
 						if conn != nil {
-							fmt.Println("Rolling back table " + tableName)
-							RollBackTable(tableName)
+							fmt.Printf("Rolling back table %s for peer -> %s", tableName, peer.Address)
 							buf = GoLogger.PrepareSend("Send TransactionManager.RollBackPeer table="+tableName, "msg")
 							args := shared.TableLockingArg{TableName: tableName, GoVector: buf}
 							reply = shared.TableLockingReply{Success: false}
