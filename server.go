@@ -7,9 +7,9 @@ import (
 	"os"
 	"time"
 
+	"./dbStructs"
 	"./serverAPI"
 	"./shared"
-	"./dbStructs"
 	"github.com/DistributedClocks/GoVector/govec"
 
 	"strings"
@@ -32,6 +32,7 @@ func main() {
 	lbsIP := os.Args[1]
 	serverIP := os.Args[2]
 	crashServer := os.Args[3]
+	tableNameArgs := os.Args[4:]
 
 	if crashServer == "true" {
 		shared.CrashServer = true
@@ -39,20 +40,27 @@ func main() {
 		shared.CrashServer = false
 	}
 
-	// TODO provide as cmd arguments
-	serverAPI.CreateTable("A")
-	serverAPI.CreateTable("B")
-	serverAPI.CreateTable("C")
-	// TODO disallow any clients to use these tables
-	serverAPI.CreateTable("A"+"_BACKUP")
-	serverAPI.CreateTable("B"+"_BACKUP")
-	serverAPI.CreateTable("C"+"_BACKUP")
+	for _, tableName := range tableNameArgs {
+		serverAPI.CreateTable(tableName)
+		serverAPI.CreateTable(tableName + "_BACKUP")
+	}
+	// // TODO provide as cmd arguments
+	// serverAPI.CreateTable("A")
+	// serverAPI.CreateTable("B")
+	// serverAPI.CreateTable("C")
+	// // TODO disallow any clients to use these tables
+	// serverAPI.CreateTable("A" + "_BACKUP")
+	// serverAPI.CreateTable("B" + "_BACKUP")
+	// serverAPI.CreateTable("C" + "_BACKUP")
 
 	// when a new server joins, need to ask peers whether these tables are already locked
 	serverAPI.AllTblLocks.Lock()
-	serverAPI.AllTblLocks.All = map[string]bool{"A": false, "B": false, "C": false}
+	// serverAPI.AllTblLocks.All = map[string]bool{"A": false, "B": false, "C": false}
+	serverAPI.AllTblLocks.All = map[string]bool{}
+	for _, tableName := range tableNameArgs {
+		serverAPI.AllTblLocks.All[tableName] = false
+	}
 	serverAPI.AllTblLocks.Unlock()
-
 
 	//Open listener
 	listener, err := net.Listen("tcp", serverIP)
@@ -80,15 +88,15 @@ func main() {
 	for _, tableName := range tableNames {
 		tablesAndLocks[tableName] = false
 	}
-	serverAPI.GoLogger.LogLocalEvent("Server has tables: "+strings.Join(tableNames, ", "))
+	serverAPI.GoLogger.LogLocalEvent("Server has tables: " + strings.Join(tableNames, ", "))
 
 	// are all tables unlocked at this point? if peer owns a lock, then I should also be locked
 	serverAPI.AllServers.Lock()
 	serverAPI.AllServers.All[serverAPI.SelfIP] = &serverAPI.Connection{
 		serverAPI.SelfIP,
 		time.Now().UnixNano(),
-		nil, // no handle for self
-		tablesAndLocks,		// I don't own any locks
+		nil,            // no handle for self
+		tablesAndLocks, // I don't own any locks
 		0,
 	}
 	serverAPI.AllServers.Unlock()
@@ -153,7 +161,6 @@ func main() {
 
 		serverAPI.AllServers.Lock()
 
-
 		if _, exists := serverAPI.AllServers.All[neighbour]; exists {
 			panic("IP already registered")
 		}
@@ -176,7 +183,7 @@ func main() {
 			time.Now().UnixNano(),
 			conn,
 			serverTables[neighbour],
-			0,		// use channel to stop Monitor
+			0, // use channel to stop Monitor
 
 		}
 

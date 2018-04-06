@@ -5,31 +5,13 @@ To run testLBS.go
     go run testLBS.go "127.0.0.1:54321"
 
 To run testLock.go
-    go run server.go "127.0.0.1:54345" "127.0.0.1:54321"
+    go run server.go "127.0.0.1:54345" "127.0.0.1:54321" "false" "A" "B" "C"
     go run testLock.go "127.0.0.1:54345"
-
-To test heartbeats between servers
-    go run lbs.go "127.0.0.1:8080" "false"
-    go run server.go "127.0.0.1:8080" "127.0.0.1:8081"
-    go run server.go "127.0.0.1:8080" "127.0.0.1:8082"
-    go run server.go "127.0.0.1:8080" "127.0.0.1:8083"
-
-To test app.go (connections between server, lbs and clients)
-    In another terminal:
-    go run lbs.go 0.0.0.0:9990 "false"
-
-    In another terminal:
-    go run server.go 0.0.0.0:9990 127.0.0.1:12345
-
-    In another terminal
-    go run app.go "127.0.0.1:54321" "127.0.0.1:9999" 
-
-To use GoVector, download it, follow instructions on the project GitHub
 
 To test server, lbs, and client together (single client):
     go run lbs.go "127.0.0.1:54321" "false"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12345"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12346"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12345" "false" "A" "B"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12346" "false" "A" "B" "C"
     go run app.go "127.0.0.1:54321" "127.0.0.1:9999" "1"
 
     sed -i '3,$d' shiviz/govectorLog.txt
@@ -78,15 +60,15 @@ To test on VM:
     VM1:
     go run lbs.go "10.0.0.4:54321" "false"
     VM2:
-    go run server.go "40.125.70.162:54321" "10.0.0.5:12345" "false"
+    go run server.go "40.125.70.162:54321" "10.0.0.5:12345" "false" "A" "B"
     VM3:
-    go run server.go "40.125.70.162:54321" "10.0.0.6:12346" "false"
-    VM4:
-    go run server.go "40.125.70.162:54321" "10.0.0.7:12347" "false"
+    go run server.go "40.125.70.162:54321" "10.0.0.6:12346" "false" "B" "C"
+    VM4: 
+    go run server.go "40.125.70.162:54321" "10.0.0.7:12347" "false" "A" "C"
     VM5:
     go run app.go "40.125.70.162:54321" "10.0.0.8:12348" "0"
     VM6:
-    go run server.go "40.125.70.162:54321" "10.0.0.9:12349" "false"
+    go run server.go "40.125.70.162:54321" "10.0.0.9:12349" "false" "A" "B"
     VM7:
     go run app.go "40.125.70.162:54321" "10.0.0.10:12350" "0"
 
@@ -159,9 +141,9 @@ To test server crash (without recovery right now) enter the following numbers to
 
     Example:
     go run lbs.go "127.0.0.1:54321" "false"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12345" "true"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12346" "false"
-    go run server.go "127.0.0.1:54321" "127.0.0.1:12347" "false"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12345" "true" "A" "B"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12346" "false" "B" "C"
+    go run server.go "127.0.0.1:54321" "127.0.0.1:12347" "false" "A" "C"
     go run app.go "127.0.0.1:54321" "127.0.0.1:12348" "6"
 
     sed -i '3,$d' shiviz/govectorLog.txt
