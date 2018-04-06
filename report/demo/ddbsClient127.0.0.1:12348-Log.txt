@@ -1,0 +1,175 @@
+client127.0.0.1:12348 {"client127.0.0.1:12348":1}
+Initialization Complete
+client127.0.0.1:12348 {"client127.0.0.1:12348":2}
+Send LBS.GetServers
+client127.0.0.1:12348 {"server127.0.0.1:12345":5, "LBS":15, "server127.0.0.1:12346":5, "server127.0.0.1:12347":5, "client127.0.0.1:12348":3}
+Received LBS.GetServers
+client127.0.0.1:12348 {"server127.0.0.1:12347":5, "client127.0.0.1:12348":4, "server127.0.0.1:12345":5, "LBS":15, "server127.0.0.1:12346":5}
+Send ServerConn.ClientConnect127.0.0.1:12345
+client127.0.0.1:12348 {"server127.0.0.1:12347":17, "client127.0.0.1:12348":5, "server127.0.0.1:12345":20, "LBS":15, "server127.0.0.1:12346":18}
+Established connection to server 127.0.0.1:12345
+client127.0.0.1:12348 {"server127.0.0.1:12345":20, "LBS":15, "server127.0.0.1:12346":18, "server127.0.0.1:12347":17, "client127.0.0.1:12348":6}
+Send ServerConn.ClientConnect127.0.0.1:12346
+client127.0.0.1:12348 {"server127.0.0.1:12345":20, "LBS":15, "server127.0.0.1:12346":20, "server127.0.0.1:12347":17, "client127.0.0.1:12348":7}
+Established connection to server 127.0.0.1:12346
+client127.0.0.1:12348 {"client127.0.0.1:12348":8, "server127.0.0.1:12345":20, "LBS":15, "server127.0.0.1:12346":20, "server127.0.0.1:12347":17}
+Send ServerConn.TableLock A
+client127.0.0.1:12348 {"LBS":15, "server127.0.0.1:12346":20, "server127.0.0.1:12347":20, "client127.0.0.1:12348":9, "server127.0.0.1:12345":24}
+Received result A
+client127.0.0.1:12348 {"server127.0.0.1:12347":20, "client127.0.0.1:12348":10, "server127.0.0.1:12345":24, "LBS":15, "server127.0.0.1:12346":20}
+Send ServerConn.TableLock B
+client127.0.0.1:12348 {"client127.0.0.1:12348":11, "server127.0.0.1:12345":26, "LBS":15, "server127.0.0.1:12346":24, "server127.0.0.1:12347":20}
+Received result B
+client127.0.0.1:12348 {"client127.0.0.1:12348":12, "server127.0.0.1:12345":26, "LBS":15, "server127.0.0.1:12346":24, "server127.0.0.1:12347":20}
+Send ExecuteOperation
+client127.0.0.1:12348 {"server127.0.0.1:12347":20, "client127.0.0.1:12348":13, "server127.0.0.1:12345":28, "LBS":15, "server127.0.0.1:12346":24}
+TableCommands.GetTableContents succeeded Table: A
+{
+	(  Key: test0; name: John; age: 20; gender: M; )
+	(  Key: test1; age: 30; gender: F; name: Alice; )
+	(  Key: test2; gender: M; name: Bob; age: 50; )
+}
+client127.0.0.1:12348 {"server127.0.0.1:12345":28, "LBS":15, "server127.0.0.1:12346":24, "server127.0.0.1:12347":20, "client127.0.0.1:12348":14}
+Send ExecuteOperation
+client127.0.0.1:12348 {"server127.0.0.1:12345":28, "LBS":15, "server127.0.0.1:12346":26, "server127.0.0.1:12347":20, "client127.0.0.1:12348":15}
+TableCommands.GetTableContents succeeded Table: B
+{
+	(  Key: k0; company: Facebook; emp_id: test0; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+}
+client127.0.0.1:12348 {"server127.0.0.1:12345":28, "LBS":15, "server127.0.0.1:12346":26, "server127.0.0.1:12347":20, "client127.0.0.1:12348":16}
+Locally joining tables : A and B
+client127.0.0.1:12348 {"server127.0.0.1:12345":28, "LBS":15, "server127.0.0.1:12346":26, "server127.0.0.1:12347":20, "client127.0.0.1:12348":17}
+Local join finished
+client127.0.0.1:12348 {"client127.0.0.1:12348":18, "server127.0.0.1:12345":28, "LBS":15, "server127.0.0.1:12346":26, "server127.0.0.1:12347":20}
+Send TransactionManager.prepareCommit
+client127.0.0.1:12348 {"server127.0.0.1:12345":32, "LBS":15, "server127.0.0.1:12346":26, "server127.0.0.1:12347":22, "client127.0.0.1:12348":19}
+TransactionManager.PrepareCommit succeeded
+client127.0.0.1:12348 {"server127.0.0.1:12345":32, "LBS":15, "server127.0.0.1:12346":26, "server127.0.0.1:12347":22, "client127.0.0.1:12348":20}
+Send TransactionManager.prepareCommit
+client127.0.0.1:12348 {"server127.0.0.1:12346":30, "server127.0.0.1:12347":22, "client127.0.0.1:12348":21, "server127.0.0.1:12345":34, "LBS":15}
+TransactionManager.PrepareCommit succeeded
+client127.0.0.1:12348 {"server127.0.0.1:12345":34, "LBS":15, "server127.0.0.1:12346":30, "server127.0.0.1:12347":22, "client127.0.0.1:12348":22}
+Send TransactionManager.CommitTransaction
+client127.0.0.1:12348 {"server127.0.0.1:12347":24, "client127.0.0.1:12348":23, "server127.0.0.1:12345":38, "LBS":15, "server127.0.0.1:12346":30}
+TransactionManager.CommitTransaction succeeded
+client127.0.0.1:12348 {"server127.0.0.1:12345":38, "LBS":15, "server127.0.0.1:12346":30, "server127.0.0.1:12347":24, "client127.0.0.1:12348":24}
+Send TransactionManager.CommitTransaction
+client127.0.0.1:12348 {"server127.0.0.1:12347":24, "client127.0.0.1:12348":25, "server127.0.0.1:12345":40, "LBS":15, "server127.0.0.1:12346":34}
+TransactionManager.CommitTransaction succeeded
+client127.0.0.1:12348 {"client127.0.0.1:12348":26, "server127.0.0.1:12345":40, "LBS":15, "server127.0.0.1:12346":34, "server127.0.0.1:12347":24}
+Send ServerConn.TableUnlock A
+client127.0.0.1:12348 {"server127.0.0.1:12347":26, "client127.0.0.1:12348":27, "server127.0.0.1:12345":44, "LBS":15, "server127.0.0.1:12346":34}
+Received result A
+client127.0.0.1:12348 {"server127.0.0.1:12346":34, "server127.0.0.1:12347":26, "client127.0.0.1:12348":28, "server127.0.0.1:12345":44, "LBS":15}
+Send ServerConn.TableUnlock B
+client127.0.0.1:12348 {"server127.0.0.1:12347":26, "client127.0.0.1:12348":29, "server127.0.0.1:12345":46, "LBS":15, "server127.0.0.1:12346":38}
+Received result B
+client127.0.0.1:12348 {"LBS":15, "server127.0.0.1:12346":38, "server127.0.0.1:12347":26, "client127.0.0.1:12348":30, "server127.0.0.1:12345":46}
+Transaction finished, result : Table: A
+{
+	(  Key: test0; name: John; age: 20; gender: M; )
+	(  Key: test1; gender: F; name: Alice; age: 30; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+}, Table: B
+{
+	(  Key: k1; emp_id: test1; company: Amazon; )
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+	(  Key: k0; company: Facebook; emp_id: test0; )
+}, Table: A joined with B
+{
+	(  Key: k2 + test2; company: Microsoft; emp_id: test2; name: Bob; age: 50; gender: M; )
+	(  Key: k0 + test0; emp_id: test0; company: Facebook; name: John; age: 20; gender: M; )
+	(  Key: k1 + test1; company: Amazon; emp_id: test1; age: 30; gender: F; name: Alice; )
+}
+client127.0.0.1:12348 {"server127.0.0.1:12347":26, "client127.0.0.1:12348":31, "server127.0.0.1:12345":46, "LBS":15, "server127.0.0.1:12346":38}
+Close connection to 127.0.0.1:12345
+client127.0.0.1:12348 {"server127.0.0.1:12345":46, "LBS":15, "server127.0.0.1:12346":38, "server127.0.0.1:12347":26, "client127.0.0.1:12348":32}
+Close connection to 127.0.0.1:12346
+client127.0.0.1:12348 {"server127.0.0.1:12345":46, "LBS":15, "server127.0.0.1:12346":38, "server127.0.0.1:12347":26, "client127.0.0.1:12348":33}
+Transaction succeeded
+client127.0.0.1:12348 {"LBS":15, "server127.0.0.1:12346":38, "server127.0.0.1:12347":26, "client127.0.0.1:12348":34, "server127.0.0.1:12345":46}
+Send LBS.GetServers
+client127.0.0.1:12348 {"server127.0.0.1:12347":26, "client127.0.0.1:12348":35, "server127.0.0.1:12345":46, "LBS":17, "server127.0.0.1:12346":38}
+Received LBS.GetServers
+client127.0.0.1:12348 {"LBS":17, "server127.0.0.1:12346":38, "server127.0.0.1:12347":26, "client127.0.0.1:12348":36, "server127.0.0.1:12345":46}
+Send ServerConn.ClientConnect127.0.0.1:12345
+client127.0.0.1:12348 {"client127.0.0.1:12348":37, "server127.0.0.1:12345":48, "LBS":17, "server127.0.0.1:12346":38, "server127.0.0.1:12347":26}
+Established connection to server 127.0.0.1:12345
+client127.0.0.1:12348 {"server127.0.0.1:12345":48, "LBS":17, "server127.0.0.1:12346":38, "server127.0.0.1:12347":26, "client127.0.0.1:12348":38}
+Send ServerConn.ClientConnect127.0.0.1:12346
+client127.0.0.1:12348 {"server127.0.0.1:12346":40, "server127.0.0.1:12347":26, "client127.0.0.1:12348":39, "server127.0.0.1:12345":48, "LBS":17}
+Established connection to server 127.0.0.1:12346
+client127.0.0.1:12348 {"server127.0.0.1:12346":40, "server127.0.0.1:12347":26, "client127.0.0.1:12348":40, "server127.0.0.1:12345":48, "LBS":17}
+Send ServerConn.TableLock A
+client127.0.0.1:12348 {"client127.0.0.1:12348":41, "server127.0.0.1:12345":52, "LBS":17, "server127.0.0.1:12346":40, "server127.0.0.1:12347":28}
+Received result A
+client127.0.0.1:12348 {"server127.0.0.1:12347":28, "client127.0.0.1:12348":42, "server127.0.0.1:12345":52, "LBS":17, "server127.0.0.1:12346":40}
+Send ServerConn.TableLock B
+client127.0.0.1:12348 {"client127.0.0.1:12348":43, "server127.0.0.1:12345":54, "LBS":17, "server127.0.0.1:12346":44, "server127.0.0.1:12347":28}
+Received result B
+client127.0.0.1:12348 {"client127.0.0.1:12348":44, "server127.0.0.1:12345":54, "LBS":17, "server127.0.0.1:12346":44, "server127.0.0.1:12347":28}
+Send ExecuteOperation
+client127.0.0.1:12348 {"server127.0.0.1:12346":44, "server127.0.0.1:12347":28, "client127.0.0.1:12348":45, "server127.0.0.1:12345":56, "LBS":17}
+TableCommands.DeleteRow succeeded for table A
+client127.0.0.1:12348 {"LBS":17, "server127.0.0.1:12346":44, "server127.0.0.1:12347":28, "client127.0.0.1:12348":46, "server127.0.0.1:12345":56}
+Send ExecuteOperation
+client127.0.0.1:12348 {"client127.0.0.1:12348":47, "server127.0.0.1:12345":56, "LBS":17, "server127.0.0.1:12346":46, "server127.0.0.1:12347":28}
+TableCommands.DeleteRow succeeded for table B
+client127.0.0.1:12348 {"client127.0.0.1:12348":48, "server127.0.0.1:12345":56, "LBS":17, "server127.0.0.1:12346":46, "server127.0.0.1:12347":28}
+Send ExecuteOperation
+client127.0.0.1:12348 {"client127.0.0.1:12348":49, "server127.0.0.1:12345":58, "LBS":17, "server127.0.0.1:12346":46, "server127.0.0.1:12347":28}
+TableCommands.GetTableContents succeeded Table: A
+{
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+	(  Key: test2; gender: M; name: Bob; age: 50; )
+}
+client127.0.0.1:12348 {"client127.0.0.1:12348":50, "server127.0.0.1:12345":58, "LBS":17, "server127.0.0.1:12346":46, "server127.0.0.1:12347":28}
+Send ExecuteOperation
+client127.0.0.1:12348 {"server127.0.0.1:12346":48, "server127.0.0.1:12347":28, "client127.0.0.1:12348":51, "server127.0.0.1:12345":58, "LBS":17}
+TableCommands.GetTableContents succeeded Table: B
+{
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+}
+client127.0.0.1:12348 {"server127.0.0.1:12345":58, "LBS":17, "server127.0.0.1:12346":48, "server127.0.0.1:12347":28, "client127.0.0.1:12348":52}
+Send TransactionManager.prepareCommit
+client127.0.0.1:12348 {"server127.0.0.1:12346":48, "server127.0.0.1:12347":30, "client127.0.0.1:12348":53, "server127.0.0.1:12345":62, "LBS":17}
+TransactionManager.PrepareCommit succeeded
+client127.0.0.1:12348 {"LBS":17, "server127.0.0.1:12346":48, "server127.0.0.1:12347":30, "client127.0.0.1:12348":54, "server127.0.0.1:12345":62}
+Send TransactionManager.prepareCommit
+client127.0.0.1:12348 {"server127.0.0.1:12345":64, "LBS":17, "server127.0.0.1:12346":52, "server127.0.0.1:12347":30, "client127.0.0.1:12348":55}
+TransactionManager.PrepareCommit succeeded
+client127.0.0.1:12348 {"server127.0.0.1:12347":30, "client127.0.0.1:12348":56, "server127.0.0.1:12345":64, "LBS":17, "server127.0.0.1:12346":52}
+Send TransactionManager.CommitTransaction
+client127.0.0.1:12348 {"LBS":17, "server127.0.0.1:12346":52, "server127.0.0.1:12347":32, "client127.0.0.1:12348":57, "server127.0.0.1:12345":68}
+TransactionManager.CommitTransaction succeeded
+client127.0.0.1:12348 {"server127.0.0.1:12347":32, "client127.0.0.1:12348":58, "server127.0.0.1:12345":68, "LBS":17, "server127.0.0.1:12346":52}
+Send TransactionManager.CommitTransaction
+client127.0.0.1:12348 {"server127.0.0.1:12346":56, "server127.0.0.1:12347":32, "client127.0.0.1:12348":59, "server127.0.0.1:12345":70, "LBS":17}
+TransactionManager.CommitTransaction succeeded
+client127.0.0.1:12348 {"client127.0.0.1:12348":60, "server127.0.0.1:12345":70, "LBS":17, "server127.0.0.1:12346":56, "server127.0.0.1:12347":32}
+Send ServerConn.TableUnlock A
+client127.0.0.1:12348 {"client127.0.0.1:12348":61, "server127.0.0.1:12345":74, "LBS":17, "server127.0.0.1:12346":56, "server127.0.0.1:12347":34}
+Received result A
+client127.0.0.1:12348 {"server127.0.0.1:12347":34, "client127.0.0.1:12348":62, "server127.0.0.1:12345":74, "LBS":17, "server127.0.0.1:12346":56}
+Send ServerConn.TableUnlock B
+client127.0.0.1:12348 {"server127.0.0.1:12346":60, "server127.0.0.1:12347":34, "client127.0.0.1:12348":63, "server127.0.0.1:12345":76, "LBS":17}
+Received result B
+client127.0.0.1:12348 {"LBS":17, "server127.0.0.1:12346":60, "server127.0.0.1:12347":34, "client127.0.0.1:12348":64, "server127.0.0.1:12345":76}
+Transaction finished, result : Table: A
+{
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+}, Table: B
+{
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+}
+client127.0.0.1:12348 {"LBS":17, "server127.0.0.1:12346":60, "server127.0.0.1:12347":34, "client127.0.0.1:12348":65, "server127.0.0.1:12345":76}
+Close connection to 127.0.0.1:12345
+client127.0.0.1:12348 {"server127.0.0.1:12347":34, "client127.0.0.1:12348":66, "server127.0.0.1:12345":76, "LBS":17, "server127.0.0.1:12346":60}
+Close connection to 127.0.0.1:12346
+client127.0.0.1:12348 {"server127.0.0.1:12347":34, "client127.0.0.1:12348":67, "server127.0.0.1:12345":76, "LBS":17, "server127.0.0.1:12346":60}
+Transaction succeeded

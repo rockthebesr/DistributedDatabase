@@ -1,0 +1,34 @@
+LBS {"LBS":1}
+Initialization Complete
+LBS {"server127.0.0.1:12345":3, "LBS":2}
+Received AddMappings()
+LBS {"LBS":3, "server127.0.0.1:12345":3}
+Sending AddMappings()
+LBS {"server127.0.0.1:12345":5, "LBS":4}
+Received GetPeers()
+LBS {"server127.0.0.1:12345":5, "LBS":5}
+Sending GetPeers()
+LBS {"server127.0.0.1:12345":5, "LBS":6, "server127.0.0.1:12346":3}
+Received AddMappings()
+LBS {"server127.0.0.1:12345":5, "LBS":7, "server127.0.0.1:12346":3}
+Sending AddMappings()
+LBS {"LBS":8, "server127.0.0.1:12346":5, "server127.0.0.1:12345":5}
+Received GetPeers()
+LBS {"server127.0.0.1:12345":5, "LBS":9, "server127.0.0.1:12346":5}
+Sending GetPeers()
+LBS {"server127.0.0.1:12345":5, "LBS":10, "server127.0.0.1:12346":5, "server127.0.0.1:12347":3}
+Received AddMappings()
+LBS {"server127.0.0.1:12346":5, "server127.0.0.1:12347":3, "server127.0.0.1:12345":5, "LBS":11}
+Sending AddMappings()
+LBS {"server127.0.0.1:12346":5, "server127.0.0.1:12347":5, "server127.0.0.1:12345":5, "LBS":12}
+Received GetPeers()
+LBS {"server127.0.0.1:12347":5, "server127.0.0.1:12345":5, "LBS":13, "server127.0.0.1:12346":5}
+Sending GetPeers()
+LBS {"server127.0.0.1:12346":5, "server127.0.0.1:12347":5, "server127.0.0.1:12345":5, "LBS":14, "client127.0.0.1:12348":2}
+Received GetServers()
+LBS {"server127.0.0.1:12347":5, "server127.0.0.1:12345":5, "LBS":15, "client127.0.0.1:12348":2, "server127.0.0.1:12346":5}
+Sending GetServers()
+LBS {"client127.0.0.1:12348":34, "server127.0.0.1:12346":38, "server127.0.0.1:12347":26, "server127.0.0.1:12345":46, "LBS":16}
+Received GetServers()
+LBS {"server127.0.0.1:12345":46, "LBS":17, "client127.0.0.1:12348":34, "server127.0.0.1:12346":38, "server127.0.0.1:12347":26}
+Sending GetServers()

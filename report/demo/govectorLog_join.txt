@@ -1,0 +1,504 @@
+(?<host>\w+) (?<clock>\{.*\})\n(?<event>.*)
+
+LBS {"LBS":1}
+Initialization Complete
+LBS {"serverX":3, "LBS":2}
+Received AddMappings()
+LBS {"LBS":3, "serverX":3}
+Sending AddMappings()
+LBS {"serverX":5, "LBS":4}
+Received GetPeers()
+LBS {"serverX":5, "LBS":5}
+Sending GetPeers()
+LBS {"serverX":5, "LBS":6, "serverY":3}
+Received AddMappings()
+LBS {"serverX":5, "LBS":7, "serverY":3}
+Sending AddMappings()
+LBS {"LBS":8, "serverY":5, "serverX":5}
+Received GetPeers()
+LBS {"serverX":5, "LBS":9, "serverY":5}
+Sending GetPeers()
+LBS {"serverX":5, "LBS":10, "serverY":5, "serverZ":3}
+Received AddMappings()
+LBS {"serverY":5, "serverZ":3, "serverX":5, "LBS":11}
+Sending AddMappings()
+LBS {"serverY":5, "serverZ":5, "serverX":5, "LBS":12}
+Received GetPeers()
+LBS {"serverZ":5, "serverX":5, "LBS":13, "serverY":5}
+Sending GetPeers()
+LBS {"serverY":5, "serverZ":5, "serverX":5, "LBS":14, "client127.0.0.1:12348":2}
+Received GetServers()
+LBS {"serverZ":5, "serverX":5, "LBS":15, "client127.0.0.1:12348":2, "serverY":5}
+Sending GetServers()
+LBS {"client127.0.0.1:12348":34, "serverY":38, "serverZ":26, "serverX":46, "LBS":16}
+Received GetServers()
+LBS {"serverX":46, "LBS":17, "client127.0.0.1:12348":34, "serverY":38, "serverZ":26}
+Sending GetServers()
+serverX {"serverX":1}
+Initialization Complete
+serverX {"serverX":2}
+Server has tables: A_BACKUP, B, B_BACKUP, A
+serverX {"serverX":3}
+Sending AddMappings to LBS
+serverX {"serverX":4, "LBS":3}
+Received AddMappings from LBS
+serverX {"LBS":3, "serverX":5}
+Sending GetPeers to LBS
+serverX {"serverX":6, "LBS":5}
+Received GetPeers from LBS
+serverX {"serverX":7, "LBS":9, "serverY":7}
+Received ConnectToPeer from Server
+serverX {"serverX":8, "LBS":9, "serverY":7}
+Sending ConnectToPeer back
+serverX {"serverX":9, "LBS":9, "serverY":9}
+Received GetTableContents 
+serverX {"serverY":9, "serverX":10, "LBS":9}
+Sending GetTableContents reply= Table: B
+{
+	(  Key: k1; company: Amazon; emp_id: test1; )
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+	(  Key: k0; company: Facebook; emp_id: test0; )
+}
+serverX {"serverY":11, "serverX":11, "LBS":9}
+Received GetTableContents 
+serverX {"serverX":12, "LBS":9, "serverY":11}
+Sending GetTableContents reply= Table: B_BACKUP
+{
+	(  Key: k0; company: Facebook; emp_id: test0; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+}
+serverX {"serverY":18, "serverX":13, "LBS":13, "serverZ":13}
+Received ConnectToPeer from Server
+serverX {"serverX":14, "LBS":13, "serverZ":13, "serverY":18}
+Sending ConnectToPeer back
+serverX {"LBS":13, "serverZ":15, "serverY":18, "serverX":15}
+Received GetTableContents 
+serverX {"serverY":18, "serverX":16, "LBS":13, "serverZ":15}
+Sending GetTableContents reply= Table: A
+{
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+	(  Key: test0; name: John; age: 20; gender: M; )
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+}
+serverX {"LBS":13, "serverZ":17, "serverY":18, "serverX":17}
+Received GetTableContents 
+serverX {"LBS":13, "serverZ":17, "serverY":18, "serverX":18}
+Sending GetTableContents reply= Table: A_BACKUP
+{
+	(  Key: test0; name: John; age: 20; gender: M; )
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+}
+serverX {"serverZ":17, "serverY":18, "serverX":19, "LBS":15, "client127.0.0.1:12348":4}
+Received ClientConnect from Client
+serverX {"serverZ":17, "serverY":18, "serverX":20, "LBS":15, "client127.0.0.1:12348":4}
+Sending ClientConnect back
+serverX {"serverX":21, "LBS":15, "client127.0.0.1:12348":8, "serverZ":17, "serverY":20}
+Received TableLock() A tablesLockedByClient=
+serverX {"LBS":15, "client127.0.0.1:12348":8, "serverZ":17, "serverY":20, "serverX":22}
+Sending TableUnavailable to server Z
+serverX {"client127.0.0.1:12348":8, "serverZ":20, "serverY":20, "serverX":23, "LBS":15}
+Received TableUnavailable from server Z
+serverX {"serverX":24, "LBS":15, "client127.0.0.1:12348":8, "serverZ":20, "serverY":20}
+Sending TableLock() tablesLockedByClient=A
+serverX {"LBS":15, "client127.0.0.1:12348":10, "serverZ":20, "serverY":22, "serverX":25}
+Received TableUnavailable()
+serverX {"serverZ":20, "serverY":22, "serverX":26, "LBS":15, "client127.0.0.1:12348":10}
+Sending TableUnavailable()
+serverX {"serverX":27, "LBS":15, "client127.0.0.1:12348":12, "serverZ":20, "serverY":24}
+Received GetTableContents 
+serverX {"serverZ":20, "serverY":24, "serverX":28, "LBS":15, "client127.0.0.1:12348":12}
+Sending GetTableContents reply= Table: A
+{
+	(  Key: test0; name: John; age: 20; gender: M; )
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+}
+serverX {"client127.0.0.1:12348":18, "serverZ":20, "serverY":26, "serverX":29, "LBS":15}
+Received PrepareCommit() from 127.0.0.1:12348
+serverX {"serverX":30, "LBS":15, "client127.0.0.1:12348":18, "serverZ":20, "serverY":26}
+Sending PrepareTableForCommit for table A
+serverX {"client127.0.0.1:12348":18, "serverZ":22, "serverY":26, "serverX":31, "LBS":15}
+Received PrepareTableForCommit reply
+serverX {"serverZ":22, "serverY":26, "serverX":32, "LBS":15, "client127.0.0.1:12348":18}
+Sending PrepareCommit successful back to127.0.0.1:12348
+serverX {"serverX":33, "LBS":15, "client127.0.0.1:12348":20, "serverZ":22, "serverY":28}
+Received PrepareTableForCommit for table B
+serverX {"serverY":28, "serverX":34, "LBS":15, "client127.0.0.1:12348":20, "serverZ":22}
+Sending PrepareTableForCommit result table =  Table: B
+{
+	(  Key: k2; emp_id: test2; company: Microsoft; )
+	(  Key: k0; company: Facebook; emp_id: test0; )
+	(  Key: k1; emp_id: test1; company: Amazon; )
+}
+serverX {"client127.0.0.1:12348":22, "serverZ":22, "serverY":30, "serverX":35, "LBS":15}
+Received CommitTransaction() from 127.0.0.1:12348
+serverX {"client127.0.0.1:12348":22, "serverZ":22, "serverY":30, "serverX":36, "LBS":15}
+Sending CommitTable for table A
+serverX {"serverX":37, "LBS":15, "client127.0.0.1:12348":22, "serverZ":24, "serverY":30}
+Received CommitTable reply
+serverX {"LBS":15, "client127.0.0.1:12348":22, "serverZ":24, "serverY":30, "serverX":38}
+Sending CommitTransction successful back to127.0.0.1:12348Table= Table: A
+{
+	(  Key: test1; gender: F; name: Alice; age: 30; )
+	(  Key: test2; gender: M; name: Bob; age: 50; )
+	(  Key: test0; name: John; age: 20; gender: M; )
+}
+serverX {"client127.0.0.1:12348":24, "serverZ":24, "serverY":32, "serverX":39, "LBS":15}
+Received CommitTable for table B
+serverX {"client127.0.0.1:12348":24, "serverZ":24, "serverY":32, "serverX":40, "LBS":15}
+Sending CommitTable result table =  Table: B
+{
+	(  Key: k2; emp_id: test2; company: Microsoft; )
+	(  Key: k0; company: Facebook; emp_id: test0; )
+	(  Key: k1; emp_id: test1; company: Amazon; )
+}
+serverX {"LBS":15, "client127.0.0.1:12348":26, "serverZ":24, "serverY":34, "serverX":41}
+Received TableUnlock()
+serverX {"client127.0.0.1:12348":26, "serverZ":24, "serverY":34, "serverX":42, "LBS":15}
+Sending TableAvailable to Z
+serverX {"client127.0.0.1:12348":26, "serverZ":26, "serverY":34, "serverX":43, "LBS":15}
+Received TableAvailable from server Z
+serverX {"serverZ":26, "serverY":34, "serverX":44, "LBS":15, "client127.0.0.1:12348":26}
+Sending TableUnlock() tablesLockedByClient=
+serverX {"serverY":36, "serverX":45, "LBS":15, "client127.0.0.1:12348":28, "serverZ":26}
+Received TableAvailable()
+serverX {"LBS":15, "client127.0.0.1:12348":28, "serverZ":26, "serverY":36, "serverX":46}
+Sending TableAvailable()
+serverX {"serverY":38, "serverX":47, "LBS":17, "client127.0.0.1:12348":36, "serverZ":26}
+Received ClientConnect from Client
+serverX {"serverY":38, "serverX":48, "LBS":17, "client127.0.0.1:12348":36, "serverZ":26}
+Sending ClientConnect back
+serverX {"client127.0.0.1:12348":40, "serverZ":26, "serverY":40, "serverX":49, "LBS":17}
+Received TableLock() A tablesLockedByClient=
+serverX {"serverY":40, "serverX":50, "LBS":17, "client127.0.0.1:12348":40, "serverZ":26}
+Sending TableUnavailable to server Z
+serverX {"client127.0.0.1:12348":40, "serverZ":28, "serverY":40, "serverX":51, "LBS":17}
+Received TableUnavailable from server Z
+serverX {"serverZ":28, "serverY":40, "serverX":52, "LBS":17, "client127.0.0.1:12348":40}
+Sending TableLock() tablesLockedByClient=A
+serverX {"LBS":17, "client127.0.0.1:12348":42, "serverZ":28, "serverY":42, "serverX":53}
+Received TableUnavailable()
+serverX {"client127.0.0.1:12348":42, "serverZ":28, "serverY":42, "serverX":54, "LBS":17}
+Sending TableUnavailable()
+serverX {"client127.0.0.1:12348":44, "serverZ":28, "serverY":44, "serverX":55, "LBS":17}
+Received DeleteRow 
+serverX {"serverX":56, "LBS":17, "client127.0.0.1:12348":44, "serverZ":28, "serverY":44}
+Sending DeleteRow from table=A key=test0
+serverX {"LBS":17, "client127.0.0.1:12348":48, "serverZ":28, "serverY":46, "serverX":57}
+Received GetTableContents 
+serverX {"LBS":17, "client127.0.0.1:12348":48, "serverZ":28, "serverY":46, "serverX":58}
+Sending GetTableContents reply= Table: A
+{
+	(  Key: test1; gender: F; name: Alice; age: 30; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+}
+serverX {"serverZ":28, "serverY":48, "serverX":59, "LBS":17, "client127.0.0.1:12348":52}
+Received PrepareCommit() from 127.0.0.1:12348
+serverX {"serverY":48, "serverX":60, "LBS":17, "client127.0.0.1:12348":52, "serverZ":28}
+Sending PrepareTableForCommit for table A
+serverX {"serverX":61, "LBS":17, "client127.0.0.1:12348":52, "serverZ":30, "serverY":48}
+Received PrepareTableForCommit reply
+serverX {"client127.0.0.1:12348":52, "serverZ":30, "serverY":48, "serverX":62, "LBS":17}
+Sending PrepareCommit successful back to127.0.0.1:12348
+serverX {"serverZ":30, "serverY":50, "serverX":63, "LBS":17, "client127.0.0.1:12348":54}
+Received PrepareTableForCommit for table B
+serverX {"serverY":50, "serverX":64, "LBS":17, "client127.0.0.1:12348":54, "serverZ":30}
+Sending PrepareTableForCommit result table =  Table: B
+{
+	(  Key: k2; emp_id: test2; company: Microsoft; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+}
+serverX {"LBS":17, "client127.0.0.1:12348":56, "serverZ":30, "serverY":52, "serverX":65}
+Received CommitTransaction() from 127.0.0.1:12348
+serverX {"client127.0.0.1:12348":56, "serverZ":30, "serverY":52, "serverX":66, "LBS":17}
+Sending CommitTable for table A
+serverX {"LBS":17, "client127.0.0.1:12348":56, "serverZ":32, "serverY":52, "serverX":67}
+Received CommitTable reply
+serverX {"client127.0.0.1:12348":56, "serverZ":32, "serverY":52, "serverX":68, "LBS":17}
+Sending CommitTransction successful back to127.0.0.1:12348Table= Table: A
+{
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+}
+serverX {"LBS":17, "client127.0.0.1:12348":58, "serverZ":32, "serverY":54, "serverX":69}
+Received CommitTable for table B
+serverX {"serverX":70, "LBS":17, "client127.0.0.1:12348":58, "serverZ":32, "serverY":54}
+Sending CommitTable result table =  Table: B
+{
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+}
+serverX {"serverY":56, "serverX":71, "LBS":17, "client127.0.0.1:12348":60, "serverZ":32}
+Received TableUnlock()
+serverX {"serverY":56, "serverX":72, "LBS":17, "client127.0.0.1:12348":60, "serverZ":32}
+Sending TableAvailable to Z
+serverX {"serverZ":34, "serverY":56, "serverX":73, "LBS":17, "client127.0.0.1:12348":60}
+Received TableAvailable from server Z
+serverX {"LBS":17, "client127.0.0.1:12348":60, "serverZ":34, "serverY":56, "serverX":74}
+Sending TableUnlock() tablesLockedByClient=
+serverX {"serverX":75, "LBS":17, "client127.0.0.1:12348":62, "serverZ":34, "serverY":58}
+Received TableAvailable()
+serverX {"serverX":76, "LBS":17, "client127.0.0.1:12348":62, "serverZ":34, "serverY":58}
+Sending TableAvailable()
+serverY {"serverY":1}
+Initialization Complete
+serverY {"serverY":2}
+Server has tables: B_BACKUP, C, C_BACKUP, B
+serverY {"serverY":3}
+Sending AddMappings to LBS
+serverY {"serverY":4, "serverX":5, "LBS":7}
+Received AddMappings from LBS
+serverY {"LBS":7, "serverY":5, "serverX":5}
+Sending GetPeers to LBS
+serverY {"serverY":6, "serverX":5, "LBS":9}
+Received GetPeers from LBS
+serverY {"serverY":7, "serverX":5, "LBS":9}
+Sending ConnectToPeer to Server
+serverY {"LBS":9, "serverY":8, "serverX":8}
+Received ConnectToPeer from Server
+serverY {"serverX":8, "LBS":9, "serverY":9}
+Send GetTableContents
+serverY {"LBS":9, "serverY":10, "serverX":10}
+TableCommands.GetTableContents succeeded  Table: B
+{
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+	(  Key: k0; company: Facebook; emp_id: test0; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+}
+serverY {"LBS":9, "serverY":11, "serverX":10}
+Send GetTableContents
+serverY {"serverX":12, "LBS":9, "serverY":12}
+TableCommands.GetTableContents succeeded  Table: B_BACKUP
+{
+	(  Key: k0; company: Facebook; emp_id: test0; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+}
+serverY {"serverY":13, "serverX":12, "LBS":13, "serverZ":7}
+Received ConnectToPeer from Server
+serverY {"serverY":14, "serverX":12, "LBS":13, "serverZ":7}
+Sending ConnectToPeer back
+serverY {"serverX":12, "LBS":13, "serverZ":9, "serverY":15}
+Received GetTableContents 
+serverY {"LBS":13, "serverZ":9, "serverY":16, "serverX":12}
+Sending GetTableContents reply= Table: C
+{
+	(  Key: t0; tv_show: Friends; )
+	(  Key: t1; tv_show: Simpsons; )
+}
+serverY {"serverZ":11, "serverY":17, "serverX":12, "LBS":13}
+Received GetTableContents 
+serverY {"serverY":18, "serverX":12, "LBS":13, "serverZ":11}
+Sending GetTableContents reply= Table: C_BACKUP
+{
+	(  Key: t0; tv_show: Friends; )
+	(  Key: t1; tv_show: Simpsons; )
+}
+serverY {"client127.0.0.1:12348":6, "serverZ":17, "serverY":19, "serverX":20, "LBS":15}
+Received ClientConnect from Client
+serverY {"LBS":15, "client127.0.0.1:12348":6, "serverZ":17, "serverY":20, "serverX":20}
+Sending ClientConnect back
+serverY {"client127.0.0.1:12348":10, "serverZ":20, "serverY":21, "serverX":24, "LBS":15}
+Received TableLock() B tablesLockedByClient=
+serverY {"client127.0.0.1:12348":10, "serverZ":20, "serverY":22, "serverX":24, "LBS":15}
+Sending TableUnavailable to server X
+serverY {"serverZ":20, "serverY":23, "serverX":26, "LBS":15, "client127.0.0.1:12348":10}
+Received TableUnavailable from server X
+serverY {"serverX":26, "LBS":15, "client127.0.0.1:12348":10, "serverZ":20, "serverY":24}
+Sending TableLock() tablesLockedByClient=B
+serverY {"serverX":28, "LBS":15, "client127.0.0.1:12348":14, "serverZ":20, "serverY":25}
+Received GetTableContents 
+serverY {"LBS":15, "client127.0.0.1:12348":14, "serverZ":20, "serverY":26, "serverX":28}
+Sending GetTableContents reply= Table: B
+{
+	(  Key: k0; company: Facebook; emp_id: test0; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+}
+serverY {"serverY":27, "serverX":32, "LBS":15, "client127.0.0.1:12348":20, "serverZ":22}
+Received PrepareCommit() from 127.0.0.1:12348
+serverY {"serverX":32, "LBS":15, "client127.0.0.1:12348":20, "serverZ":22, "serverY":28}
+Sending PrepareTableForCommit for table B
+serverY {"client127.0.0.1:12348":20, "serverZ":22, "serverY":29, "serverX":34, "LBS":15}
+Received PrepareTableForCommit reply
+serverY {"LBS":15, "client127.0.0.1:12348":20, "serverZ":22, "serverY":30, "serverX":34}
+Sending PrepareCommit successful back to127.0.0.1:12348
+serverY {"client127.0.0.1:12348":24, "serverZ":24, "serverY":31, "serverX":38, "LBS":15}
+Received CommitTransaction() from 127.0.0.1:12348
+serverY {"serverX":38, "LBS":15, "client127.0.0.1:12348":24, "serverZ":24, "serverY":32}
+Sending CommitTable for table B
+serverY {"LBS":15, "client127.0.0.1:12348":24, "serverZ":24, "serverY":33, "serverX":40}
+Received CommitTable reply
+serverY {"serverY":34, "serverX":40, "LBS":15, "client127.0.0.1:12348":24, "serverZ":24}
+Sending CommitTransction successful back to127.0.0.1:12348Table= Table: B
+{
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+	(  Key: k0; emp_id: test0; company: Facebook; )
+	(  Key: k1; emp_id: test1; company: Amazon; )
+}
+serverY {"LBS":15, "client127.0.0.1:12348":28, "serverZ":26, "serverY":35, "serverX":44}
+Received TableUnlock()
+serverY {"serverX":44, "LBS":15, "client127.0.0.1:12348":28, "serverZ":26, "serverY":36}
+Sending TableAvailable to X
+serverY {"serverX":46, "LBS":15, "client127.0.0.1:12348":28, "serverZ":26, "serverY":37}
+Received TableAvailable from server X
+serverY {"serverZ":26, "serverY":38, "serverX":46, "LBS":15, "client127.0.0.1:12348":28}
+Sending TableUnlock() tablesLockedByClient=
+serverY {"serverX":48, "LBS":17, "client127.0.0.1:12348":38, "serverZ":26, "serverY":39}
+Received ClientConnect from Client
+serverY {"LBS":17, "client127.0.0.1:12348":38, "serverZ":26, "serverY":40, "serverX":48}
+Sending ClientConnect back
+serverY {"serverY":41, "serverX":52, "LBS":17, "client127.0.0.1:12348":42, "serverZ":28}
+Received TableLock() B tablesLockedByClient=
+serverY {"serverX":52, "LBS":17, "client127.0.0.1:12348":42, "serverZ":28, "serverY":42}
+Sending TableUnavailable to server X
+serverY {"serverX":54, "LBS":17, "client127.0.0.1:12348":42, "serverZ":28, "serverY":43}
+Received TableUnavailable from server X
+serverY {"serverZ":28, "serverY":44, "serverX":54, "LBS":17, "client127.0.0.1:12348":42}
+Sending TableLock() tablesLockedByClient=B
+serverY {"LBS":17, "client127.0.0.1:12348":46, "serverZ":28, "serverY":45, "serverX":56}
+Received DeleteRow 
+serverY {"serverZ":28, "serverY":46, "serverX":56, "LBS":17, "client127.0.0.1:12348":46}
+Sending DeleteRow from table=B key=k0
+serverY {"serverX":58, "LBS":17, "client127.0.0.1:12348":50, "serverZ":28, "serverY":47}
+Received GetTableContents 
+serverY {"serverX":58, "LBS":17, "client127.0.0.1:12348":50, "serverZ":28, "serverY":48}
+Sending GetTableContents reply= Table: B
+{
+	(  Key: k2; company: Microsoft; emp_id: test2; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+}
+serverY {"serverX":62, "LBS":17, "client127.0.0.1:12348":54, "serverZ":30, "serverY":49}
+Received PrepareCommit() from 127.0.0.1:12348
+serverY {"serverY":50, "serverX":62, "LBS":17, "client127.0.0.1:12348":54, "serverZ":30}
+Sending PrepareTableForCommit for table B
+serverY {"serverY":51, "serverX":64, "LBS":17, "client127.0.0.1:12348":54, "serverZ":30}
+Received PrepareTableForCommit reply
+serverY {"serverZ":30, "serverY":52, "serverX":64, "LBS":17, "client127.0.0.1:12348":54}
+Sending PrepareCommit successful back to127.0.0.1:12348
+serverY {"LBS":17, "client127.0.0.1:12348":58, "serverZ":32, "serverY":53, "serverX":68}
+Received CommitTransaction() from 127.0.0.1:12348
+serverY {"serverZ":32, "serverY":54, "serverX":68, "LBS":17, "client127.0.0.1:12348":58}
+Sending CommitTable for table B
+serverY {"serverY":55, "serverX":70, "LBS":17, "client127.0.0.1:12348":58, "serverZ":32}
+Received CommitTable reply
+serverY {"serverX":70, "LBS":17, "client127.0.0.1:12348":58, "serverZ":32, "serverY":56}
+Sending CommitTransction successful back to127.0.0.1:12348Table= Table: B
+{
+	(  Key: k2; emp_id: test2; company: Microsoft; )
+	(  Key: k1; emp_id: test1; company: Amazon; )
+}
+serverY {"serverY":57, "serverX":74, "LBS":17, "client127.0.0.1:12348":62, "serverZ":34}
+Received TableUnlock()
+serverY {"serverY":58, "serverX":74, "LBS":17, "client127.0.0.1:12348":62, "serverZ":34}
+Sending TableAvailable to X
+serverY {"serverZ":34, "serverY":59, "serverX":76, "LBS":17, "client127.0.0.1:12348":62}
+Received TableAvailable from server X
+serverY {"client127.0.0.1:12348":62, "serverZ":34, "serverY":60, "serverX":76, "LBS":17}
+Sending TableUnlock() tablesLockedByClient=
+serverZ {"serverZ":1}
+Initialization Complete
+serverZ {"serverZ":2}
+Server has tables: C, C_BACKUP, A, A_BACKUP
+serverZ {"serverZ":3}
+Sending AddMappings to LBS
+serverZ {"serverZ":4, "serverX":5, "LBS":11, "serverY":5}
+Received AddMappings from LBS
+serverZ {"serverZ":5, "serverX":5, "LBS":11, "serverY":5}
+Sending GetPeers to LBS
+serverZ {"serverZ":6, "serverX":5, "LBS":13, "serverY":5}
+Received GetPeers from LBS
+serverZ {"LBS":13, "serverY":5, "serverZ":7, "serverX":5}
+Sending ConnectToPeer to Server
+serverZ {"serverZ":8, "serverX":12, "LBS":13, "serverY":14}
+Received ConnectToPeer from Server
+serverZ {"serverZ":9, "serverX":12, "LBS":13, "serverY":14}
+Send GetTableContents
+serverZ {"serverZ":10, "serverX":12, "LBS":13, "serverY":16}
+TableCommands.GetTableContents succeeded  Table: C
+{
+	(  Key: t0; tv_show: Friends; )
+	(  Key: t1; tv_show: Simpsons; )
+}
+serverZ {"serverX":12, "LBS":13, "serverY":16, "serverZ":11}
+Send GetTableContents
+serverZ {"serverX":12, "LBS":13, "serverY":18, "serverZ":12}
+TableCommands.GetTableContents succeeded  Table: C_BACKUP
+{
+	(  Key: t0; tv_show: Friends; )
+	(  Key: t1; tv_show: Simpsons; )
+}
+serverZ {"serverX":12, "LBS":13, "serverY":18, "serverZ":13}
+Sending ConnectToPeer to Server
+serverZ {"LBS":13, "serverY":18, "serverZ":14, "serverX":14}
+Received ConnectToPeer from Server
+serverZ {"serverY":18, "serverZ":15, "serverX":14, "LBS":13}
+Send GetTableContents
+serverZ {"serverZ":16, "serverX":16, "LBS":13, "serverY":18}
+TableCommands.GetTableContents succeeded  Table: A
+{
+	(  Key: test0; age: 20; gender: M; name: John; )
+	(  Key: test1; gender: F; name: Alice; age: 30; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+}
+serverZ {"serverZ":17, "serverX":16, "LBS":13, "serverY":18}
+Send GetTableContents
+serverZ {"serverY":18, "serverZ":18, "serverX":18, "LBS":13}
+TableCommands.GetTableContents succeeded  Table: A_BACKUP
+{
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+	(  Key: test0; name: John; age: 20; gender: M; )
+}
+serverZ {"client127.0.0.1:12348":8, "serverY":20, "serverZ":19, "serverX":22, "LBS":15}
+Received TableUnavailable()
+serverZ {"LBS":15, "client127.0.0.1:12348":8, "serverY":20, "serverZ":20, "serverX":22}
+Sending TableUnavailable()
+serverZ {"serverX":30, "LBS":15, "client127.0.0.1:12348":18, "serverY":26, "serverZ":21}
+Received PrepareTableForCommit for table A
+serverZ {"serverY":26, "serverZ":22, "serverX":30, "LBS":15, "client127.0.0.1:12348":18}
+Sending PrepareTableForCommit result table =  Table: A
+{
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+	(  Key: test2; age: 50; gender: M; name: Bob; )
+	(  Key: test0; name: John; age: 20; gender: M; )
+}
+serverZ {"client127.0.0.1:12348":22, "serverY":30, "serverZ":23, "serverX":36, "LBS":15}
+Received CommitTable for table A
+serverZ {"serverZ":24, "serverX":36, "LBS":15, "client127.0.0.1:12348":22, "serverY":30}
+Sending CommitTable result table =  Table: A
+{
+	(  Key: test0; name: John; age: 20; gender: M; )
+	(  Key: test1; gender: F; name: Alice; age: 30; )
+	(  Key: test2; gender: M; name: Bob; age: 50; )
+}
+serverZ {"serverX":42, "LBS":15, "client127.0.0.1:12348":26, "serverY":34, "serverZ":25}
+Received TableAvailable()
+serverZ {"LBS":15, "client127.0.0.1:12348":26, "serverY":34, "serverZ":26, "serverX":42}
+Sending TableAvailable()
+serverZ {"serverZ":27, "serverX":50, "LBS":17, "client127.0.0.1:12348":40, "serverY":40}
+Received TableUnavailable()
+serverZ {"serverZ":28, "serverX":50, "LBS":17, "client127.0.0.1:12348":40, "serverY":40}
+Sending TableUnavailable()
+serverZ {"serverY":48, "serverZ":29, "serverX":60, "LBS":17, "client127.0.0.1:12348":52}
+Received PrepareTableForCommit for table A
+serverZ {"serverY":48, "serverZ":30, "serverX":60, "LBS":17, "client127.0.0.1:12348":52}
+Sending PrepareTableForCommit result table =  Table: A
+{
+	(  Key: test1; age: 30; gender: F; name: Alice; )
+	(  Key: test2; gender: M; name: Bob; age: 50; )
+}
+serverZ {"serverY":52, "serverZ":31, "serverX":66, "LBS":17, "client127.0.0.1:12348":56}
+Received CommitTable for table A
+serverZ {"serverY":52, "serverZ":32, "serverX":66, "LBS":17, "client127.0.0.1:12348":56}
+Sending CommitTable result table =  Table: A
+{
+	(  Key: test1; age: 30; gender: F; name: Alice; )
+	(  Key: test2; gender: M; name: Bob; age: 50; )
+}
+serverZ {"serverZ":33, "serverX":72, "LBS":17, "client127.0.0.1:12348":60, "serverY":56}
+Received TableAvailable()
+serverZ {"serverY":56, "serverZ":34, "serverX":72, "LBS":17, "client127.0.0.1:12348":60}
+Sending TableAvailable()

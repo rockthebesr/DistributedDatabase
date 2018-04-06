@@ -179,7 +179,7 @@ func MonitorServers(k string, HeartbeatInterval time.Duration) {
 func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 	AllServers := new(AllConnection)
 	AllServers.RecentHeartbeat = map[string]int64{}
-	Logger = govec.InitGoVector("client"+localIP, "shiviz/ddbsClient"+localIP)
+	Logger = govec.InitGoVector("client"+localIP, "report/demo/ddbsClient"+localIP)
 	//Connect to lbs
 	loadBalancer, err := rpc.Dial("tcp", lbsIPAddr)
 	shared.CheckErr(err)

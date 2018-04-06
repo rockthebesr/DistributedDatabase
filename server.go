@@ -68,7 +68,7 @@ func main() {
 	defer listener.Close()
 
 	serverAPI.SelfIP = listener.Addr().String()
-	serverAPI.GoLogger = govec.InitGoVector("server"+serverAPI.SelfIP, "shiviz/ddbsServer"+serverAPI.SelfIP)
+	serverAPI.GoLogger = govec.InitGoVector("server"+serverAPI.SelfIP, "report/demo/ddbsServer"+serverAPI.SelfIP)
 
 	//Connect to the load balancer
 	lbsConn, err := rpc.Dial("tcp", lbsIP)

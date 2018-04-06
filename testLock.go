@@ -1,10 +1,10 @@
 package main
 
 import (
-	"os"
-	"net/rpc"
 	"./shared"
 	"github.com/DistributedClocks/GoVector/govec"
+	"net/rpc"
+	"os"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 	buf = Logger.PrepareSend("Sending ServerConn.TableLock A", "msg")
 	args := shared.TableLockingArg{
 		TableName: "A",
-		GoVector: buf,
+		GoVector:  buf,
 	}
 	err = c.Call("ServerConn.TableLock", &args, &reply)
 	shared.CheckError(err)
@@ -29,7 +29,7 @@ func main() {
 	buf = Logger.PrepareSend("Sending ServerConn.TableLock A", "msg")
 	args2 := shared.TableLockingArg{
 		TableName: "A",
-		GoVector: buf,
+		GoVector:  buf,
 	}
 	err = c.Call("ServerConn.TableLock", &args2, &reply)
 	shared.CheckError(err)
@@ -42,7 +42,7 @@ func main() {
 	buf = Logger.PrepareSend("Sending ServerConn.TableLock B", "msg")
 	args3 := shared.TableLockingArg{
 		TableName: "B",
-		GoVector: buf,
+		GoVector:  buf,
 	}
 	err = c.Call("ServerConn.TableLock", &args3, &reply)
 	shared.CheckError(err)
@@ -51,7 +51,7 @@ func main() {
 	buf = Logger.PrepareSend("Sending ServerConn.TableUnlock A", "msg")
 	args4 := shared.TableLockingArg{
 		TableName: "A",
-		GoVector: buf,
+		GoVector:  buf,
 	}
 	err = c.Call("ServerConn.TableUnlock", &args4, &reply)
 	shared.CheckError(err)
@@ -60,7 +60,7 @@ func main() {
 	buf = Logger.PrepareSend("Sending ServerConn.TableLock A", "msg")
 	args5 := shared.TableLockingArg{
 		TableName: "A",
-		GoVector: buf,
+		GoVector:  buf,
 	}
 	err = c.Call("ServerConn.TableLock", &args5, &reply)
 	shared.CheckError(err)
@@ -69,7 +69,7 @@ func main() {
 	buf = Logger.PrepareSend("Sending ServerConn.TableUnlock B", "msg")
 	args6 := shared.TableLockingArg{
 		TableName: "B",
-		GoVector: buf,
+		GoVector:  buf,
 	}
 	err = c.Call("ServerConn.TableUnlock", &args6, &reply)
 	shared.CheckError(err)
