@@ -45,9 +45,6 @@ var (
 	AllTblLocks = AllTableLocks{All: make(map[string]bool)}
 
 	Crash    = false
-
-	//TEMPORARY, REMOVE LATER
-	//AllServers    = AllConnection{All: map[string]*Connection{"127.0.0.1:54345": &Connection{TableMappings: map[string]bool{"A": false, "B": false, "C": false}}}}
 )
 
 type DisconnectedError string
@@ -461,39 +458,45 @@ func HandleServerCrash(k string) {
 				GoLogger.LogLocalEvent("Unlocking Table " + tableName + " for crashed server " + k)
 
 				AllTblLocks.All[tableName] = false
+
 				fmt.Println("Rolling back table " + tableName)
 				RollBackTable(tableName)
 				for _, peer := range AllServers.All {
 					if peer.Address != k && peer.Address != SelfIP {
-						conn := peer.Handle
-						if conn != nil {
-							fmt.Printf("Rolling back table %s for peer -> %s", tableName, peer.Address)
-							buf = GoLogger.PrepareSend("Send TransactionManager.RollBackPeer table="+tableName, "msg")
-							args := shared.TableLockingArg{TableName: tableName, GoVector: buf}
-							reply = shared.TableLockingReply{Success: false}
-							err := conn.Call("TransactionManager.RollBackPeer", &args, &reply)
-							shared.CheckError(err)
-							if err != nil || !reply.Success {
-								fmt.Println("Error occurred at 1")
-							} else {
-								fmt.Println("RollBackPeer succeeded")
-							}
-							GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
+						fmt.Println("peer owns tables -> ", peer.TableMappings[tableName])
+						if _, ok := peer.TableMappings[tableName]; ok {
+							conn := peer.Handle
+							if conn != nil {
+								fmt.Printf("Rolling back table %s for peer -> %s", tableName, peer.Address)
+								buf = GoLogger.PrepareSend("Send TransactionManager.RollBackPeer table="+tableName, "msg")
+								args := shared.TableLockingArg{TableName: tableName, GoVector: buf}
+								reply = shared.TableLockingReply{Success: false}
+								err := conn.Call("TransactionManager.RollBackPeer", &args, &reply)
+								shared.CheckError(err)
+								if err != nil || !reply.Success {
+									fmt.Println("Error occurred at 1")
+								} else {
+									fmt.Println("RollBackPeer succeeded")
+								}
+								GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
+								fmt.Printf("Finished rolling back table %s for peer -> %s\n", tableName, peer.Address)
 
-							buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable "+tableName, "msg")
-							args = shared.TableLockingArg{
-								SelfIP,
-								tableName,
-								buf,
+								fmt.Printf("Sending table available for table %s for peer -> %s\n", tableName, peer.Address)
+								buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable "+tableName, "msg")
+								args = shared.TableLockingArg{
+									SelfIP,
+									tableName,
+									buf,
+								}
+								err = conn.Call("ServerConn.TableAvailable", &args, &reply)
+								shared.CheckErr(err)
+								if err != nil {
+									GoLogger.UnpackReceive("Error "+tableName, reply.GoVector, &msg)
+								} else {
+									GoLogger.UnpackReceive("Received table available from server "+peer.Address, reply.GoVector, &msg)
+								}
+								fmt.Println("Sent table available to ", peer.Address)
 							}
-							err = conn.Call("ServerConn.TableAvailable", &args, &reply)
-							shared.CheckErr(err)
-							if err != nil {
-								GoLogger.UnpackReceive("Error "+tableName, reply.GoVector, &msg)
-							} else {
-								GoLogger.UnpackReceive("Received table available from server "+peer.Address, reply.GoVector, &msg)
-							}
-							fmt.Println("Sent table available to ", peer.Address)
 						}
 					}
 				}

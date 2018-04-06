@@ -1,104 +1,154 @@
 server127.0.0.1:12347 {"server127.0.0.1:12347":1}
 Initialization Complete
 server127.0.0.1:12347 {"server127.0.0.1:12347":2}
-Server has tables: C, C_BACKUP, A, A_BACKUP
+Server has tables: C_BACKUP, A, A_BACKUP, C
 server127.0.0.1:12347 {"server127.0.0.1:12347":3}
 Sending AddMappings to LBS
-server127.0.0.1:12347 {"server127.0.0.1:12347":4, "server127.0.0.1:12345":5, "LBS":11, "server127.0.0.1:12346":5}
+server127.0.0.1:12347 {"server127.0.0.1:12346":5, "server127.0.0.1:12347":4, "LBS":11, "server127.0.0.1:12345":5}
 Received AddMappings from LBS
-server127.0.0.1:12347 {"server127.0.0.1:12347":5, "server127.0.0.1:12345":5, "LBS":11, "server127.0.0.1:12346":5}
+server127.0.0.1:12347 {"server127.0.0.1:12347":5, "LBS":11, "server127.0.0.1:12345":5, "server127.0.0.1:12346":5}
 Sending GetPeers to LBS
-server127.0.0.1:12347 {"server127.0.0.1:12347":6, "server127.0.0.1:12345":5, "LBS":13, "server127.0.0.1:12346":5}
+server127.0.0.1:12347 {"server127.0.0.1:12347":6, "LBS":13, "server127.0.0.1:12345":5, "server127.0.0.1:12346":5}
 Received GetPeers from LBS
-server127.0.0.1:12347 {"LBS":13, "server127.0.0.1:12346":5, "server127.0.0.1:12347":7, "server127.0.0.1:12345":5}
+server127.0.0.1:12347 {"server127.0.0.1:12347":7, "LBS":13, "server127.0.0.1:12345":5, "server127.0.0.1:12346":5}
 Sending ConnectToPeer to Server
-server127.0.0.1:12347 {"server127.0.0.1:12347":8, "server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12346":14}
+server127.0.0.1:12347 {"server127.0.0.1:12346":11, "server127.0.0.1:12347":8, "LBS":13, "server127.0.0.1:12345":14}
 Received ConnectToPeer from Server
-server127.0.0.1:12347 {"server127.0.0.1:12347":9, "server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12346":14}
+server127.0.0.1:12347 {"server127.0.0.1:12346":11, "server127.0.0.1:12347":9, "LBS":13, "server127.0.0.1:12345":14}
 Send GetTableContents
-server127.0.0.1:12347 {"server127.0.0.1:12347":10, "server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12346":16}
-TableCommands.GetTableContents succeeded  Table: C
+server127.0.0.1:12347 {"server127.0.0.1:12345":16, "server127.0.0.1:12346":11, "server127.0.0.1:12347":10, "LBS":13}
+TableCommands.GetTableContents succeeded  Table: A_BACKUP
 {
-	(  Key: t0; tv_show: Friends; )
-	(  Key: t1; tv_show: Simpsons; )
+	(  Key: test0; name: John; age: 20; gender: M; )
+	(  Key: test1; gender: F; name: Alice; age: 30; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
 }
-server127.0.0.1:12347 {"server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12346":16, "server127.0.0.1:12347":11}
+server127.0.0.1:12347 {"LBS":13, "server127.0.0.1:12345":16, "server127.0.0.1:12346":11, "server127.0.0.1:12347":11}
 Send GetTableContents
-server127.0.0.1:12347 {"server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12346":18, "server127.0.0.1:12347":12}
+server127.0.0.1:12347 {"server127.0.0.1:12346":11, "server127.0.0.1:12347":12, "LBS":13, "server127.0.0.1:12345":18}
+TableCommands.GetTableContents succeeded  Table: A
+{
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+	(  Key: test0; name: John; age: 20; gender: M; )
+}
+server127.0.0.1:12347 {"server127.0.0.1:12345":18, "server127.0.0.1:12346":11, "server127.0.0.1:12347":13, "LBS":13}
+Sending ConnectToPeer to Server
+server127.0.0.1:12347 {"LBS":13, "server127.0.0.1:12345":18, "server127.0.0.1:12346":14, "server127.0.0.1:12347":14}
+Received ConnectToPeer from Server
+server127.0.0.1:12347 {"server127.0.0.1:12346":14, "server127.0.0.1:12347":15, "LBS":13, "server127.0.0.1:12345":18}
+Send GetTableContents
+server127.0.0.1:12347 {"server127.0.0.1:12347":16, "LBS":13, "server127.0.0.1:12345":18, "server127.0.0.1:12346":16}
 TableCommands.GetTableContents succeeded  Table: C_BACKUP
 {
 	(  Key: t0; tv_show: Friends; )
 	(  Key: t1; tv_show: Simpsons; )
 }
-server127.0.0.1:12347 {"server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12346":18, "server127.0.0.1:12347":13}
-Sending ConnectToPeer to Server
-server127.0.0.1:12347 {"LBS":13, "server127.0.0.1:12346":18, "server127.0.0.1:12347":14, "server127.0.0.1:12345":14}
-Received ConnectToPeer from Server
-server127.0.0.1:12347 {"server127.0.0.1:12346":18, "server127.0.0.1:12347":15, "server127.0.0.1:12345":14, "LBS":13}
+server127.0.0.1:12347 {"server127.0.0.1:12345":18, "server127.0.0.1:12346":16, "server127.0.0.1:12347":17, "LBS":13}
 Send GetTableContents
-server127.0.0.1:12347 {"server127.0.0.1:12347":16, "server127.0.0.1:12345":16, "LBS":13, "server127.0.0.1:12346":18}
-TableCommands.GetTableContents succeeded  Table: A
+server127.0.0.1:12347 {"LBS":13, "server127.0.0.1:12345":18, "server127.0.0.1:12346":18, "server127.0.0.1:12347":18}
+TableCommands.GetTableContents succeeded  Table: C
 {
+	(  Key: t0; tv_show: Friends; )
+	(  Key: t1; tv_show: Simpsons; )
+}
+server127.0.0.1:12347 {"server127.0.0.1:12346":20, "server127.0.0.1:12347":19, "LBS":15, "server127.0.0.1:12345":22, "client127.0.0.1:12348":8}
+Received TableUnavailable()
+server127.0.0.1:12347 {"LBS":15, "server127.0.0.1:12345":22, "client127.0.0.1:12348":8, "server127.0.0.1:12346":20, "server127.0.0.1:12347":20}
+Sending TableUnavailable()
+server127.0.0.1:12347 {"server127.0.0.1:12345":32, "client127.0.0.1:12348":20, "server127.0.0.1:12346":30, "server127.0.0.1:12347":21, "LBS":15}
+Received PrepareTableForCommit for table A
+server127.0.0.1:12347 {"LBS":15, "server127.0.0.1:12345":32, "client127.0.0.1:12348":20, "server127.0.0.1:12346":30, "server127.0.0.1:12347":22}
+Sending PrepareTableForCommit result table =  Table: A
+{
+	(  Key: test1; age: 30; gender: F; name: Alice; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+	(  Key: test0; gender: M; name: John; age: 20; )
+}
+server127.0.0.1:12347 {"server127.0.0.1:12347":23, "LBS":15, "server127.0.0.1:12345":32, "client127.0.0.1:12348":20, "server127.0.0.1:12346":30}
+Server 127.0.0.1:12345 crashed
+server127.0.0.1:12347 {"server127.0.0.1:12346":30, "server127.0.0.1:12347":24, "LBS":15, "server127.0.0.1:12345":32, "client127.0.0.1:12348":20}
+Unlocking Table A for crashed server 127.0.0.1:12345
+server127.0.0.1:12347 {"client127.0.0.1:12348":20, "server127.0.0.1:12346":30, "server127.0.0.1:12347":25, "LBS":15, "server127.0.0.1:12345":32}
+Roll back Table A TableContents:  Table: A
+{
+	(  Key: test1; name: Alice; age: 30; gender: F; )
+	(  Key: test2; gender: M; name: Bob; age: 50; )
 	(  Key: test0; age: 20; gender: M; name: John; )
-	(  Key: test1; gender: F; name: Alice; age: 30; )
-	(  Key: test2; name: Bob; age: 50; gender: M; )
 }
-server127.0.0.1:12347 {"server127.0.0.1:12347":17, "server127.0.0.1:12345":16, "LBS":13, "server127.0.0.1:12346":18}
-Send GetTableContents
-server127.0.0.1:12347 {"server127.0.0.1:12346":18, "server127.0.0.1:12347":18, "server127.0.0.1:12345":18, "LBS":13}
-TableCommands.GetTableContents succeeded  Table: A_BACKUP
+server127.0.0.1:12347 {"server127.0.0.1:12346":30, "server127.0.0.1:12347":26, "LBS":15, "server127.0.0.1:12345":32, "client127.0.0.1:12348":20}
+Deleting server 127.0.0.1:12345 from list of peers
+server127.0.0.1:12347 {"server127.0.0.1:12346":30, "server127.0.0.1:12347":27, "LBS":15, "server127.0.0.1:12345":32, "client127.0.0.1:12348":20}
+Removing server mappings from LBS
+server127.0.0.1:12347 {"server127.0.0.1:12345":32, "client127.0.0.1:12348":20, "server127.0.0.1:12346":33, "server127.0.0.1:12347":28, "LBS":23}
+Received result from removing server mappings
+server127.0.0.1:12347 {"server127.0.0.1:12346":39, "server127.0.0.1:12347":29, "LBS":25, "server127.0.0.1:12345":34, "client127.0.0.1:12348":39}
+Received ClientConnect from Client
+server127.0.0.1:12347 {"server127.0.0.1:12347":30, "LBS":25, "server127.0.0.1:12345":34, "client127.0.0.1:12348":39, "server127.0.0.1:12346":39}
+Sending ClientConnect back
+server127.0.0.1:12347 {"client127.0.0.1:12348":41, "server127.0.0.1:12346":39, "server127.0.0.1:12347":31, "LBS":25, "server127.0.0.1:12345":34}
+Received TableLock() A tablesLockedByClient=
+server127.0.0.1:12347 {"server127.0.0.1:12346":39, "server127.0.0.1:12347":32, "LBS":25, "server127.0.0.1:12345":34, "client127.0.0.1:12348":41}
+Sending TableLock() tablesLockedByClient=A
+server127.0.0.1:12347 {"client127.0.0.1:12348":45, "server127.0.0.1:12346":41, "server127.0.0.1:12347":33, "LBS":25, "server127.0.0.1:12345":34}
+Received GetTableContents 
+server127.0.0.1:12347 {"server127.0.0.1:12345":34, "client127.0.0.1:12348":45, "server127.0.0.1:12346":41, "server127.0.0.1:12347":34, "LBS":25}
+Sending GetTableContents reply= Table: A
 {
-	(  Key: test1; name: Alice; age: 30; gender: F; )
-	(  Key: test2; name: Bob; age: 50; gender: M; )
-	(  Key: test0; name: John; age: 20; gender: M; )
-}
-server127.0.0.1:12347 {"client127.0.0.1:12348":8, "server127.0.0.1:12346":20, "server127.0.0.1:12347":19, "server127.0.0.1:12345":22, "LBS":15}
-Received TableUnavailable()
-server127.0.0.1:12347 {"LBS":15, "client127.0.0.1:12348":8, "server127.0.0.1:12346":20, "server127.0.0.1:12347":20, "server127.0.0.1:12345":22}
-Sending TableUnavailable()
-server127.0.0.1:12347 {"server127.0.0.1:12345":30, "LBS":15, "client127.0.0.1:12348":18, "server127.0.0.1:12346":26, "server127.0.0.1:12347":21}
-Received PrepareTableForCommit for table A
-server127.0.0.1:12347 {"server127.0.0.1:12346":26, "server127.0.0.1:12347":22, "server127.0.0.1:12345":30, "LBS":15, "client127.0.0.1:12348":18}
-Sending PrepareTableForCommit result table =  Table: A
-{
-	(  Key: test1; name: Alice; age: 30; gender: F; )
-	(  Key: test2; age: 50; gender: M; name: Bob; )
-	(  Key: test0; name: John; age: 20; gender: M; )
-}
-server127.0.0.1:12347 {"client127.0.0.1:12348":22, "server127.0.0.1:12346":30, "server127.0.0.1:12347":23, "server127.0.0.1:12345":36, "LBS":15}
-Received CommitTable for table A
-server127.0.0.1:12347 {"server127.0.0.1:12347":24, "server127.0.0.1:12345":36, "LBS":15, "client127.0.0.1:12348":22, "server127.0.0.1:12346":30}
-Sending CommitTable result table =  Table: A
-{
-	(  Key: test0; name: John; age: 20; gender: M; )
-	(  Key: test1; gender: F; name: Alice; age: 30; )
 	(  Key: test2; gender: M; name: Bob; age: 50; )
+	(  Key: test0; age: 20; gender: M; name: John; )
+	(  Key: test1; name: Alice; age: 30; gender: F; )
 }
-server127.0.0.1:12347 {"server127.0.0.1:12345":42, "LBS":15, "client127.0.0.1:12348":26, "server127.0.0.1:12346":34, "server127.0.0.1:12347":25}
-Received TableAvailable()
-server127.0.0.1:12347 {"LBS":15, "client127.0.0.1:12348":26, "server127.0.0.1:12346":34, "server127.0.0.1:12347":26, "server127.0.0.1:12345":42}
-Sending TableAvailable()
-server127.0.0.1:12347 {"server127.0.0.1:12347":27, "server127.0.0.1:12345":50, "LBS":17, "client127.0.0.1:12348":40, "server127.0.0.1:12346":40}
-Received TableUnavailable()
-server127.0.0.1:12347 {"server127.0.0.1:12347":28, "server127.0.0.1:12345":50, "LBS":17, "client127.0.0.1:12348":40, "server127.0.0.1:12346":40}
-Sending TableUnavailable()
-server127.0.0.1:12347 {"server127.0.0.1:12346":48, "server127.0.0.1:12347":29, "server127.0.0.1:12345":60, "LBS":17, "client127.0.0.1:12348":52}
-Received PrepareTableForCommit for table A
-server127.0.0.1:12347 {"server127.0.0.1:12346":48, "server127.0.0.1:12347":30, "server127.0.0.1:12345":60, "LBS":17, "client127.0.0.1:12348":52}
-Sending PrepareTableForCommit result table =  Table: A
+server127.0.0.1:12347 {"server127.0.0.1:12346":45, "server127.0.0.1:12347":35, "LBS":25, "server127.0.0.1:12345":34, "client127.0.0.1:12348":53}
+Received PrepareCommit() from 127.0.0.1:12348
+server127.0.0.1:12347 {"server127.0.0.1:12345":34, "client127.0.0.1:12348":53, "server127.0.0.1:12346":45, "server127.0.0.1:12347":36, "LBS":25}
+Sending PrepareCommit successful back to127.0.0.1:12348
+server127.0.0.1:12347 {"server127.0.0.1:12345":34, "client127.0.0.1:12348":57, "server127.0.0.1:12346":47, "server127.0.0.1:12347":37, "LBS":25}
+Received CommitTransaction() from 127.0.0.1:12348
+server127.0.0.1:12347 {"server127.0.0.1:12346":47, "server127.0.0.1:12347":38, "LBS":25, "server127.0.0.1:12345":34, "client127.0.0.1:12348":57}
+Sending CommitTransction successful back to127.0.0.1:12348Table= Table: A
+{
+	(  Key: test2; name: Bob; age: 50; gender: M; )
+	(  Key: test0; name: John; age: 20; gender: M; )
+	(  Key: test1; gender: F; name: Alice; age: 30; )
+}
+server127.0.0.1:12347 {"client127.0.0.1:12348":61, "server127.0.0.1:12346":49, "server127.0.0.1:12347":39, "LBS":25, "server127.0.0.1:12345":34}
+Received TableUnlock()
+server127.0.0.1:12347 {"server127.0.0.1:12346":49, "server127.0.0.1:12347":40, "LBS":25, "server127.0.0.1:12345":34, "client127.0.0.1:12348":61}
+Sending TableUnlock() tablesLockedByClient=
+server127.0.0.1:12347 {"server127.0.0.1:12345":34, "client127.0.0.1:12348":69, "server127.0.0.1:12346":49, "server127.0.0.1:12347":41, "LBS":27}
+Received ClientConnect from Client
+server127.0.0.1:12347 {"server127.0.0.1:12347":42, "LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":69, "server127.0.0.1:12346":49}
+Sending ClientConnect back
+server127.0.0.1:12347 {"server127.0.0.1:12346":51, "server127.0.0.1:12347":43, "LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":73}
+Received TableLock() A tablesLockedByClient=
+server127.0.0.1:12347 {"server127.0.0.1:12347":44, "LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":73, "server127.0.0.1:12346":51}
+Sending TableLock() tablesLockedByClient=A
+server127.0.0.1:12347 {"LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":77, "server127.0.0.1:12346":53, "server127.0.0.1:12347":45}
+Received DeleteRow 
+server127.0.0.1:12347 {"client127.0.0.1:12348":77, "server127.0.0.1:12346":53, "server127.0.0.1:12347":46, "LBS":27, "server127.0.0.1:12345":34}
+Sending DeleteRow from table=A key=test0
+server127.0.0.1:12347 {"server127.0.0.1:12346":55, "server127.0.0.1:12347":47, "LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":81}
+Received GetTableContents 
+server127.0.0.1:12347 {"client127.0.0.1:12348":81, "server127.0.0.1:12346":55, "server127.0.0.1:12347":48, "LBS":27, "server127.0.0.1:12345":34}
+Sending GetTableContents reply= Table: A
 {
 	(  Key: test1; age: 30; gender: F; name: Alice; )
-	(  Key: test2; gender: M; name: Bob; age: 50; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
 }
-server127.0.0.1:12347 {"server127.0.0.1:12346":52, "server127.0.0.1:12347":31, "server127.0.0.1:12345":66, "LBS":17, "client127.0.0.1:12348":56}
-Received CommitTable for table A
-server127.0.0.1:12347 {"server127.0.0.1:12346":52, "server127.0.0.1:12347":32, "server127.0.0.1:12345":66, "LBS":17, "client127.0.0.1:12348":56}
-Sending CommitTable result table =  Table: A
+server127.0.0.1:12347 {"LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":85, "server127.0.0.1:12346":57, "server127.0.0.1:12347":49}
+Received PrepareCommit() from 127.0.0.1:12348
+server127.0.0.1:12347 {"server127.0.0.1:12345":34, "client127.0.0.1:12348":85, "server127.0.0.1:12346":57, "server127.0.0.1:12347":50, "LBS":27}
+Sending PrepareCommit successful back to127.0.0.1:12348
+server127.0.0.1:12347 {"server127.0.0.1:12347":51, "LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":89, "server127.0.0.1:12346":59}
+Received CommitTransaction() from 127.0.0.1:12348
+server127.0.0.1:12347 {"server127.0.0.1:12347":52, "LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":89, "server127.0.0.1:12346":59}
+Sending CommitTransction successful back to127.0.0.1:12348Table= Table: A
 {
 	(  Key: test1; age: 30; gender: F; name: Alice; )
-	(  Key: test2; gender: M; name: Bob; age: 50; )
+	(  Key: test2; name: Bob; age: 50; gender: M; )
 }
-server127.0.0.1:12347 {"server127.0.0.1:12347":33, "server127.0.0.1:12345":72, "LBS":17, "client127.0.0.1:12348":60, "server127.0.0.1:12346":56}
-Received TableAvailable()
-server127.0.0.1:12347 {"server127.0.0.1:12346":56, "server127.0.0.1:12347":34, "server127.0.0.1:12345":72, "LBS":17, "client127.0.0.1:12348":60}
-Sending TableAvailable()
+server127.0.0.1:12347 {"server127.0.0.1:12347":53, "LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":95, "server127.0.0.1:12346":63}
+Received TableUnlock()
+server127.0.0.1:12347 {"server127.0.0.1:12346":63, "server127.0.0.1:12347":54, "LBS":27, "server127.0.0.1:12345":34, "client127.0.0.1:12348":95}
+Sending TableUnlock() tablesLockedByClient=

@@ -162,11 +162,11 @@ To test server crash (without recovery right now) enter the following numbers to
     sed -i '' '$r report/demo/ddbsServer127.0.0.1:12345-Log.txt' report/demo/govectorLog_join.txt
     sed -i '' '$r report/demo/ddbsServer127.0.0.1:12346-Log.txt' report/demo/govectorLog_join.txt
     sed -i '' '$r report/demo/ddbsServer127.0.0.1:12347-Log.txt' report/demo/govectorLog_join.txt
-    sed -i '' '$r report/demo/ddbsClient127.0.0.1:9999-Log.txt' report/demo/govectorLog_join.txt
+    sed -i '' '$r report/demo/ddbsClient127.0.0.1:12348-Log.txt' report/demo/govectorLog_join.txt
     sed -i '' 's/127.0.0.1:12345/X/g' report/demo/govectorLog_join.txt
     sed -i '' 's/127.0.0.1:12346/Y/g' report/demo/govectorLog_join.txt
     sed -i '' 's/127.0.0.1:12347/Z/g' report/demo/govectorLog_join.txt
-    sed -i '' 's/127.0.0.1:9999//g' report/demo/govectorLog_join.txt
+    sed -i '' 's/127.0.0.1:12348//g' report/demo/govectorLog_join.txt
 
 To test server recovery (server is not a primary server):
     go run lbs.go "127.0.0.1:54321" "false"

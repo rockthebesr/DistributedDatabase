@@ -1,156 +1,172 @@
 server127.0.0.1:12346 {"server127.0.0.1:12346":1}
 Initialization Complete
 server127.0.0.1:12346 {"server127.0.0.1:12346":2}
-Server has tables: B_BACKUP, C, C_BACKUP, B
+Server has tables: B, B_BACKUP, C, C_BACKUP
 server127.0.0.1:12346 {"server127.0.0.1:12346":3}
 Sending AddMappings to LBS
-server127.0.0.1:12346 {"server127.0.0.1:12346":4, "server127.0.0.1:12345":5, "LBS":7}
+server127.0.0.1:12346 {"LBS":7, "server127.0.0.1:12345":5, "server127.0.0.1:12346":4}
 Received AddMappings from LBS
-server127.0.0.1:12346 {"LBS":7, "server127.0.0.1:12346":5, "server127.0.0.1:12345":5}
+server127.0.0.1:12346 {"server127.0.0.1:12346":5, "LBS":7, "server127.0.0.1:12345":5}
 Sending GetPeers to LBS
-server127.0.0.1:12346 {"server127.0.0.1:12346":6, "server127.0.0.1:12345":5, "LBS":9}
+server127.0.0.1:12346 {"server127.0.0.1:12346":6, "LBS":9, "server127.0.0.1:12345":5}
 Received GetPeers from LBS
-server127.0.0.1:12346 {"server127.0.0.1:12346":7, "server127.0.0.1:12345":5, "LBS":9}
+server127.0.0.1:12346 {"server127.0.0.1:12345":5, "server127.0.0.1:12346":7, "LBS":9}
 Sending ConnectToPeer to Server
-server127.0.0.1:12346 {"LBS":9, "server127.0.0.1:12346":8, "server127.0.0.1:12345":8}
+server127.0.0.1:12346 {"server127.0.0.1:12346":8, "LBS":9, "server127.0.0.1:12345":8}
 Received ConnectToPeer from Server
-server127.0.0.1:12346 {"server127.0.0.1:12345":8, "LBS":9, "server127.0.0.1:12346":9}
+server127.0.0.1:12346 {"LBS":9, "server127.0.0.1:12345":8, "server127.0.0.1:12346":9}
 Send GetTableContents
-server127.0.0.1:12346 {"LBS":9, "server127.0.0.1:12346":10, "server127.0.0.1:12345":10}
+server127.0.0.1:12346 {"server127.0.0.1:12346":10, "LBS":9, "server127.0.0.1:12345":10}
 TableCommands.GetTableContents succeeded  Table: B
 {
+	(  Key: k1; company: Amazon; emp_id: test1; )
 	(  Key: k2; company: Microsoft; emp_id: test2; )
 	(  Key: k0; company: Facebook; emp_id: test0; )
-	(  Key: k1; company: Amazon; emp_id: test1; )
 }
-server127.0.0.1:12346 {"LBS":9, "server127.0.0.1:12346":11, "server127.0.0.1:12345":10}
+server127.0.0.1:12346 {"LBS":9, "server127.0.0.1:12345":10, "server127.0.0.1:12346":11}
 Send GetTableContents
-server127.0.0.1:12346 {"server127.0.0.1:12345":12, "LBS":9, "server127.0.0.1:12346":12}
+server127.0.0.1:12346 {"server127.0.0.1:12346":12, "LBS":9, "server127.0.0.1:12345":12}
 TableCommands.GetTableContents succeeded  Table: B_BACKUP
 {
-	(  Key: k0; company: Facebook; emp_id: test0; )
-	(  Key: k1; company: Amazon; emp_id: test1; )
+	(  Key: k0; emp_id: test0; company: Facebook; )
+	(  Key: k1; emp_id: test1; company: Amazon; )
 	(  Key: k2; company: Microsoft; emp_id: test2; )
 }
-server127.0.0.1:12346 {"server127.0.0.1:12346":13, "server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12347":7}
+server127.0.0.1:12346 {"LBS":13, "server127.0.0.1:12345":18, "server127.0.0.1:12347":13, "server127.0.0.1:12346":13}
 Received ConnectToPeer from Server
-server127.0.0.1:12346 {"server127.0.0.1:12346":14, "server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12347":7}
+server127.0.0.1:12346 {"server127.0.0.1:12346":14, "LBS":13, "server127.0.0.1:12345":18, "server127.0.0.1:12347":13}
 Sending ConnectToPeer back
-server127.0.0.1:12346 {"server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12347":9, "server127.0.0.1:12346":15}
+server127.0.0.1:12346 {"LBS":13, "server127.0.0.1:12345":18, "server127.0.0.1:12347":15, "server127.0.0.1:12346":15}
 Received GetTableContents 
-server127.0.0.1:12346 {"LBS":13, "server127.0.0.1:12347":9, "server127.0.0.1:12346":16, "server127.0.0.1:12345":12}
-Sending GetTableContents reply= Table: C
-{
-	(  Key: t0; tv_show: Friends; )
-	(  Key: t1; tv_show: Simpsons; )
-}
-server127.0.0.1:12346 {"server127.0.0.1:12347":11, "server127.0.0.1:12346":17, "server127.0.0.1:12345":12, "LBS":13}
-Received GetTableContents 
-server127.0.0.1:12346 {"server127.0.0.1:12346":18, "server127.0.0.1:12345":12, "LBS":13, "server127.0.0.1:12347":11}
+server127.0.0.1:12346 {"server127.0.0.1:12347":15, "server127.0.0.1:12346":16, "LBS":13, "server127.0.0.1:12345":18}
 Sending GetTableContents reply= Table: C_BACKUP
 {
 	(  Key: t0; tv_show: Friends; )
 	(  Key: t1; tv_show: Simpsons; )
 }
-server127.0.0.1:12346 {"client127.0.0.1:12348":6, "server127.0.0.1:12347":17, "server127.0.0.1:12346":19, "server127.0.0.1:12345":20, "LBS":15}
-Received ClientConnect from Client
-server127.0.0.1:12346 {"LBS":15, "client127.0.0.1:12348":6, "server127.0.0.1:12347":17, "server127.0.0.1:12346":20, "server127.0.0.1:12345":20}
-Sending ClientConnect back
-server127.0.0.1:12346 {"client127.0.0.1:12348":10, "server127.0.0.1:12347":20, "server127.0.0.1:12346":21, "server127.0.0.1:12345":24, "LBS":15}
-Received TableLock() B tablesLockedByClient=
-server127.0.0.1:12346 {"client127.0.0.1:12348":10, "server127.0.0.1:12347":20, "server127.0.0.1:12346":22, "server127.0.0.1:12345":24, "LBS":15}
-Sending TableUnavailable to server 127.0.0.1:12345
-server127.0.0.1:12346 {"server127.0.0.1:12347":20, "server127.0.0.1:12346":23, "server127.0.0.1:12345":26, "LBS":15, "client127.0.0.1:12348":10}
-Received TableUnavailable from server 127.0.0.1:12345
-server127.0.0.1:12346 {"server127.0.0.1:12345":26, "LBS":15, "client127.0.0.1:12348":10, "server127.0.0.1:12347":20, "server127.0.0.1:12346":24}
-Sending TableLock() tablesLockedByClient=B
-server127.0.0.1:12346 {"server127.0.0.1:12345":28, "LBS":15, "client127.0.0.1:12348":14, "server127.0.0.1:12347":20, "server127.0.0.1:12346":25}
+server127.0.0.1:12346 {"server127.0.0.1:12345":18, "server127.0.0.1:12347":17, "server127.0.0.1:12346":17, "LBS":13}
 Received GetTableContents 
-server127.0.0.1:12346 {"LBS":15, "client127.0.0.1:12348":14, "server127.0.0.1:12347":20, "server127.0.0.1:12346":26, "server127.0.0.1:12345":28}
+server127.0.0.1:12346 {"LBS":13, "server127.0.0.1:12345":18, "server127.0.0.1:12347":17, "server127.0.0.1:12346":18}
+Sending GetTableContents reply= Table: C
+{
+	(  Key: t0; tv_show: Friends; )
+	(  Key: t1; tv_show: Simpsons; )
+}
+server127.0.0.1:12346 {"server127.0.0.1:12345":18, "server127.0.0.1:12347":17, "server127.0.0.1:12346":19, "client127.0.0.1:12348":4, "LBS":15}
+Received ClientConnect from Client
+server127.0.0.1:12346 {"server127.0.0.1:12346":20, "client127.0.0.1:12348":4, "LBS":15, "server127.0.0.1:12345":18, "server127.0.0.1:12347":17}
+Sending ClientConnect back
+server127.0.0.1:12346 {"client127.0.0.1:12348":10, "LBS":15, "server127.0.0.1:12345":24, "server127.0.0.1:12347":20, "server127.0.0.1:12346":21}
+Received TableLock() B tablesLockedByClient=
+server127.0.0.1:12346 {"client127.0.0.1:12348":10, "LBS":15, "server127.0.0.1:12345":24, "server127.0.0.1:12347":20, "server127.0.0.1:12346":22}
+Sending TableUnavailable to server 127.0.0.1:12345
+server127.0.0.1:12346 {"server127.0.0.1:12345":26, "server127.0.0.1:12347":20, "server127.0.0.1:12346":23, "client127.0.0.1:12348":10, "LBS":15}
+Received TableUnavailable from server 127.0.0.1:12345
+server127.0.0.1:12346 {"server127.0.0.1:12345":26, "server127.0.0.1:12347":20, "server127.0.0.1:12346":24, "client127.0.0.1:12348":10, "LBS":15}
+Sending TableLock() tablesLockedByClient=B
+server127.0.0.1:12346 {"client127.0.0.1:12348":14, "LBS":15, "server127.0.0.1:12345":28, "server127.0.0.1:12347":20, "server127.0.0.1:12346":25}
+Received GetTableContents 
+server127.0.0.1:12346 {"client127.0.0.1:12348":14, "LBS":15, "server127.0.0.1:12345":28, "server127.0.0.1:12347":20, "server127.0.0.1:12346":26}
 Sending GetTableContents reply= Table: B
+{
+	(  Key: k1; company: Amazon; emp_id: test1; )
+	(  Key: k2; emp_id: test2; company: Microsoft; )
+	(  Key: k0; company: Facebook; emp_id: test0; )
+}
+server127.0.0.1:12346 {"client127.0.0.1:12348":18, "LBS":15, "server127.0.0.1:12345":28, "server127.0.0.1:12347":20, "server127.0.0.1:12346":27}
+Received PrepareCommit() from 127.0.0.1:12348
+server127.0.0.1:12346 {"server127.0.0.1:12347":20, "server127.0.0.1:12346":28, "client127.0.0.1:12348":18, "LBS":15, "server127.0.0.1:12345":28}
+Sending PrepareTableForCommit for table B
+server127.0.0.1:12346 {"server127.0.0.1:12347":20, "server127.0.0.1:12346":29, "client127.0.0.1:12348":18, "LBS":15, "server127.0.0.1:12345":30}
+Received PrepareTableForCommit reply
+server127.0.0.1:12346 {"server127.0.0.1:12346":30, "client127.0.0.1:12348":18, "LBS":15, "server127.0.0.1:12345":30, "server127.0.0.1:12347":20}
+Sending PrepareCommit successful back to127.0.0.1:12348
+server127.0.0.1:12346 {"LBS":15, "server127.0.0.1:12345":30, "server127.0.0.1:12347":20, "server127.0.0.1:12346":31, "client127.0.0.1:12348":18}
+Server 127.0.0.1:12345 crashed
+server127.0.0.1:12346 {"server127.0.0.1:12346":32, "client127.0.0.1:12348":18, "LBS":15, "server127.0.0.1:12345":30, "server127.0.0.1:12347":20}
+Deleting server 127.0.0.1:12345 from list of peers
+server127.0.0.1:12346 {"server127.0.0.1:12346":33, "client127.0.0.1:12348":18, "LBS":15, "server127.0.0.1:12345":30, "server127.0.0.1:12347":20}
+Removing server mappings from LBS
+server127.0.0.1:12346 {"server127.0.0.1:12346":34, "client127.0.0.1:12348":18, "LBS":21, "server127.0.0.1:12345":30, "server127.0.0.1:12347":20}
+Received result from removing server mappings
+server127.0.0.1:12346 {"server127.0.0.1:12346":35, "client127.0.0.1:12348":18, "LBS":21, "server127.0.0.1:12345":30, "server127.0.0.1:12347":20}
+Roll back Table B TableContents:  Table: B
+{
+	(  Key: k2; emp_id: test2; company: Microsoft; )
+	(  Key: k0; company: Facebook; emp_id: test0; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
+}
+server127.0.0.1:12346 {"client127.0.0.1:12348":18, "LBS":21, "server127.0.0.1:12345":30, "server127.0.0.1:12347":20, "server127.0.0.1:12346":36}
+Unlocked table B
+server127.0.0.1:12346 {"server127.0.0.1:12347":20, "server127.0.0.1:12346":37, "client127.0.0.1:12348":18, "LBS":21, "server127.0.0.1:12345":30}
+Handled RollBack, 127.0.0.1:12348
+server127.0.0.1:12346 {"server127.0.0.1:12346":38, "client127.0.0.1:12348":37, "LBS":25, "server127.0.0.1:12345":34, "server127.0.0.1:12347":27}
+Received ClientConnect from Client
+server127.0.0.1:12346 {"client127.0.0.1:12348":37, "LBS":25, "server127.0.0.1:12345":34, "server127.0.0.1:12347":27, "server127.0.0.1:12346":39}
+Sending ClientConnect back
+server127.0.0.1:12346 {"LBS":25, "server127.0.0.1:12345":34, "server127.0.0.1:12347":32, "server127.0.0.1:12346":40, "client127.0.0.1:12348":43}
+Received TableLock() B tablesLockedByClient=
+server127.0.0.1:12346 {"server127.0.0.1:12345":34, "server127.0.0.1:12347":32, "server127.0.0.1:12346":41, "client127.0.0.1:12348":43, "LBS":25}
+Sending TableLock() tablesLockedByClient=B
+server127.0.0.1:12346 {"server127.0.0.1:12346":42, "client127.0.0.1:12348":47, "LBS":25, "server127.0.0.1:12345":34, "server127.0.0.1:12347":34}
+Received GetTableContents 
+server127.0.0.1:12346 {"server127.0.0.1:12346":43, "client127.0.0.1:12348":47, "LBS":25, "server127.0.0.1:12345":34, "server127.0.0.1:12347":34}
+Sending GetTableContents reply= Table: B
+{
+	(  Key: k1; company: Amazon; emp_id: test1; )
+	(  Key: k2; emp_id: test2; company: Microsoft; )
+	(  Key: k0; company: Facebook; emp_id: test0; )
+}
+server127.0.0.1:12346 {"server127.0.0.1:12345":34, "server127.0.0.1:12347":34, "server127.0.0.1:12346":44, "client127.0.0.1:12348":51, "LBS":25}
+Received PrepareCommit() from 127.0.0.1:12348
+server127.0.0.1:12346 {"server127.0.0.1:12346":45, "client127.0.0.1:12348":51, "LBS":25, "server127.0.0.1:12345":34, "server127.0.0.1:12347":34}
+Sending PrepareCommit successful back to127.0.0.1:12348
+server127.0.0.1:12346 {"LBS":25, "server127.0.0.1:12345":34, "server127.0.0.1:12347":36, "server127.0.0.1:12346":46, "client127.0.0.1:12348":55}
+Received CommitTransaction() from 127.0.0.1:12348
+server127.0.0.1:12346 {"client127.0.0.1:12348":55, "LBS":25, "server127.0.0.1:12345":34, "server127.0.0.1:12347":36, "server127.0.0.1:12346":47}
+Sending CommitTransction successful back to127.0.0.1:12348Table= Table: B
 {
 	(  Key: k0; company: Facebook; emp_id: test0; )
 	(  Key: k1; company: Amazon; emp_id: test1; )
-	(  Key: k2; company: Microsoft; emp_id: test2; )
+	(  Key: k2; emp_id: test2; company: Microsoft; )
 }
-server127.0.0.1:12346 {"server127.0.0.1:12346":27, "server127.0.0.1:12345":32, "LBS":15, "client127.0.0.1:12348":20, "server127.0.0.1:12347":22}
-Received PrepareCommit() from 127.0.0.1:12348
-server127.0.0.1:12346 {"server127.0.0.1:12345":32, "LBS":15, "client127.0.0.1:12348":20, "server127.0.0.1:12347":22, "server127.0.0.1:12346":28}
-Sending PrepareTableForCommit for table B
-server127.0.0.1:12346 {"client127.0.0.1:12348":20, "server127.0.0.1:12347":22, "server127.0.0.1:12346":29, "server127.0.0.1:12345":34, "LBS":15}
-Received PrepareTableForCommit reply
-server127.0.0.1:12346 {"LBS":15, "client127.0.0.1:12348":20, "server127.0.0.1:12347":22, "server127.0.0.1:12346":30, "server127.0.0.1:12345":34}
-Sending PrepareCommit successful back to127.0.0.1:12348
-server127.0.0.1:12346 {"client127.0.0.1:12348":24, "server127.0.0.1:12347":24, "server127.0.0.1:12346":31, "server127.0.0.1:12345":38, "LBS":15}
-Received CommitTransaction() from 127.0.0.1:12348
-server127.0.0.1:12346 {"server127.0.0.1:12345":38, "LBS":15, "client127.0.0.1:12348":24, "server127.0.0.1:12347":24, "server127.0.0.1:12346":32}
-Sending CommitTable for table B
-server127.0.0.1:12346 {"LBS":15, "client127.0.0.1:12348":24, "server127.0.0.1:12347":24, "server127.0.0.1:12346":33, "server127.0.0.1:12345":40}
-Received CommitTable reply
-server127.0.0.1:12346 {"server127.0.0.1:12346":34, "server127.0.0.1:12345":40, "LBS":15, "client127.0.0.1:12348":24, "server127.0.0.1:12347":24}
-Sending CommitTransction successful back to127.0.0.1:12348Table= Table: B
-{
-	(  Key: k2; company: Microsoft; emp_id: test2; )
-	(  Key: k0; emp_id: test0; company: Facebook; )
-	(  Key: k1; emp_id: test1; company: Amazon; )
-}
-server127.0.0.1:12346 {"LBS":15, "client127.0.0.1:12348":28, "server127.0.0.1:12347":26, "server127.0.0.1:12346":35, "server127.0.0.1:12345":44}
+server127.0.0.1:12346 {"server127.0.0.1:12346":48, "client127.0.0.1:12348":59, "LBS":25, "server127.0.0.1:12345":34, "server127.0.0.1:12347":38}
 Received TableUnlock()
-server127.0.0.1:12346 {"server127.0.0.1:12345":44, "LBS":15, "client127.0.0.1:12348":28, "server127.0.0.1:12347":26, "server127.0.0.1:12346":36}
-Sending TableAvailable to 127.0.0.1:12345
-server127.0.0.1:12346 {"server127.0.0.1:12345":46, "LBS":15, "client127.0.0.1:12348":28, "server127.0.0.1:12347":26, "server127.0.0.1:12346":37}
-Received TableAvailable from server 127.0.0.1:12345
-server127.0.0.1:12346 {"server127.0.0.1:12347":26, "server127.0.0.1:12346":38, "server127.0.0.1:12345":46, "LBS":15, "client127.0.0.1:12348":28}
+server127.0.0.1:12346 {"server127.0.0.1:12345":34, "server127.0.0.1:12347":38, "server127.0.0.1:12346":49, "client127.0.0.1:12348":59, "LBS":25}
 Sending TableUnlock() tablesLockedByClient=
-server127.0.0.1:12346 {"server127.0.0.1:12345":48, "LBS":17, "client127.0.0.1:12348":38, "server127.0.0.1:12347":26, "server127.0.0.1:12346":39}
+server127.0.0.1:12346 {"server127.0.0.1:12345":34, "server127.0.0.1:12347":42, "server127.0.0.1:12346":50, "client127.0.0.1:12348":71, "LBS":27}
 Received ClientConnect from Client
-server127.0.0.1:12346 {"LBS":17, "client127.0.0.1:12348":38, "server127.0.0.1:12347":26, "server127.0.0.1:12346":40, "server127.0.0.1:12345":48}
+server127.0.0.1:12346 {"LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":42, "server127.0.0.1:12346":51, "client127.0.0.1:12348":71}
 Sending ClientConnect back
-server127.0.0.1:12346 {"server127.0.0.1:12346":41, "server127.0.0.1:12345":52, "LBS":17, "client127.0.0.1:12348":42, "server127.0.0.1:12347":28}
+server127.0.0.1:12346 {"client127.0.0.1:12348":75, "LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":44, "server127.0.0.1:12346":52}
 Received TableLock() B tablesLockedByClient=
-server127.0.0.1:12346 {"server127.0.0.1:12345":52, "LBS":17, "client127.0.0.1:12348":42, "server127.0.0.1:12347":28, "server127.0.0.1:12346":42}
-Sending TableUnavailable to server 127.0.0.1:12345
-server127.0.0.1:12346 {"server127.0.0.1:12345":54, "LBS":17, "client127.0.0.1:12348":42, "server127.0.0.1:12347":28, "server127.0.0.1:12346":43}
-Received TableUnavailable from server 127.0.0.1:12345
-server127.0.0.1:12346 {"server127.0.0.1:12347":28, "server127.0.0.1:12346":44, "server127.0.0.1:12345":54, "LBS":17, "client127.0.0.1:12348":42}
+server127.0.0.1:12346 {"client127.0.0.1:12348":75, "LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":44, "server127.0.0.1:12346":53}
 Sending TableLock() tablesLockedByClient=B
-server127.0.0.1:12346 {"LBS":17, "client127.0.0.1:12348":46, "server127.0.0.1:12347":28, "server127.0.0.1:12346":45, "server127.0.0.1:12345":56}
+server127.0.0.1:12346 {"LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":46, "server127.0.0.1:12346":54, "client127.0.0.1:12348":79}
 Received DeleteRow 
-server127.0.0.1:12346 {"server127.0.0.1:12347":28, "server127.0.0.1:12346":46, "server127.0.0.1:12345":56, "LBS":17, "client127.0.0.1:12348":46}
+server127.0.0.1:12346 {"server127.0.0.1:12347":46, "server127.0.0.1:12346":55, "client127.0.0.1:12348":79, "LBS":27, "server127.0.0.1:12345":34}
 Sending DeleteRow from table=B key=k0
-server127.0.0.1:12346 {"server127.0.0.1:12345":58, "LBS":17, "client127.0.0.1:12348":50, "server127.0.0.1:12347":28, "server127.0.0.1:12346":47}
+server127.0.0.1:12346 {"server127.0.0.1:12346":56, "client127.0.0.1:12348":83, "LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":48}
 Received GetTableContents 
-server127.0.0.1:12346 {"server127.0.0.1:12345":58, "LBS":17, "client127.0.0.1:12348":50, "server127.0.0.1:12347":28, "server127.0.0.1:12346":48}
+server127.0.0.1:12346 {"server127.0.0.1:12345":34, "server127.0.0.1:12347":48, "server127.0.0.1:12346":57, "client127.0.0.1:12348":83, "LBS":27}
 Sending GetTableContents reply= Table: B
 {
-	(  Key: k2; company: Microsoft; emp_id: test2; )
 	(  Key: k1; company: Amazon; emp_id: test1; )
+	(  Key: k2; emp_id: test2; company: Microsoft; )
 }
-server127.0.0.1:12346 {"server127.0.0.1:12345":62, "LBS":17, "client127.0.0.1:12348":54, "server127.0.0.1:12347":30, "server127.0.0.1:12346":49}
+server127.0.0.1:12346 {"server127.0.0.1:12345":34, "server127.0.0.1:12347":50, "server127.0.0.1:12346":58, "client127.0.0.1:12348":87, "LBS":27}
 Received PrepareCommit() from 127.0.0.1:12348
-server127.0.0.1:12346 {"server127.0.0.1:12346":50, "server127.0.0.1:12345":62, "LBS":17, "client127.0.0.1:12348":54, "server127.0.0.1:12347":30}
-Sending PrepareTableForCommit for table B
-server127.0.0.1:12346 {"server127.0.0.1:12346":51, "server127.0.0.1:12345":64, "LBS":17, "client127.0.0.1:12348":54, "server127.0.0.1:12347":30}
-Received PrepareTableForCommit reply
-server127.0.0.1:12346 {"server127.0.0.1:12347":30, "server127.0.0.1:12346":52, "server127.0.0.1:12345":64, "LBS":17, "client127.0.0.1:12348":54}
+server127.0.0.1:12346 {"LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":50, "server127.0.0.1:12346":59, "client127.0.0.1:12348":87}
 Sending PrepareCommit successful back to127.0.0.1:12348
-server127.0.0.1:12346 {"LBS":17, "client127.0.0.1:12348":58, "server127.0.0.1:12347":32, "server127.0.0.1:12346":53, "server127.0.0.1:12345":68}
+server127.0.0.1:12346 {"client127.0.0.1:12348":91, "LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":52, "server127.0.0.1:12346":60}
 Received CommitTransaction() from 127.0.0.1:12348
-server127.0.0.1:12346 {"server127.0.0.1:12347":32, "server127.0.0.1:12346":54, "server127.0.0.1:12345":68, "LBS":17, "client127.0.0.1:12348":58}
-Sending CommitTable for table B
-server127.0.0.1:12346 {"server127.0.0.1:12346":55, "server127.0.0.1:12345":70, "LBS":17, "client127.0.0.1:12348":58, "server127.0.0.1:12347":32}
-Received CommitTable reply
-server127.0.0.1:12346 {"server127.0.0.1:12345":70, "LBS":17, "client127.0.0.1:12348":58, "server127.0.0.1:12347":32, "server127.0.0.1:12346":56}
+server127.0.0.1:12346 {"server127.0.0.1:12346":61, "client127.0.0.1:12348":91, "LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":52}
 Sending CommitTransction successful back to127.0.0.1:12348Table= Table: B
 {
 	(  Key: k2; emp_id: test2; company: Microsoft; )
-	(  Key: k1; emp_id: test1; company: Amazon; )
+	(  Key: k1; company: Amazon; emp_id: test1; )
 }
-server127.0.0.1:12346 {"server127.0.0.1:12346":57, "server127.0.0.1:12345":74, "LBS":17, "client127.0.0.1:12348":62, "server127.0.0.1:12347":34}
+server127.0.0.1:12346 {"LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":52, "server127.0.0.1:12346":62, "client127.0.0.1:12348":93}
 Received TableUnlock()
-server127.0.0.1:12346 {"server127.0.0.1:12346":58, "server127.0.0.1:12345":74, "LBS":17, "client127.0.0.1:12348":62, "server127.0.0.1:12347":34}
-Sending TableAvailable to 127.0.0.1:12345
-server127.0.0.1:12346 {"server127.0.0.1:12347":34, "server127.0.0.1:12346":59, "server127.0.0.1:12345":76, "LBS":17, "client127.0.0.1:12348":62}
-Received TableAvailable from server 127.0.0.1:12345
-server127.0.0.1:12346 {"client127.0.0.1:12348":62, "server127.0.0.1:12347":34, "server127.0.0.1:12346":60, "server127.0.0.1:12345":76, "LBS":17}
+server127.0.0.1:12346 {"server127.0.0.1:12346":63, "client127.0.0.1:12348":93, "LBS":27, "server127.0.0.1:12345":34, "server127.0.0.1:12347":52}
 Sending TableUnlock() tablesLockedByClient=

@@ -110,6 +110,11 @@ func (t *TableCommands) DeleteRow(args shared.TableAccessArgs, reply *shared.Tab
 
 func (t *TableCommands) GetTableContents(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
 
+	if args.ServerCrashErr == shared.FailPrimaryServerDuringTransaction && shared.CrashServer {
+		GoLogger.LogLocalEvent("Server " + SelfIP + " has crashed during GetTableContents")
+		panic("Server " + SelfIP + " has crashed during GetTableContents")
+	}
+
 	if _, ok := Tables[args.TableName]; !ok {
 		return shared.TableDoesNotExistError(args.TableName)
 	}
