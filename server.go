@@ -47,7 +47,6 @@ func main() {
 
 	// when a new server joins, need to ask peers whether these tables are already locked
 	serverAPI.AllTblLocks.Lock()
-	// serverAPI.AllTblLocks.All = map[string]bool{"A": false, "B": false, "C": false}
 	serverAPI.AllTblLocks.All = map[string]bool{}
 	for _, tableName := range tableNameArgs {
 		serverAPI.AllTblLocks.All[tableName] = false
@@ -73,7 +72,7 @@ func main() {
 	// TODO if LBS crashed at this point, then just reconnect to it
 	// Register the server & tables with the LBS
 	tableNames := serverAPI.GetTableNames()
-	fmt.Println("Server has tables: ", tableNames)
+	fmt.Println("Server has tables ", tableNames)
 
 	// first, assume that all my tables are unlocked
 	tablesAndLocks := make(map[string]bool)
@@ -124,6 +123,7 @@ func main() {
 		for _, ip := range listOfIps {
 			inArray, _ := shared.InArray(ip, peerIPs)
 			if !inArray {
+				fmt.Printf("Server %s has retrieved address for peer %s\n", serverAPI.SelfIP, ip)
 				peerIPs = append(peerIPs, ip)
 			}
 		}
@@ -134,6 +134,8 @@ func main() {
 
 	// Connects to other servers
 	for _, neighbour := range peerIPs {
+		fmt.Println("Connecting to peer: ", neighbour)
+
 		var success shared.ConnectionReply
 		conn, err := rpc.Dial("tcp", neighbour)
 		shared.CheckErr(err)
@@ -149,7 +151,6 @@ func main() {
 			ignored := false
 			go serverAPI.SendServerHeartbeats(conn, serverAPI.SelfIP, ignored)
 		}
-		fmt.Println("Connected to neighbour: ", neighbour)
 
 		serverAPI.AllServers.Lock()
 
@@ -179,8 +180,6 @@ func main() {
 
 		}
 
-		fmt.Println("neighbour: ", serverAPI.AllServers.All[neighbour].Handle, serverAPI.AllServers.All[neighbour].TableMappings)
-
 		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Second*2)
 
 		serverAPI.AllServers.Unlock()
@@ -199,12 +198,17 @@ func main() {
 				continue
 			}
 
+			fmt.Printf("Received the following contents for table %s from peer %s -> %v\n", tableName, neighbour, reply.OneTableContents)
+
 			serverAPI.CopyTable(tableName, dbStructs.Table{tableName, reply.OneTableContents})
 
 			err, tableString := shared.TableToString(tableName, serverAPI.Tables[tableName].Rows)
 			serverAPI.GoLogger.UnpackReceive("TableCommands.GetTableContents succeeded "+tableString, reply.GoVector, &msg)
 		}
+	}
 
+	for _, connPeer := range serverAPI.AllServers.All {
+		fmt.Printf("Server %s is now connected to peer %s with the following locked/unlocked tables -> %v\n", serverAPI.SelfIP, connPeer.Address, connPeer.TableMappings)
 	}
 
 	// Listens for other connections

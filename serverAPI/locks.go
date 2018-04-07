@@ -15,6 +15,9 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 	var msg string
 	GoLogger.UnpackReceive("Received TableLock() "+args.TableName+" tablesLockedByClient="+strings.Join(TransactionTables[args.IpAddress], ", "), args.GoVector, &msg)
 
+	fmt.Printf("Lock ownership for server %s before locking table %s -> %v\n", SelfIP, args.TableName, AllServers.All[SelfIP].TableMappings)
+	fmt.Printf("Locking states for all locks before locking table %s -> %v\n", args.TableName, AllTblLocks.All)
+
 	if _, ok := AllTblLocks.All[args.TableName]; !ok {
 		buf = GoLogger.PrepareSend("Error TableLock() table does not exist "+args.TableName, "msg")
 		return errors.New("Table does not exist")
@@ -94,6 +97,10 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
 	fmt.Println("Table locked: " + args.TableName)
+
+	fmt.Printf("Lock ownership for server %s after locking table %s -> %v\n", SelfIP, args.TableName, AllServers.All[SelfIP].TableMappings)
+	fmt.Printf("Locking states for all locks after locking table %s -> %v\n", args.TableName, AllTblLocks.All)
+
 	return nil
 }
 
@@ -105,6 +112,9 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 	var buf []byte
 	var msg string
 	GoLogger.UnpackReceive("Received TableUnlock()", args.GoVector, &msg)
+
+	fmt.Printf("Lock ownership for server %s before unlocking table %s -> %v\n", SelfIP, args.TableName, AllServers.All[SelfIP].TableMappings)
+	fmt.Printf("Locking states for all locks before unlocking table %s -> %v\n", args.TableName, AllTblLocks.All)
 
 	if _, ok := AllTblLocks.All[args.TableName]; !ok {
 		buf = GoLogger.PrepareSend("Error TableLock() table does not exist", "msg")
@@ -184,6 +194,9 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 
 	AllClients.All[args.IpAddress].StopChannel = 1 // once commit succeeds, stop listening for heartbeats
 
+	fmt.Printf("Lock ownership for server %s after unlocking table %s -> %v\n", SelfIP, args.TableName, AllServers.All[SelfIP].TableMappings)
+	fmt.Printf("Locking states for all locks after unlocking table %s -> %v\n", args.TableName, AllTblLocks.All)
+
 	return nil
 }
 
@@ -198,6 +211,9 @@ func (s *ServerConn) TableAvailable(args *shared.TableLockingArg, reply *shared.
 	var buf []byte
 	var msg string
 	GoLogger.UnpackReceive("Received TableAvailable()", args.GoVector, &msg)
+
+	fmt.Printf("Lock ownership for server %s before being notified of table %s's availability  -> %v\n", SelfIP, args.TableName, AllServers.All[SelfIP].TableMappings)
+	fmt.Printf("Locking states for all locks before ubeing notified of table %s's availability -> %v\n", args.TableName, AllTblLocks.All)
 
 	if AllTblLocks.All[args.TableName] == false {
 		return errors.New("Something weird has happened table=" + args.TableName + " selfIP=" + SelfIP)
@@ -216,6 +232,9 @@ func (s *ServerConn) TableAvailable(args *shared.TableLockingArg, reply *shared.
 	buf = GoLogger.PrepareSend("Sending TableAvailable()", "msg")
 
 	*reply = shared.TableLockingReply{Success: true, GoVector: buf}
+
+	fmt.Printf("Lock ownership for server %s after being notified of table %s's availability  -> %v\n", SelfIP, args.TableName, AllServers.All[SelfIP].TableMappings)
+	fmt.Printf("Locking states for all locks after ubeing notified of table %s's availability -> %v\n", args.TableName, AllTblLocks.All)
 
 	return nil
 }

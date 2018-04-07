@@ -29,7 +29,6 @@ type AllConnection struct {
 type AllTableLocks struct {
 	sync.RWMutex
 	All        map[string]bool // key:value = tableName:isLocked
-	TableNames []string        // not used
 }
 
 var (
