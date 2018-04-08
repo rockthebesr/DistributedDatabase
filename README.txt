@@ -1,5 +1,66 @@
 Special instructions for compiling/running the code should be included in this file.
 
+To test on VM:
+    VM1: lbs
+    ssh -i ~/.ssh/id_rsa haoran@40.125.70.162
+
+    VM2: server1
+    ssh -i ~/.ssh/id_rsa haoran@52.151.36.31
+
+    VM3: server2
+    ssh -i ~/.ssh/id_rsa haoran@40.125.70.74
+
+    VM4: server3
+    ssh -i ~/.ssh/id_rsa haoran@52.151.14.52
+
+    VM5: server4
+    ssh -i ~/.ssh/id_rsa haoran@52.158.234.124
+
+    VM6: app1
+    ssh -i ~/.ssh/id_rsa haoran@52.175.252.217
+
+    VM7: app2
+    ssh -i ~/.ssh/id_rsa haoran@52.151.8.223
+
+    VM1:
+    go run lbs.go "10.0.0.4:54321" "false"
+    VM2:
+    go run server.go "40.125.70.162:54321" "10.0.0.5:12345" "false" "A" "B"
+    VM3:
+    go run server.go "40.125.70.162:54321" "10.0.0.6:12346" "false" "B" "C"
+    VM4: 
+    go run server.go "40.125.70.162:54321" "10.0.0.7:12347" "false" "A" "C"
+    VM5:
+    go run server.go "40.125.70.162:54321" "10.0.0.8:12348" "false" "A" "B"
+    VM6:
+    go run appA.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
+    VM7:
+    go run appB.go "40.125.70.162:54321" "10.0.0.10:12350" "0"
+
+    Local:
+    sed -i '3,$d' report/demo/govectorLog.txt
+    scp haoran@40.125.70.162:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsLBS-Log.txt report/demo/ddbsLBS-Log.txt
+    scp haoran@52.151.36.31:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.5:12345-Log.txt report/demo/ddbsServer10.0.0.5:12345-Log.txt
+    scp haoran@40.125.70.74:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.6:12346-Log.txt report/demo/ddbsServer10.0.0.6:12346-Log.txt
+    scp haoran@52.151.14.52:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.7:12347-Log.txt report/demo/ddbsServer10.0.0.7:12347-Log.txt
+    scp haoran@52.158.234.124:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.8:12348-Log.txt report/demo/ddbsClient10.0.0.8:12348-Log.txt
+    scp haoran@52.175.252.217:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsClient10.0.0.9:12349-Log.txt report/demo/ddbsClient10.0.0.9:12349-Log.txt
+    scp haoran@52.151.8.223:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsClient10.0.0.10:12350-Log.txt report/demo/ddbsClient10.0.0.10:12350-Log.txt
+    sed -i '$r report/demo/ddbsLBS-Log.txt' report/demo/govectorLog.txt
+    sed -i '$r report/demo/ddbsServer10.0.0.5:12345-Log.txt' report/demo/govectorLog.txt
+    sed -i '$r report/demo/ddbsServer10.0.0.6:12346-Log.txt' report/demo/govectorLog.txt
+    sed -i '$r report/demo/ddbsServer10.0.0.7:12347-Log.txt' report/demo/govectorLog.txt
+    sed -i '$r report/demo/ddbsServer10.0.0.8:12348-Log.txt' report/demo/govectorLog.txt
+    sed -i '$r report/demo/ddbsClient10.0.0.9:12349-Log.txt' report/demo/govectorLog.txt
+    sed -i '$r report/demo/ddbsClient10.0.0.10:12350-Log.txt' report/demo/govectorLog.txt
+    sed -i 's/10.0.0.5:12345/W/g' report/demo/govectorLog.txt
+    sed -i 's/10.0.0.6:12346/X/g' report/demo/govectorLog.txt
+    sed -i 's/10.0.0.7:12347/Y/g' report/demo/govectorLog.txt
+    sed -i 's/10.0.0.8:12348/Z/g' report/demo/govectorLog.txt
+    sed -i 's/10.0.0.9:12349/ClientA/g' report/demo/govectorLog.txt
+    sed -i 's/10.0.0.10:12350/ClientB/g' report/demo/govectorLog.txt
+
+
 To run testLBS.go
     go run lbs.go "127.0.0.1:54321" "false"
     go run testLBS.go "127.0.0.1:54321"
@@ -35,59 +96,7 @@ To test server, lbs, and client together (single client):
 
     visit https://bestchai.bitbucket.io/report/demo/ and load report/demo/govectorLog.txt
 
-To test on VM:
-    VM1: lbs
-    ssh -i ~/.ssh/id_rsa haoran@40.125.70.162
 
-    VM2: server1
-    ssh -i ~/.ssh/id_rsa haoran@52.151.36.31
-
-    VM3: server2
-    ssh -i ~/.ssh/id_rsa haoran@40.125.70.74
-
-    VM4: server3
-    ssh -i ~/.ssh/id_rsa haoran@52.151.14.52
-
-    VM5: app1
-    ssh -i ~/.ssh/id_rsa haoran@52.158.234.124
-
-    VM6: server4
-    ssh -i ~/.ssh/id_rsa haoran@52.175.252.217
-
-    VM7: app2
-    ssh -i ~/.ssh/id_rsa haoran@52.151.8.223
-
-    VM1:
-    go run lbs.go "10.0.0.4:54321" "false"
-    VM2:
-    go run server.go "40.125.70.162:54321" "10.0.0.5:12345" "false" "A" "B"
-    VM3:
-    go run server.go "40.125.70.162:54321" "10.0.0.6:12346" "false" "B" "C"
-    VM4: 
-    go run server.go "40.125.70.162:54321" "10.0.0.7:12347" "false" "A" "C"
-    VM5:
-    go run app.go "40.125.70.162:54321" "10.0.0.8:12348" "0"
-    VM6:
-    go run server.go "40.125.70.162:54321" "10.0.0.9:12349" "false" "A" "B"
-    VM7:
-    go run app.go "40.125.70.162:54321" "10.0.0.10:12350" "0"
-
-    Local:
-    sed -i '3,$d' report/demo/govectorLog.txt
-    scp haoran@40.125.70.162:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsLBS-Log.txt report/demo/ddbsLBS-Log.txt
-    scp haoran@52.151.36.31:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.5:12345-Log.txt report/demo/ddbsServer10.0.0.5:12345-Log.txt
-    scp haoran@40.125.70.74:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.6:12346-Log.txt report/demo/ddbsServer10.0.0.6:12346-Log.txt
-    scp haoran@52.151.14.52:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.7:12347-Log.txt report/demo/ddbsServer10.0.0.7:12347-Log.txt
-    scp haoran@52.158.234.124:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsClient10.0.0.8:12348-Log.txt report/demo/ddbsClient10.0.0.8:12348-Log.txt
-    sed -i '$r report/demo/ddbsLBS-Log.txt' report/demo/govectorLog.txt
-    sed -i '$r report/demo/ddbsServer10.0.0.5:12345-Log.txt' report/demo/govectorLog.txt
-    sed -i '$r report/demo/ddbsServer10.0.0.6:12346-Log.txt' report/demo/govectorLog.txt
-    sed -i '$r report/demo/ddbsServer10.0.0.7:12347-Log.txt' report/demo/govectorLog.txt
-    sed -i '$r report/demo/ddbsClient10.0.0.8:12348-Log.txt' report/demo/govectorLog.txt
-    sed -i 's/10.0.0.5:12345/X/g' report/demo/govectorLog.txt
-    sed -i 's/10.0.0.6:12346/Y/g' report/demo/govectorLog.txt
-    sed -i 's/10.0.0.7:12347/Z/g' report/demo/govectorLog.txt
-    sed -i 's/10.0.0.8:12348//g' report/demo/govectorLog.txt
 
 To test strict 2-phase locking protocol with deadlocks:
     go run lbs.go "10.0.0.4:54321" "false"
