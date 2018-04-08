@@ -23,6 +23,8 @@ func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *s
 	GoLogger.UnpackReceive("Received PrepareCommit() from "+args.IPAddress, args.GoVector, &msg)
 	updatedTables := args.UpdatedTables
 
+	fmt.Printf("Received PrepareCommit from %s with updated tables %v\n", args.IPAddress, args.UpdatedTables)
+
 	if args.ServerCrashErr == shared.FailPrimaryServerAfterClientSendsPrepareCommit && shared.CrashServer {
 		GoLogger.LogLocalEvent("Server has crashed after receiving prepare to commit from client")
 		panic("Server has crashed after receiving prepare to commit from client")
@@ -51,16 +53,19 @@ func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *s
 
 	buf := GoLogger.PrepareSend("Sending PrepareCommit successful back to"+args.IPAddress, &msg)
 	*reply = shared.TransactionReply{true, buf}
+
+	fmt.Println("Server has finished preparing to commit")
+
 	return nil
 }
 
 func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, reply *shared.TransactionReply) error {
 
-	fmt.Println("CommitTransaction")
-
 	var msg string
 	GoLogger.UnpackReceive("Received CommitTransaction() from "+args.IPAddress, args.GoVector, &msg)
 	updatedTables := args.UpdatedTables
+
+	fmt.Printf("Received CommitTransaction from %s with updated tables %v\n", args.IPAddress, args.UpdatedTables)
 
 	if args.ServerCrashErr == shared.FailPrimaryServerAfterClientSendsCommit && shared.CrashServer {
 		GoLogger.LogLocalEvent("Server has crashed after receiving commit from client" )
@@ -90,6 +95,9 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 	_, str := shared.TableToString(args.UpdatedTables[0], Tables[args.UpdatedTables[0]].Rows)
 	buf := GoLogger.PrepareSend("Sending CommitTransction successful back to"+args.IPAddress +"Table="+str, &msg)
 	*reply = shared.TransactionReply{true, buf}
+
+	fmt.Println("Server has finished committing a transaction")
+
 	return nil
 }
 

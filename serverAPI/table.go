@@ -46,6 +46,8 @@ func (t *TableCommands) SetRow(args shared.TableAccessArgs, reply *shared.TableA
 	var msg string
 	GoLogger.UnpackReceive("Received SetRow ", args.GoVector, &msg)
 
+	fmt.Printf("Server %s has received operation SetRow\n", SelfIP)
+
 	Tables[args.TableName].Rows[args.Key] = args.TableRow
 	(*reply).Success = true
 
@@ -54,6 +56,8 @@ func (t *TableCommands) SetRow(args shared.TableAccessArgs, reply *shared.TableA
 	err, tableString := shared.TableToString(args.TableName, result)
 	buf = GoLogger.PrepareSend("Sending SetRow added="+tableString, "msg")
 	(*reply).GoVector = buf
+
+	fmt.Printf("Table contents after SetRow are %v\n", Tables[args.TableName].Rows)
 
 	return err
 }
@@ -77,6 +81,8 @@ func (t *TableCommands) GetRow(args shared.TableAccessArgs, reply *shared.TableA
 	var msg string
 	GoLogger.UnpackReceive("Received GetRow ", args.GoVector, &msg)
 
+	fmt.Printf("Server %s has received operation GetRow\n", SelfIP)
+
 	(*reply).OneRow = Tables[args.TableName].Rows[args.Key]
 	(*reply).Success = true
 
@@ -85,6 +91,8 @@ func (t *TableCommands) GetRow(args shared.TableAccessArgs, reply *shared.TableA
 	err, tableString := shared.TableToString(args.TableName, result)
 	buf = GoLogger.PrepareSend("Sending GetRow reply="+tableString, "msg")
 	(*reply).GoVector = buf
+
+	fmt.Printf("Table contents after GetRow are %v\n", Tables[args.TableName].Rows)
 
 	return err
 }
@@ -99,11 +107,15 @@ func (t *TableCommands) DeleteRow(args shared.TableAccessArgs, reply *shared.Tab
 	var msg string
 	GoLogger.UnpackReceive("Received DeleteRow ", args.GoVector, &msg)
 
+	fmt.Printf("Server %s has received operation DeleteRow\n", SelfIP)
+
 	delete(Tables[args.TableName].Rows, args.Key)
 	(*reply).Success = true
 
 	buf = GoLogger.PrepareSend("Sending DeleteRow from table="+args.TableName+" key="+args.Key, "msg")
 	(*reply).GoVector = buf
+
+	fmt.Printf("Table contents after DeleteRow are %v\n", Tables[args.TableName].Rows)
 
 	return err
 }
@@ -170,6 +182,8 @@ func (t *TableCommands) PrepareTableForCommit(args shared.TableAccessArgs, reply
 	var msg string
 	GoLogger.UnpackReceive("Received PrepareTableForCommit for table "+args.TableName, args.GoVector, &msg)
 
+	fmt.Printf("Server %s is preparing to commit table %s\n", SelfIP, args.TableName)
+
 	targetTableName := args.TableName
 	newTable := args.NewTable
 	err = CopyTable(targetTableName, newTable)
@@ -177,6 +191,9 @@ func (t *TableCommands) PrepareTableForCommit(args shared.TableAccessArgs, reply
 	buf := GoLogger.PrepareSend("Sending PrepareTableForCommit result table = "+resultTableString, &msg)
 
 	*reply = shared.TableAccessReply{Success: true, GoVector: buf}
+
+	fmt.Printf("Server %s's contents for table %s, after preparing to commit -> %v\n", SelfIP, args.TableName, Tables[args.TableName].Rows)
+
 	return err
 }
 
@@ -188,9 +205,14 @@ func (t *TableCommands) CommitTable(args shared.TableAccessArgs, reply *shared.T
 	var msg string
 	GoLogger.UnpackReceive("Received CommitTable for table "+args.TableName, args.GoVector, &msg)
 
+	fmt.Printf("Server %s is committing table %s\n", SelfIP, args.TableName)
+
 	_, resultTableString := shared.TableToString(args.TableName, Tables[args.TableName].Rows)
 	buf := GoLogger.PrepareSend("Sending CommitTable result table = "+resultTableString, &msg)
 	*reply = shared.TableAccessReply{Success: true, GoVector: buf}
+
+	fmt.Printf("Server %s's contents for table %s, after committing -> %v\n", SelfIP, args.TableName, Tables[args.TableName].Rows)
+
 	return nil
 }
 
