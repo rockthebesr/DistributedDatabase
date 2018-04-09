@@ -182,6 +182,8 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 	AllClients.Lock()
 	defer AllClients.Unlock()
 
+	fmt.Printf("Server %s has received connection from client %s", SelfIP, ip.IP)
+
 	toRegister := (*ip).IP
 	if _, exists := AllClients.All[toRegister]; exists {
 		return errors.New("IP already registered")
@@ -363,7 +365,14 @@ func SendClientHeartbeats(conn *rpc.Client, localIP string, ignored bool) error 
 }
 
 func handleClientCrash(clientIP string) error {
+	fmt.Printf("Client %s has crashed\n", clientIP)
 	err := RollBackTableAndPeers(clientIP)
+	for _, connPeer := range AllClients.All {
+		fmt.Printf("Server %s is now connected to client -> %s\n", SelfIP, connPeer.Address)
+	}
+	for _, connPeer := range AllServers.All {
+		fmt.Printf("Server %s is now connected to peer %s with the following locked/unlocked tables -> %v\n", SelfIP, connPeer.Address, connPeer.TableMappings)
+	}
 	return err
 }
 
@@ -526,6 +535,10 @@ func HandleServerCrash(k string) {
 		GoLogger.UnpackReceive("Received result from removing server mappings", reply.GoVector, &msg)
 	}
 	fmt.Println("Server " + k + "'s mappings successfully removed")
+
+	for _, connPeer := range AllServers.All {
+		fmt.Printf("Server %s is now connected to peer %s with the following locked/unlocked tables -> %v\n", SelfIP, connPeer.Address, connPeer.TableMappings)
+	}
 
 	fmt.Println("Finished handling crash for server  " + k)
 }

@@ -99,6 +99,11 @@ func (t *TableCommands) GetRow(args shared.TableAccessArgs, reply *shared.TableA
 
 func (t *TableCommands) DeleteRow(args shared.TableAccessArgs, reply *shared.TableAccessReply) (err error) {
 
+	if args.ServerCrashErr == shared.FailPrimaryServerDuringTransaction && shared.CrashServer {
+		GoLogger.LogLocalEvent("Server " + SelfIP + " has crashed during DeleteRow")
+		panic("Server " + SelfIP + " has crashed during DeleteRow")
+	}
+
 	if _, ok := Tables[args.TableName]; !ok {
 		return shared.TableDoesNotExistError(args.TableName)
 	}
@@ -241,7 +246,7 @@ func CopyTable(destinationTableName string, fromTable dbStructs.Table) error {
 	fromTableContent := fromTable.Rows
 
 	for row := range backup {
-		delete(backup, row)
+		delete(Tables[destinationTableName].Rows, row)
 	}
 
 	for row := range fromTableContent {
@@ -250,7 +255,7 @@ func CopyTable(destinationTableName string, fromTable dbStructs.Table) error {
 		for attribute := range fromTableContent[row].Data {
 			newRow.Data[attribute] = fromTableContent[row].Data[attribute]
 		}
-		backup[fromTableContent[row].Key] = newRow
+		Tables[destinationTableName].Rows[fromTableContent[row].Key] = newRow
 	}
 
 	fmt.Println("CopyTable from " + fromTable.Name + " to " + destinationTableName)
@@ -259,11 +264,14 @@ func CopyTable(destinationTableName string, fromTable dbStructs.Table) error {
 }
 
 func RollBackTable(name string) error {
+	fmt.Printf("Server %s is rolling back table %s\n", SelfIP,name)
+	fmt.Printf("Table %s contents before rollback %v\n", SelfIP, Tables[name].Rows)
+
 	table := Tables[name].Rows
 	backup := Tables[name+"_BACKUP"].Rows
 
 	for row := range table {
-		delete(table, row)
+		delete(Tables[name].Rows, row)
 	}
 
 	for row := range backup {
@@ -272,12 +280,14 @@ func RollBackTable(name string) error {
 		for attribute := range backup[row].Data {
 			newRow.Data[attribute] = backup[row].Data[attribute]
 		}
-		table[backup[row].Key] = newRow
+		Tables[name].Rows[backup[row].Key] = newRow
 	}
 
 	fmt.Println("RollBackTable", name, Tables[name])
 	_, str := shared.TableToString(name, table)
 	GoLogger.LogLocalEvent("Roll back Table " + name + " TableContents: " + str)
+
+	fmt.Printf("Table %s contents after rollback %v\n", SelfIP, Tables[name].Rows)
 
 	return nil
 }
