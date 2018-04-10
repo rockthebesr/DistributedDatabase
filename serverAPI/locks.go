@@ -253,7 +253,7 @@ func (s *ServerConn) TableUnavailable(args *shared.TableLockingArg, reply *share
 	var msg string
 	GoLogger.UnpackReceive("Received TableUnavailable()", args.GoVector, &msg)
 
-	fmt.Printf("[RPC TableAvailable] Before TableUnavailable(%s): all locked tables are: %v\n", args.TableName, AllTblLocks.All)
+	fmt.Printf("[RPC TableUnavailable] Before TableUnavailable(%s): all locked tables are: %v\n", args.TableName, AllTblLocks.All)
 
 	if AllTblLocks.All[args.TableName] == true {
 		buf = GoLogger.PrepareSend("Error TableUnavailable(), table already locked", "msg")
@@ -276,7 +276,7 @@ func (s *ServerConn) TableUnavailable(args *shared.TableLockingArg, reply *share
 	err := BackupTable(args.TableName)
 	shared.CheckError(err)
 
-	fmt.Printf("[RPC TableAvailable] After TableUnavailable(%s): all locked tables are: %v\n", args.TableName, AllTblLocks.All)
+	fmt.Printf("[RPC TableUnavailable] After TableUnavailable(%s): all locked tables are: %v\n", args.TableName, AllTblLocks.All)
 
 	return nil
 }
