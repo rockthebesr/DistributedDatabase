@@ -8,9 +8,11 @@ import (
 	"sort"
 	"strings"
 	"time"
+	"bufio"
 
 	"../dbStructs"
 	"../shared"
+	"os"
 )
 
 type NotSupportedOperationType string
@@ -24,9 +26,15 @@ var currentTransaction dbStructs.Transaction
 var DeadlockTimeout = 5
 var DeadlockRetryInterval = 1000 // in MilliSeconds
 var SleepDuration = 3000
+var Breakpoint = shared.BREAKPOINT
 
 func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rpc.Client, crashPoint shared.CrashPoint) (bool, error) {
-	fmt.Println("ExecuteTransaction=", tableToServers)
+	//fmt.Println("ExecuteTransaction=", tableToServers)
+	fmt.Println("BEGIN ExecuteTransaction \n")
+	if Breakpoint {
+		fmt.Print("Press 'Enter' to continue... \n")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
+	}
 
 	stop = 0
 
@@ -36,13 +44,24 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	if !isLocked {
 		return false, err
 	}
-	fmt.Println("done lockTables")
+
+	if Breakpoint {
+		fmt.Println("done LOCK")
+		fmt.Print("Press 'Enter' to continue... \n")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
+	}
 
 	result := []dbStructs.Table{}
 	//Tell servers to execute each operation
 	// TODO if the op is a JOIN, then do the op locally
-	fmt.Println("crashPoint=", crashPoint)
+	//fmt.Println("crashPoint=", crashPoint)
 	for j, op := range txn.Operations {
+
+		if Breakpoint {
+			fmt.Print("Execute Operation" + getOpType(op) +
+				"\n Press 'Enter' to continue... \n")
+			bufio.NewReader(os.Stdin).ReadBytes('\n')
+		}
 
 		// crash before sending the last operation
 		if crashPoint == shared.FailDuringTransaction {
@@ -76,11 +95,23 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 		return false, err
 	}
 
+	if Breakpoint {
+		fmt.Println("done PREPARE")
+		fmt.Print("Press 'Enter' to continue... \n")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
+	}
+
 	//Tell servers to commit transaction
 	isComitted, err := CommitTransaction(tableToServers, txn, crashPoint)
 	if !isComitted {
 		fmt.Println("Cannot commit transaction")
 		return false, err
+	}
+
+	if Breakpoint {
+		fmt.Println("done COMMIT")
+		fmt.Print("Press 'Enter' to continue... \n")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
 	}
 
 	//End of transaction
@@ -91,7 +122,12 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 		fmt.Println("Cannot unlock tables")
 		return false, err
 	}
-	fmt.Println("done unlockTables")
+
+	if Breakpoint {
+		fmt.Println("done UNLOCK")
+		fmt.Print("Press 'Enter' to continue... \n")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
+	}
 
 	if crashPoint == shared.FailAfterClientReceivesAllOfCommitSucceeded {
 		crashClient()
@@ -102,14 +138,20 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 
 	// TODO need to return result, distinguish between the operations
 	resultStrings := []string{}
-	for _, table := range result {
+	for i, table := range result {
 		_, resultString := shared.TableToString(table.Name, table.Rows)
+		resultString = getOpType(txn.Operations[i]) + "\n RESULT=" + resultString
 		resultStrings = append(resultStrings, resultString)
 	}
 	Logger.LogLocalEvent("Transaction finished, result :" + strings.Join(resultStrings, ","))
-	fmt.Println("-------------Transaction finished, fetched result:----------")
-	fmt.Println(strings.Join(resultStrings, ",\n"))
-	fmt.Println("------------------------------------------------------------")
+	fmt.Println("-------------Transaction Finished-------------")
+	fmt.Println(strings.Join(resultStrings, ", \n\n"))
+	fmt.Println("----------------------------------------------")
+
+	if Breakpoint {
+		fmt.Print("Press 'Enter' to continue... \n")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
+	}
 
 	AllServers.Lock()
 	for ip := range AllServers.RecentHeartbeat {
@@ -170,12 +212,12 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 				}
 			}
 		}
-		fmt.Println("merged table: ")
+		//fmt.Println("merged table: ")
 		fmt.Println(newRows)
 
 		newTable.Rows = newRows
 		currentResult = append(currentResult, newTable)
-		fmt.Println("finished join")
+		//fmt.Println("finished join")
 		Logger.LogLocalEvent("Local join finished")
 		return currentResult, nil
 	}
@@ -214,6 +256,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 			return nil, errors.New("failed op")
 		}
 		Logger.UnpackReceive("TableCommands.SetRow succeeded for table "+op.TableName, reply.GoVector, &msg)
+		currentResult = append(currentResult, dbStructs.Table{Name: op.TableName, Rows: make(map[string]dbStructs.Row)})
 		return currentResult, err
 	case dbStructs.Delete:
 		err := conn.Call("TableCommands.DeleteRow", &args, &reply)
@@ -223,6 +266,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 		}
 
 		Logger.UnpackReceive("TableCommands.DeleteRow succeeded for table "+op.TableName, reply.GoVector, &msg)
+		currentResult = append(currentResult, dbStructs.Table{Name: op.TableName, Rows: make(map[string]dbStructs.Row)})
 		return currentResult, err
 	}
 	return currentResult, NotSupportedOperationType(op.Type)
@@ -230,14 +274,14 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 }
 
 func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bool, error) {
-	fmt.Println("Prepare servers to prepare transaction")
+	fmt.Println("PREPARE Servers to commit Transaction")
 	serverToTables := reverseMap(tableToServers)
 	var msg string
 
-	fmt.Println("crashPoint=", crashPoint)
+	//fmt.Println("crashPoint=", crashPoint)
 	lenServers := len(shared.KeysToArray_2(tableToServers))
 	i := 0
-	for _, server := range tableToServers {
+	for table, server := range tableToServers {
 		i += 1
 		buf := Logger.PrepareSend("Send TransactionManager.prepareCommit", &msg)
 		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf, ServerCrashErr: crashPoint}
@@ -248,7 +292,6 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 				crashClient()
 				Logger.LogLocalEvent("Client has crashed after client sends PrepareCommit")
 				panic("FailAfterClientSendsPrepareCommit")
-				//return false, nil
 			}
 		}
 
@@ -259,19 +302,21 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 			return false, err
 		}
 		Logger.UnpackReceive("TransactionManager.PrepareCommit succeeded", reply.GoVector, &msg)
+
+		fmt.Println("PREPARE complete on Table:", table, "Server:", tableToServers[table])
 	}
 	return true, nil
 }
 
 func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bool, error) {
-	fmt.Println("Tell servers to commit transaction")
+	fmt.Println("COMMIT Servers for Transaction")
 	serverToTables := reverseMap(tableToServers)
 	var msg string
 
-	fmt.Println("crashPoint=", crashPoint)
+	//fmt.Println("crashPoint=", crashPoint)
 	lenServers := len(shared.KeysToArray_2(tableToServers))
 	i := 0
-	for _, server := range tableToServers {
+	for table, server := range tableToServers {
 		i += 1
 		buf := Logger.PrepareSend("Send TransactionManager.CommitTransaction", &msg)
 		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf, ServerCrashErr: crashPoint}
@@ -284,7 +329,6 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 				crashClient()
 				Logger.LogLocalEvent("Client has crashed after client sends CommitTransaction")
 				panic("FailAfterClientSendsCommit")
-				//return false, nil
 			}
 		}
 
@@ -297,6 +341,8 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 			return false, err
 		}
 		Logger.UnpackReceive("TransactionManager.CommitTransaction succeeded", reply.GoVector, &msg)
+
+		fmt.Println("COMMIT complete on table:", table, "Server:", tableToServers[table])
 	}
 
 	return true, nil
@@ -308,7 +354,7 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 	//wg.Add(len(tableToServers))
 
 	tables := shared.KeysToArray_2(tableToServers)
-	fmt.Println("lockTables tables=", tables)
+	//fmt.Println("lockTables tables=", tables)
 
 	// testing deadlock
 	if TxnManagerSession.TestDeadLock_ReverseTableList {
@@ -323,6 +369,8 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 		//defer wg.Done()
 		serverHandle := tableToServers[table]
 		recentTime := time.Now().UnixNano()
+
+		//fmt.Println("LOCK TableName=", table)
 
 		for range time.Tick(time.Millisecond * time.Duration(DeadlockRetryInterval)) {
 			if time.Now().UnixNano()-recentTime > int64(DeadlockTimeout*1000*1000000) { // 2 seconds
@@ -347,7 +395,7 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 			if reply.Success == false {
 				Logger.UnpackReceive("Not successful "+table, reply.GoVector, &msg)
 				//continue
-				panic("Cannot acquire all locks") // if cannot acquire locks in sequential order, then cannot proceed
+				panic("ABORT Transaction: cannot acquire all locks") // if cannot acquire locks in sequential order, then cannot proceed
 			} else {
 				TxnManagerSession.AcquiredLocks[table] = true
 				Logger.UnpackReceive("Received result "+table, reply.GoVector, &msg)
@@ -363,6 +411,8 @@ func lockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 
 		//}(table, server)
 	}
+
+	fmt.Println("LOCK complete for all tables:", tables)
 
 	//wg.Wait()
 	// If one of the replies is false, return false
@@ -403,6 +453,9 @@ func unlockTables(tableToServers map[string]*rpc.Client) (bool, error) {
 		//}(table, server)
 	}
 
+	tables := shared.KeysToArray_2(tableToServers)
+	fmt.Println("UNLOCK complete for all tables:", tables)
+
 	//wg.Wait()
 	// If one of the replies is false, return false
 	//for reply := range replies {
@@ -421,7 +474,7 @@ func sendHeartbeats(conn *rpc.Client, localIP string, ignored bool) error {
 		if stop == 1 {
 			fmt.Println("stopped sendHeartbeats")
 
-			return errors.New("Client has crashed")
+			return errors.New("stopped sendHeartbeats to Server")
 			//return nil
 		}
 		err = conn.Call("ServerConn.ClientHeartbeatProtocol", &localIP, &ignored)
@@ -466,9 +519,9 @@ func mergeRows(row1 dbStructs.Row, row2 dbStructs.Row, row1Column string, row2Co
 		targetValue := row2.Data[row2Column]
 		if row1.Key == targetValue {
 
-			fmt.Println("merge row succ")
-			fmt.Println(row1.Key)
-			fmt.Println(row2)
+			//fmt.Println("merge row succ")
+			//fmt.Println(row1.Key)
+			//fmt.Println(row2)
 			for k, v := range row2.Data {
 				newRowData[k] = v
 			}
@@ -494,9 +547,32 @@ func mergeRows(row1 dbStructs.Row, row2 dbStructs.Row, row1Column string, row2Co
 				newRowData[k] = v
 			}
 			newRow.Data = newRowData
-			fmt.Println("merge row succ")
+			//fmt.Println("merge row succ")
 			return true, newRow
 		}
 		return false, newRow
 	}
+}
+
+func getOpType(op dbStructs.Operation) string {
+	opType := op.Type
+	if opType == dbStructs.Join {
+		return "JOIN " + op.TableName + ", " + op.SecondTableName + " where " + op.FirstTableColumn + "=" + op.SecondTableColumn
+	}
+	if opType == dbStructs.SelectAll {
+		return "READ from " + op.TableName
+	}
+	if opType == dbStructs.Select {
+		return "READ from " + op.TableName + " where Key=" + op.Key
+	}
+	if opType == dbStructs.Set {
+		rows := make(map[string]dbStructs.Row)
+		rows[op.Key] = op.Value
+		_, value := shared.TableToString(op.TableName, rows)
+		return "WRITE to " + op.TableName + " where Key=" + op.Key + " Value=" + value
+	}
+	if opType == dbStructs.Delete {
+		return "DELETE from " + op.TableName + " where Key=" + op.Key
+	}
+	return ""
 }

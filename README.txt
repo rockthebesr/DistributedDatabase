@@ -7,30 +7,27 @@ To test on VM:
 
     VM2: server1
     ssh -i ~/.ssh/id_rsa haoran@52.151.36.31
-    go run server.go "40.125.70.162:54321" "10.0.0.5:12345" "false" "A" "B"
+    go run server.go "40.125.70.162:54321" "10.0.0.5:12345" "false" "A" "C"
 
     VM3: server2
     ssh -i ~/.ssh/id_rsa haoran@40.125.70.74
-    go run server.go "40.125.70.162:54321" "10.0.0.6:12346" "false" "B" "C"
+    go run server.go "40.125.70.162:54321" "10.0.0.6:12346" "false" "B"
 
     VM4: server3
     ssh -i ~/.ssh/id_rsa haoran@52.151.14.52
-    go run server.go "40.125.70.162:54321" "10.0.0.7:12347" "false" "A" "C"
+    go run server.go "40.125.70.162:54321" "10.0.0.7:12347" "false" "A" "B" "C"
 
     VM5: server4
     ssh -i ~/.ssh/id_rsa haoran@52.158.234.124
-    go run server.go "40.125.70.162:54321" "10.0.0.8:12348" "false" "A" "B"
+    go run server.go "40.125.70.162:54321" "10.0.0.8:12348" "false" "A"
 
     VM6: client1
     ssh -i ~/.ssh/id_rsa haoran@52.175.252.217
-    go run appA.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
-    go run appB.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
-    go run appC.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
-
+    go run app.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
 
     VM7: client2
     ssh -i ~/.ssh/id_rsa haoran@52.151.8.223
-    go run appA.go "40.125.70.162:54321" "10.0.0.10:12350" "0"
+    go run app.go "40.125.70.162:54321" "10.0.0.10:12350" "0"
 
     Local macOs/linux:
     After appA:

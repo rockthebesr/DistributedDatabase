@@ -23,7 +23,7 @@ func main() {
 
 	defer shared.HandlePanic()
 
-	fmt.Println("Starting server")
+	fmt.Println("-------------Server Initialization-------------")
 
 	if len(os.Args[1:]) < 3 {
 		panic("Incorrect number of arguments given")
@@ -67,16 +67,23 @@ func main() {
 	serverAPI.LBSConn = lbsConn
 	defer serverAPI.LBSConn.Close()
 	serverAPI.LBSIP = lbsIP
-	fmt.Println("Connected to load balancer")
+
+	fmt.Println("Connected to LBS")
 
 	// TODO if LBS crashed at this point, then just reconnect to it
 	// Register the server & tables with the LBS
 	tableNames := serverAPI.GetTableNames()
-	fmt.Println("Server has tables ", tableNames)
+
+	fmt.Println("Server has Tables=", tableNames)
 
 	// first, assume that all my tables are unlocked
 	tablesAndLocks := make(map[string]bool)
 	for _, tableName := range tableNames {
+
+		if strings.Contains(tableName, "_BACKUP") {
+			continue
+		}
+
 		tablesAndLocks[tableName] = false
 	}
 	serverAPI.GoLogger.LogLocalEvent("Server has tables: " + strings.Join(tableNames, ", "))
@@ -103,7 +110,9 @@ func main() {
 	}
 	err = serverAPI.LBSConn.Call("LBS.AddMappings", &args, &reply)
 	shared.CheckErr(err)
-	fmt.Println("Registered server and tables to load balancer")
+
+	fmt.Println("AddMappings registered Tables to LBS")
+
 	serverAPI.GoLogger.UnpackReceive("Received AddMappings from LBS", reply.GoVector, &msg)
 
 	//Retrieve neighbors
@@ -116,14 +125,16 @@ func main() {
 	}
 	err = serverAPI.LBSConn.Call("LBS.GetPeers", &args3, &servers)
 	shared.CheckErr(err)
-	fmt.Println("Neighbours retrieved")
+
+	fmt.Println("GetPeers retrieved neighbouring/peer Servers")
+
 	serverAPI.GoLogger.UnpackReceive("Received GetPeers from LBS", servers.GoVector, &msg)
 
 	for _, listOfIps := range servers.Servers {
 		for _, ip := range listOfIps {
 			inArray, _ := shared.InArray(ip, peerIPs)
 			if !inArray {
-				fmt.Printf("Server %s has retrieved address for peer %s\n", serverAPI.SelfIP, ip)
+				fmt.Printf("    peer Server=%s\n", ip)
 				peerIPs = append(peerIPs, ip)
 			}
 		}
@@ -134,7 +145,7 @@ func main() {
 
 	// Connects to other servers
 	for _, neighbour := range peerIPs {
-		fmt.Println("Connecting to peer: ", neighbour)
+		fmt.Println("ConnectToPeer to Server=", neighbour)
 
 		var success shared.ConnectionReply
 		conn, err := rpc.Dial("tcp", neighbour)
@@ -180,6 +191,8 @@ func main() {
 
 		}
 
+		fmt.Println("    peer Server has Table:OwnsLock=", serverTables[neighbour])
+
 		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Second*2)
 
 		serverAPI.AllServers.Unlock()
@@ -188,6 +201,11 @@ func main() {
 		var msg string
 
 		for tableName, _ := range serverTables[neighbour] {
+
+			if strings.Contains(tableName, "_BACKUP") {
+				continue
+			}
+
 			buf := serverAPI.GoLogger.PrepareSend("Send GetTableContents", "msg")
 			args := shared.TableAccessArgs{TableName: tableName, GoVector: buf, IsRecovery: true}
 			reply := shared.TableAccessReply{Success: false}
@@ -198,7 +216,7 @@ func main() {
 				continue
 			}
 
-			fmt.Printf("Received the following contents for table %s from peer %s -> %v\n", tableName, neighbour, reply.OneTableContents)
+			fmt.Printf("    GetTableContents Table=%s from peer Server=%s, TableContents=%v\n", tableName, neighbour, reply.OneTableContents)
 
 			serverAPI.CopyTable(tableName, dbStructs.Table{tableName, reply.OneTableContents})
 
@@ -207,9 +225,11 @@ func main() {
 		}
 	}
 
+	fmt.Printf("Server %s is now connected to peer Servers=")
 	for _, connPeer := range serverAPI.AllServers.All {
-		fmt.Printf("Server %s is now connected to peer %s with the following locked/unlocked tables -> %v\n", serverAPI.SelfIP, connPeer.Address, connPeer.TableMappings)
+		fmt.Printf("%s", connPeer.Address)
 	}
+	fmt.Println("\n")
 
 	// Listens for other connections
 	serverConn := new(serverAPI.ServerConn)
@@ -220,6 +240,9 @@ func main() {
 	rpcServer.RegisterName("ServerConn", serverConn)
 	rpcServer.RegisterName("TableCommands", tableCommands)
 	rpcServer.RegisterName("TransactionManager", txnManager)
+
+
+	fmt.Println("-----------------------------------------------")
 
 	for {
 		accept, err := listener.Accept()

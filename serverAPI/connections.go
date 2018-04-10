@@ -134,7 +134,7 @@ func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.
 		0,
 	}
 
-	fmt.Printf("Got Register from %s\n", toRegister)
+	fmt.Printf("[RPC ConnectToPeer] register for new Server=%s\n", toRegister)
 
 	go MonitorPeers(toRegister, time.Duration(HeartbeatInterval)*time.Second*2)
 
@@ -143,7 +143,7 @@ func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.
 
 	AllServers.All[toRegister].Handle = conn
 
-	fmt.Printf("Established bi-directional RPC to server %s %v\n", toRegister, AllServers.All[toRegister].Handle)
+	fmt.Printf("    Established bi-directional RPC to Server %s Handle=%v\n", toRegister, AllServers.All[toRegister].Handle)
 
 	var ignored bool
 	go SendServerHeartbeats(AllServers.All[toRegister].Handle, SelfIP, ignored)
@@ -184,7 +184,7 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 
 	toRegister := (*ip).IP
 	if _, exists := AllClients.All[toRegister]; exists {
-		return errors.New("IP already registered")
+		return errors.New("ClientConnect err: IP already registered")
 	}
 
 	// TODO client should hold some locks at this point
@@ -196,7 +196,7 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 		0,
 	}
 
-	fmt.Printf("Got Register from %s\n", toRegister)
+	fmt.Printf("[RPC ClientConnect] register for new Client=%s\n", toRegister)
 
 	//stop := make(chan bool)
 	AllClients.All[toRegister].StopChannel = 0
@@ -208,7 +208,7 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 
 	AllClients.All[toRegister].Handle = conn
 
-	fmt.Printf("Established bi-directional RPC to client %s\n", toRegister)
+	fmt.Printf("    Established bi-directional RPC to Client=%s\n", toRegister)
 
 	var ignored bool
 	go SendClientHeartbeats(conn, SelfIP, ignored)
@@ -372,11 +372,16 @@ func RollBackTableAndPeers(clientIP string) error {
 	AllServers.Lock()
 	defer AllServers.Unlock()
 	tablesToUnlock := TransactionTables[clientIP]
-	fmt.Println("!!!start handleClientCrash tablesToUnlock=", tablesToUnlock)
+
+	fmt.Println("-------RollBackTableAndPeers-------")
+	fmt.Println( "Tables to unlock=", tablesToUnlock)
+
 	tablesContents := ""
 	for _, tableName := range tablesToUnlock {
 		// Server rolls back transactions
 		RollBackTable(tableName)
+		fmt.Println( "    RollBackTable for self, Table=", tableName)
+
 		for _, conn := range AllServers.All {
 			if _, ok := conn.TableMappings[tableName]; !ok {
 				continue
@@ -394,7 +399,7 @@ func RollBackTableAndPeers(clientIP string) error {
 			if err != nil || !reply.Success {
 				fmt.Println("Error occurred at 1")
 			} else {
-				fmt.Println("RollBackPeer succeeded")
+				fmt.Println("    RollBackPeer for Server=", conn.Address, "Table=", tableName)
 			}
 			GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
 
@@ -408,7 +413,7 @@ func RollBackTableAndPeers(clientIP string) error {
 			if err != nil || !reply.Success {
 				fmt.Println("Error occurred at 2")
 			} else {
-				fmt.Println("TableAvailable succeeded")
+				fmt.Println("    TableAvailable for Server=", conn.Address, "Table=", tableName)
 			}
 			GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
 			AllServers.Lock()
@@ -417,7 +422,9 @@ func RollBackTableAndPeers(clientIP string) error {
 		// Server unlocks tables (i.e. Server detect Client crash, unlock table)
 		AllServers.All[SelfIP].TableMappings[tableName] = false // unsets the owner of the lock
 		AllTblLocks.All[tableName] = false                      // sets table to unlocked
+
 		GoLogger.LogLocalEvent("Unlocked table " + tableName)
+		fmt.Println("    UnlockTable for self, Table=", tableName)
 
 		_, tableString := shared.TableToString(tableName, Tables[tableName].Rows)
 		tablesContents = tablesContents + tableString
@@ -435,7 +442,8 @@ func RollBackTableAndPeers(clientIP string) error {
 	// Remove all the tables in lockedTables list
 	TransactionTables[clientIP] = []string{}
 
-	fmt.Println("finished handleClientCrash")
+	fmt.Println("Finished RollBackTableAndPeers for crashed", clientIP, ", current LockedTables=", currentLockedTables, "rollback TableContents=", tablesContents)
+	fmt.Println("-------------------------------")
 
 	return nil
 }
@@ -446,6 +454,9 @@ func HandleServerCrash(k string) {
 
 	AllServers.Lock()
 	defer AllServers.Unlock()
+	tablesContents := ""
+
+	fmt.Println("-------HandleServerCrash-------")
 
 	tablesAndLocks := AllServers.All[k].TableMappings
 	for tableName, ownsLock := range tablesAndLocks {
@@ -453,20 +464,20 @@ func HandleServerCrash(k string) {
 			var reply shared.TableLockingReply
 
 			if AllTblLocks.All[tableName] {
-				fmt.Println("Unlocked table ", tableName)
+				fmt.Println("    UnlockTable for self, Table=", tableName)
 				GoLogger.LogLocalEvent("Unlocking Table " + tableName + " for crashed server " + k)
 
 				AllTblLocks.All[tableName] = false
 
-				fmt.Println("Rolling back table " + tableName)
+				fmt.Println("    RollBackTable for self, Table=" + tableName)
 				RollBackTable(tableName)
 				for _, peer := range AllServers.All {
 					if peer.Address != k && peer.Address != SelfIP {
-						fmt.Println("peer owns tables -> ", peer.TableMappings[tableName])
+						//fmt.Println("peer owns tables -> ", peer.TableMappings[tableName])
 						if _, ok := peer.TableMappings[tableName]; ok {
 							conn := peer.Handle
 							if conn != nil {
-								fmt.Printf("Rolling back table %s for peer -> %s", tableName, peer.Address)
+
 								buf = GoLogger.PrepareSend("Send TransactionManager.RollBackPeer table="+tableName, "msg")
 								args := shared.TableLockingArg{TableName: tableName, GoVector: buf}
 								reply = shared.TableLockingReply{Success: false}
@@ -475,12 +486,11 @@ func HandleServerCrash(k string) {
 								if err != nil || !reply.Success {
 									fmt.Println("Error occurred at 1")
 								} else {
-									fmt.Println("RollBackPeer succeeded")
+									fmt.Printf("    RollBackTable for peer, Table=%s Server=%s", tableName, peer.Address)
 								}
 								GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
-								fmt.Printf("Finished rolling back table %s for peer -> %s\n", tableName, peer.Address)
+								//fmt.Printf("Finished rolling back table %s for peer -> %s\n", tableName, peer.Address)
 
-								fmt.Printf("Sending table available for table %s for peer -> %s\n", tableName, peer.Address)
 								buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable "+tableName, "msg")
 								args = shared.TableLockingArg{
 									SelfIP,
@@ -491,21 +501,28 @@ func HandleServerCrash(k string) {
 								shared.CheckErr(err)
 								if err != nil {
 									GoLogger.UnpackReceive("Error "+tableName, reply.GoVector, &msg)
+									fmt.Println("Error occurred at 2")
 								} else {
 									GoLogger.UnpackReceive("Received table available from server "+peer.Address, reply.GoVector, &msg)
+									fmt.Printf("    TableAvailable for Table=%s Server=%s\n", tableName, peer.Address)
 								}
-								fmt.Println("Sent table available to ", peer.Address)
+								//fmt.Println("Sent table available to ", peer.Address)
 							}
 						}
 					}
 				}
 			}
+
+			// It is no longer the lock owner
 			AllServers.All[k].TableMappings[tableName] = false
+
+			_, tableString := shared.TableToString(tableName, Tables[tableName].Rows)
+			tablesContents = tablesContents + tableString
 		}
 	}
 	AllServers.All[k].Handle.Close()
 
-	fmt.Println("Removing server " + k + "'s mappings from LBS")
+	fmt.Println("Remove Server " + k + "from self map")
 
 	GoLogger.LogLocalEvent("Deleting server " + k + " from list of peers")
 	delete(AllServers.All, k)
@@ -527,6 +544,16 @@ func HandleServerCrash(k string) {
 	}
 	fmt.Println("Server " + k + "'s mappings successfully removed")
 
-	fmt.Println("Finished handling crash for server  " + k)
+	AllTblLocks.Lock()
+	defer AllTblLocks.Unlock()
+	currentLockedTables := []string{}
+	for table, locked := range AllTblLocks.All {
+		if locked == true {
+			currentLockedTables = append(currentLockedTables, table)
+		}
+	}
+
+	fmt.Println("Finished HandleCrashServer for", k, ", current LockedTables=", currentLockedTables, "rollback TableContents=", tablesContents)
+	fmt.Println("-------------------------------")
 }
 

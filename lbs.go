@@ -13,6 +13,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"sort"
 )
 
 type AllMappings struct {
@@ -26,6 +27,7 @@ func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNamesRe
 	allMappings.Lock()
 	defer allMappings.Unlock()
 
+	fmt.Println("AddMappings to LBS for Server=", args.ServerIpAddress)
 	for z := 0; z < len(args.TableNames); z++ {
 		tableName := args.TableNames[z]
 
@@ -74,7 +76,7 @@ func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableName
 	allMappings.Lock()
 	defer allMappings.Unlock()
 
-	fmt.Println("Removing mappings from LBS -> ", args.ServerIpAddress)
+	fmt.Println("RemoveMappings from LBS for Server=", args.ServerIpAddress)
 	for tableName, listOfIps := range allMappings.all {
 		for ip, active := range listOfIps {
 			if ip != args.ServerIpAddress {
@@ -109,6 +111,8 @@ func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableName
 	serversStr := strings.Join(servers, ",")
 	err = ioutil.WriteFile(lbsDisk, []byte(serversStr), 0644)
 	shared.CheckError(err)
+
+	//fmt.Println("RemoveMappings", args.ServerIpAddress)
 
 	return nil
 }
@@ -162,6 +166,8 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 	Logger.UnpackReceive("Received GetPeers()", args.GoVector, &msg)
 	buf = Logger.PrepareSend("Sending GetPeers()", "msg")
 
+	fmt.Println("GetPeers Servers=", peers, "for", args.ServerIpAddress)
+
 	*reply = shared.ServerPeers{Servers: peers, GoVector: buf}
 
 	return nil
@@ -183,11 +189,15 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesRep
 
 		servers[tableName] = ""
 
-		listOfIps := allMappings.all[tableName]
-		numActive := getNumOfActiveServers(listOfIps)
+		mapOfIps := allMappings.all[tableName]
+		numActive := getNumOfActiveServers(mapOfIps)
+
+		listOfIps := shared.KeysToArray(mapOfIps)
+		sort.Strings(listOfIps)
 
 		// assume that at least one server is active
-		for ip, active := range listOfIps {
+		for _, ip := range listOfIps {
+			active := mapOfIps[ip]
 			if active == true {
 				// then something went wrong
 				if servers[tableName] != "" {
@@ -224,7 +234,8 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesRep
 
 	}
 
-	fmt.Println("GetServers", servers)
+	fmt.Println("GetServers Servers=", servers, "for", args.ServerIpAddress)
+
 	buf = Logger.PrepareSend("Sending GetServers()", "msg")
 
 	*reply = shared.TableNamesReply{TableNameToServers: servers, GoVector: buf}

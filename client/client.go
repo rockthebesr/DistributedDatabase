@@ -6,10 +6,12 @@ import (
 	"net/rpc"
 	"sync"
 	"time"
+	"bufio"
 	//"../serverAPI"
 	"../dbStructs"
 	"../shared"
 	"github.com/arcaneiceman/GoVector/govec"
+	"os"
 )
 
 type ClientConn int
@@ -36,6 +38,7 @@ var (
 	TxnManagerSession TransactionManagerSession = TransactionManagerSession{AcquiredLocks: make(map[string]bool)}
 	connectedIP                                 = map[string]*rpc.Client{}
 	stop              int
+	reducePrintCount = 4
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,11 +60,12 @@ func GetNeededTables(txn dbStructs.Transaction) []string {
 //ConnectToServers - connect to servers and return map of tableNames -> server conns
 func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, error) {
 	result := map[string]*rpc.Client{}
+	fmt.Println("ConnectToServers: Client already connected to Servers=", connectedIP)
 
 	//fmt.Println("ServerConn", serverAPI.HeartbeatInterval)
 	// TODO do not connect to same server more than once
 	for t, sAddr := range tToServerIPs {
-		fmt.Println("Client connected to servers -> ", connectedIP)
+		fmt.Println("Connect to Server=", sAddr + "for Table=", t)
 		if _, ok := connectedIP[sAddr]; ok {
 			Logger.LogLocalEvent(sAddr + " is already connected")
 			result[t] = connectedIP[sAddr]
@@ -87,7 +91,7 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 			for s, sConn := range connectedIP {
 				err := sConn.Close()
 				shared.CheckError(err)
-				delete(connectedIP, s)
+				delete(connectedIP, s)		// TODO what's this? can't do this
 				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			return nil, err
@@ -112,7 +116,7 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 		}
 	}
 
-	fmt.Println("ConnectToServers done", result)
+	fmt.Println("ConnectToServers done, Servers=", result)
 	// TODO before returning, make sure all servers are still connected?
 	return result, nil
 }
@@ -129,7 +133,7 @@ func handleServerCrash(serverIP string) error {
 	defer AllServers.Unlock()
 	delete(connectedIP, serverIP)
 
-	fmt.Println("tell connected servers to roll back transaction", connectedIP)
+	fmt.Println("ROLLBACK Primary Servers: roll back transaction, Servers=", connectedIP)
 	for sAddr, sConn := range connectedIP {
 		buf := Logger.PrepareSend("Send RollBackPrimaryServer to server "+sAddr, &msg)
 		args := shared.TableLockingArg{IpAddress: localAddr, GoVector: buf}
@@ -143,7 +147,7 @@ func handleServerCrash(serverIP string) error {
 			Logger.UnpackReceive("Received RollBackPrimaryServer success", reply.GoVector, &msg)
 		}
 	}
-	Logger.LogLocalEvent("Handled server crash, server: " + serverIP)
+	Logger.LogLocalEvent("HandleServerCrash finished, crashed Server=" + serverIP)
 	return nil
 }
 
@@ -157,18 +161,24 @@ func (c *ClientConn) ReceiveServerIP(addr *string, ignored *bool) error {
 }
 
 func MonitorServers(k string, HeartbeatInterval time.Duration) {
+	count := 0
 	for {
 		AllServers.Lock()
 		if time.Now().UnixNano()-AllServers.RecentHeartbeat[k] > int64(HeartbeatInterval) {
 			fmt.Printf("%s timed out\n", k)
 			delete(AllServers.RecentHeartbeat, k)
 			AllServers.Unlock()
+			fmt.Printf("Handle Server crash, ROLLBACK Servers\n") 	// TODO for each connected server
 			handleServerCrash(k)
 			return
 		}
-		fmt.Printf("%s is alive\n", k)
+		if count % reducePrintCount == 0 {
+			fmt.Printf("%s is alive\n", k)
+		}
+
 		AllServers.Unlock()
 		time.Sleep(HeartbeatInterval)
+		count += 1
 	}
 }
 
@@ -183,7 +193,7 @@ func StartClient(lbsIPAddr string, localIP string) (bool, error) {
 	//Connect to lbs
 	loadBalancer, err := rpc.Dial("tcp", lbsIPAddr)
 	shared.CheckErr(err)
-	fmt.Println("Connected to lbs at " + lbsIPAddr)
+	fmt.Println("Connected to LBS at " + lbsIPAddr)
 	lbs = loadBalancer
 	addr, err := net.ResolveTCPAddr("tcp", localIP)
 	shared.CheckErr(err)
@@ -210,11 +220,11 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 	//Get needed tables
 	tableNames := GetNeededTables(txn)
 
-	fmt.Println("NewTransaction tables=", tableNames)
+	fmt.Println("TRANSACTION requires Tables=", tableNames)
 
 	//Get needed servers
 	buf := Logger.PrepareSend("Send LBS.GetServers", "msg")
-	args := shared.TableNamesArg{TableNames: tableNames, GoVector: buf}
+	args := shared.TableNamesArg{TableNames: tableNames, GoVector: buf, ServerIpAddress:localAddr}
 	reply := shared.TableNamesReply{}
 	err := lbs.Call("LBS.GetServers", &args, &reply)
 	if err != nil {
@@ -229,8 +239,13 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		tablesToServerConns, err := ConnectToServers(reply.TableNameToServers)
 		//if connection successful
 		if err != nil {
-			fmt.Println("Cannot connect to servers, Retry txn. Given error -> ", err)
+			fmt.Println("ConnectToServers failed. Error=", err, "\n Retry LBS.GetServers")
 			time.Sleep(3 * time.Second)
+			if Breakpoint {
+				fmt.Print("Press 'Enter' to continue... \n")
+				bufio.NewReader(os.Stdin).ReadBytes('\n')
+			}
+
 			Logger.LogLocalEvent("Cannot connect to servers, Retry txn")
 			for s, sConn := range connectedIP {
 				err := sConn.Close()
@@ -251,7 +266,13 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		//Execute the transaction
 		result, err := ExecuteTransaction(txn, tablesToServerConns, crashPoint)
 		if err != nil {
-			fmt.Println("ExecuteTransaction err: " + err.Error() + ", Retry txn")
+			fmt.Println("ExecuteTransaction failed, Error=" + err.Error() + "\n Retry LBS.GetServers")
+			time.Sleep(3 * time.Second)
+			if Breakpoint {
+				fmt.Print("Press 'Enter' to continue... \n")
+				bufio.NewReader(os.Stdin).ReadBytes('\n')
+			}
+
 			Logger.LogLocalEvent("ExecuteTransaction err: " + err.Error() + ", Retry txn")
 			for s, sConn := range connectedIP {
 				err := sConn.Close()
@@ -305,7 +326,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		Logger.LogLocalEvent("Close connection to " + s)
 	}
 
-	Logger.LogLocalEvent("Transaction aborted : Cannot complete")
+	Logger.LogLocalEvent("ABORT: Cannot complete Transaction")
 	return false, nil
 }
 

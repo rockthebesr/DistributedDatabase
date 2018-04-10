@@ -23,6 +23,7 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"bufio"
 )
 
 func main() {
@@ -41,7 +42,7 @@ func main() {
 		return
 	}
 
-	time.Sleep(time.Second * 3)
+	time.Sleep(time.Second * 1)
 
 	op0 := dbStructs.Operation{
 		Type:      dbStructs.SelectAll,
@@ -58,22 +59,86 @@ func main() {
 		FirstTableColumn:  "key",
 		SecondTableColumn: "emp_id"}
 
-	txn0 := dbStructs.Transaction{Operations: []dbStructs.Operation{op0, op1, op2}}
-	client.NewTransaction(txn0, shared.CrashPoint(crashPoint))
-	time.Sleep(time.Second * 3)
 
 	op3 := dbStructs.Operation{
 		Type:      dbStructs.Delete,
 		TableName: "A",
-		Key:       "test0"}
+		Key:       "test1"}
 
 	op4 := dbStructs.Operation{
 		Type:      dbStructs.Delete,
 		TableName: "B",
-		Key:       "k0"}
+		Key:       "k1"}
 
-	txn1 := dbStructs.Transaction{Operations: []dbStructs.Operation{op3, op4, op0, op1}}
+
+	newRow0 := map[string]string{"name": "Jim", "age": "30", "gender": "M"}
+	newRow1 := map[string]string{"company": "Facebook", "emp_id": "test3"}
+
+
+	op5 := dbStructs.Operation{
+		Type:      dbStructs.Set,
+		TableName: "A",
+		Key:       "test3",
+		Value:     dbStructs.Row{Key: "test3", Data: newRow0}}
+
+
+	op6 := dbStructs.Operation{
+		Type:      dbStructs.Set,
+		TableName: "B",
+		Key:       "k3",
+		Value:     dbStructs.Row{Key: "k3", Data: newRow1}}
+
+
+	txn0 := dbStructs.Transaction{Operations: []dbStructs.Operation{op0, op1, op2, op3, op4, op5, op6}}
+	client.NewTransaction(txn0, shared.CrashPoint(crashPoint))
+
+	fmt.Println("Finished Transaction 1")
+
+	fmt.Print("Press 'Enter' to continue... \n")
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
+
+	//Transaction 2
+	newRow2 := map[string]string{"name": "Jim", "age": "50", "gender": "M"}
+	newRow3 := map[string]string{"company": "Microsoft", "emp_id": "test3"}
+
+	op7 := dbStructs.Operation{
+		Type:      dbStructs.Set,
+		TableName: "A",
+		Key:       "test3",
+		Value:     dbStructs.Row{Key: "test3", Data: newRow2}}
+
+
+	op8 := dbStructs.Operation{
+		Type:      dbStructs.Set,
+		TableName: "B",
+		Key:       "k3",
+		Value:     dbStructs.Row{Key: "k3", Data: newRow3}}
+
+
+	txn1 := dbStructs.Transaction{Operations: []dbStructs.Operation{op7, op8, op0, op1, op2}}
 	client.NewTransaction(txn1, shared.CrashPoint(crashPoint))
-	time.Sleep(time.Second * 3)
-	fmt.Println("Finished transactions")
+
+	fmt.Println("Finished Transaction 2")
+
+	fmt.Print("Press 'Enter' to continue... \n")
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
+
+	//Transaction 3
+	newRow := map[string]string{"tv_show": "The Office"}
+
+	op9 := dbStructs.Operation{
+		Type:      dbStructs.Set,
+		TableName: "C",
+		Key:       "newRow",
+		Value:     dbStructs.Row{Key: "newRow", Data: newRow}}
+
+	op10 := dbStructs.Operation{
+		Type:      dbStructs.SelectAll,
+		TableName: "C"}
+
+	txn2 := dbStructs.Transaction{Operations: []dbStructs.Operation{op9, op10, op0, op1}}
+	client.NewTransaction(txn2, shared.CrashPoint(crashPoint))
+
+	fmt.Println("Finished Transaction 3")
+
 }
