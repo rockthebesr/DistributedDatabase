@@ -36,11 +36,11 @@ func (t *TableCommands) SetRow(args shared.TableAccessArgs, reply *shared.TableA
 	//	return shared.InvalidNumberOfColumns{NumColumns, len(args.TableRow.Data)}
 	//}
 
-	for _, column := range Columns {
-		if _, ok := args.TableRow.Data[column]; !ok {
-			return shared.InvalidColumnNames(args.TableName)
-		}
-	}
+	//for _, column := range Columns {
+	//	if _, ok := args.TableRow.Data[column]; !ok {
+	//		return shared.InvalidColumnNames(args.TableName)
+	//	}
+	//}
 
 	var buf []byte
 	var msg string

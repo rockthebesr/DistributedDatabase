@@ -65,7 +65,7 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 	//fmt.Println("ServerConn", serverAPI.HeartbeatInterval)
 	// TODO do not connect to same server more than once
 	for t, sAddr := range tToServerIPs {
-		fmt.Println("Connect to Server=", sAddr + "for Table=", t)
+		fmt.Println("Connect to Server=", sAddr + " for Table=", t)
 		if _, ok := connectedIP[sAddr]; ok {
 			Logger.LogLocalEvent(sAddr + " is already connected")
 			result[t] = connectedIP[sAddr]
@@ -99,7 +99,7 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 
 		var msg string
 		if succ.Success {
-			fmt.Printf("Established bi-directional RPC to server %s\n", sAddr)
+			fmt.Printf("    Established bi-directional RPC to server %s\n", sAddr)
 			result[t] = conn
 			Logger.UnpackReceive("Established connection to server "+sAddr, succ.GoVector, &msg)
 			go sendHeartbeats(conn, localAddr, false)

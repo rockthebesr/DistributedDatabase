@@ -46,7 +46,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 
 	if Breakpoint {
-		fmt.Println("done LOCK")
+		fmt.Println("Done LOCK")
 		fmt.Print("Press 'Enter' to continue... \n")
 		bufio.NewReader(os.Stdin).ReadBytes('\n')
 	}
@@ -58,7 +58,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	for j, op := range txn.Operations {
 
 		if Breakpoint {
-			fmt.Print("Will Execute Operation=" + getOpType(op) +
+			fmt.Print("\nWill Execute Operation=" + getOpType(op) +
 				"\n Press 'Enter' to continue... \n")
 			bufio.NewReader(os.Stdin).ReadBytes('\n')
 		}
@@ -96,7 +96,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 
 	if Breakpoint {
-		fmt.Println("done PREPARE")
+		fmt.Println("Done PREPARE")
 		fmt.Print("Press 'Enter' to continue... \n")
 		bufio.NewReader(os.Stdin).ReadBytes('\n')
 	}
@@ -109,7 +109,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 
 	if Breakpoint {
-		fmt.Println("done COMMIT")
+		fmt.Println("Done COMMIT")
 		fmt.Print("Press 'Enter' to continue... \n")
 		bufio.NewReader(os.Stdin).ReadBytes('\n')
 	}
@@ -124,7 +124,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	}
 
 	if Breakpoint {
-		fmt.Println("done UNLOCK")
+		fmt.Println("Done UNLOCK")
 		fmt.Print("Press 'Enter' to continue... \n")
 		bufio.NewReader(os.Stdin).ReadBytes('\n')
 	}
@@ -170,7 +170,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 	var msg string
 	//Join is a special case. It is executed locally
 	if op.Type == dbStructs.Join {
-		fmt.Println(currentResult)
+		//fmt.Println(currentResult)
 		Logger.LogLocalEvent("Locally joining tables : " + op.TableName + " and " + op.SecondTableName)
 		if op.TableName == op.SecondTableName {
 			fmt.Println("Can't join on the same tables")
@@ -201,7 +201,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 
 		firstTableRows := firstTable.Rows
 		secondTableRows := secondTable.Rows
-		fmt.Println("Join: start mering")
+		//fmt.Println("Join: start mering")
 		newTable := dbStructs.Table{Name: op.TableName + " joined with " + op.SecondTableName}
 		newRows := map[string]dbStructs.Row{}
 		for _, firstTableRow := range firstTableRows {
@@ -213,7 +213,7 @@ func ExecuteOperation(op dbStructs.Operation, tableToServers map[string]*rpc.Cli
 			}
 		}
 		//fmt.Println("merged table: ")
-		fmt.Println(newRows)
+		//fmt.Println(newRows)
 
 		newTable.Rows = newRows
 		currentResult = append(currentResult, newTable)

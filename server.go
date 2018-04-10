@@ -23,7 +23,7 @@ func main() {
 
 	defer shared.HandlePanic()
 
-	fmt.Println("-------------Server Initialization-------------")
+	fmt.Println("-----------Server Initialization-----------")
 
 	if len(os.Args[1:]) < 3 {
 		panic("Incorrect number of arguments given")
@@ -227,7 +227,10 @@ func main() {
 
 	fmt.Printf("Server is now connected to peer Servers=")
 	for _, connPeer := range serverAPI.AllServers.All {
-		fmt.Printf("%s", connPeer.Address)
+		if connPeer.Address == serverIP {
+			continue
+		}
+		fmt.Printf(" %s,", connPeer.Address)
 	}
 	fmt.Println("")
 
@@ -242,7 +245,7 @@ func main() {
 	rpcServer.RegisterName("TransactionManager", txnManager)
 
 
-	fmt.Println("-----------------------------------------------")
+	fmt.Println("-------------------------------------------")
 
 	for {
 		accept, err := listener.Accept()
