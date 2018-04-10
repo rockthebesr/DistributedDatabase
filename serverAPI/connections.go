@@ -536,7 +536,7 @@ func HandleServerCrash(k string) {
 	}
 	AllServers.All[k].Handle.Close()
 
-	fmt.Println("Remove Server " + k + "from self map")
+	fmt.Println("Remove Server " + k + " from self map")
 
 	GoLogger.LogLocalEvent("Deleting server " + k + " from list of peers")
 	delete(AllServers.All, k)

@@ -18,4 +18,4 @@ type ServerPeers struct {
 
 const DEGUGMODE bool = false
 const BREAKPOINT bool = true
-const REDUCELOG = 10
+const REDUCELOG = 30

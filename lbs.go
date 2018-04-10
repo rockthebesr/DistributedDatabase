@@ -73,6 +73,7 @@ func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNamesRe
 }
 
 func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableNamesReply) error {
+	fmt.Println("RemoveMappings allMappings.Lock")
 	allMappings.Lock()
 	defer allMappings.Unlock()
 
@@ -178,6 +179,7 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 }
 
 func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesReply) error {
+	fmt.Println("GetServers allMappings.Lock")
 	allMappings.Lock()
 	defer allMappings.Unlock()
 
