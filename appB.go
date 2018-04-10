@@ -24,6 +24,7 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"bufio"
 )
 
 func main() {
@@ -42,38 +43,43 @@ func main() {
 		return
 	}
 
-	time.Sleep(time.Second * 3)
+	time.Sleep(time.Second * 1)
 
 	op0 := dbStructs.Operation{
-		Type:      dbStructs.Delete,
-		TableName: "A",
-		Key:       "k0"}
-
-	newRow := map[string]string{"company": "Tesla", "emp_id": "NIL"}
-
-	op1 := dbStructs.Operation{
-		Type:      dbStructs.Set,
-		TableName: "B",
-		Key:       "newRowB",
-		Value:     dbStructs.Row{"newRowB", newRow}}
-
-	op2 := dbStructs.Operation{
 		Type:      dbStructs.SelectAll,
 		TableName: "A"}
 
-	op3 := dbStructs.Operation{
+	op1 := dbStructs.Operation{
 		Type:      dbStructs.SelectAll,
 		TableName: "B"}
 
-	op4 := dbStructs.Operation{
+	op2 := dbStructs.Operation{
 		Type:              dbStructs.Join,
 		TableName:         "A",
 		SecondTableName:   "B",
 		FirstTableColumn:  "key",
 		SecondTableColumn: "emp_id"}
 
-	txn0 := dbStructs.Transaction{Operations: []dbStructs.Operation{op0, op1, op2, op3, op4}}
-	client.NewTransaction(txn0, shared.CrashPoint(crashPoint))
-	time.Sleep(time.Second * 3)
-	fmt.Println("Finished transactions")
+	newRow2 := map[string]string{"name": "Jim", "age": "50", "gender": "M"}
+	newRow3 := map[string]string{"company": "Microsoft", "emp_id": "test3"}
+
+	op7 := dbStructs.Operation{
+		Type:      dbStructs.Set,
+		TableName: "A",
+		Key:       "test3",
+		Value:     dbStructs.Row{Key: "test3", Data: newRow2}}
+
+
+	op8 := dbStructs.Operation{
+		Type:      dbStructs.Set,
+		TableName: "B",
+		Key:       "k3",
+		Value:     dbStructs.Row{Key: "k3", Data: newRow3}}
+
+
+	txn1 := dbStructs.Transaction{Operations: []dbStructs.Operation{op7, op8, op0, op1, op2}}
+	client.NewTransaction(txn1, shared.CrashPoint(crashPoint))
+
+	fmt.Println("Finished Transaction 2")
+
 }

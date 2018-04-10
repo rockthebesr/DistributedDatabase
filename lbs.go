@@ -134,6 +134,10 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 
 	for tableName, listOfIps := range allMappings.all {
 
+		if strings.Contains(tableName, "_BACKUP") {
+			continue
+		}
+
 		if _, ok := allMappings.all[tableName]; !ok {
 			return errors.New("Table does not exist")
 		}

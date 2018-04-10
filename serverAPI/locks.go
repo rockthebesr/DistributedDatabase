@@ -36,7 +36,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 	// Call TableUnavailable
 	// if error is returned, cannot lock table, undo locking and return error
 	for ip, serverPeer := range AllServers.All {
-		fmt.Printf("    [RPC TableLock] Call TableUnavailable(%s) to peer Server=%s", args.TableName, ip)
+		fmt.Printf("    [RPC TableLock] Call TableUnavailable(%s) to peer Server=%s \n", args.TableName, ip)
 		if ip == SelfIP {
 			continue
 		}
@@ -136,7 +136,7 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 
 	for ip, serverPeer := range AllServers.All {
 		//fmt.Println("TableUnlock", ip)
-		fmt.Printf("    [RPC TableUnlock] Call TableAvailable(%s) to peer Server=%s", args.TableName, ip)
+		fmt.Printf("    [RPC TableUnlock] Call TableAvailable(%s) to peer Server=%s \n", args.TableName, ip)
 
 		if ip == SelfIP {
 			continue

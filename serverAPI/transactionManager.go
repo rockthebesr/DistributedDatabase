@@ -40,7 +40,7 @@ func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *s
 				continue
 			}
 			if _, ok := serverPeer.TableMappings[updatedTable]; ok {
-				fmt.Printf("    [RPC PrepareCommit] Sending PrepareTableForCommit(%s) to peer Server=%s with new TableContents", updatedTable, ip)
+				fmt.Printf("    [RPC PrepareCommit] Sending PrepareTableForCommit(%s) to peer Server=%s with new TableContents \n", updatedTable, ip)
 
 				buf := GoLogger.PrepareSend("Sending PrepareTableForCommit for table "+updatedTable, &msg)
 				updateArgs := shared.TableAccessArgs{TableName: updatedTable, NewTable: updatedTableContent, GoVector: buf}
@@ -83,7 +83,7 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 				continue
 			}
 			if _, ok := serverPeer.TableMappings[updatedTable]; ok {
-				fmt.Printf("    [RPC CommitTransaction] Sending CommitTable(%s) to peer Server=%s", updatedTable, ip)
+				fmt.Printf("    [RPC CommitTransaction] Sending CommitTable(%s) to peer Server=%s \n", updatedTable, ip)
 
 				buf := GoLogger.PrepareSend("Sending CommitTable for table "+updatedTable, &msg)
 				updateArgs := shared.TableAccessArgs{TableName: updatedTable, GoVector: buf}

@@ -42,38 +42,55 @@ func main() {
 		return
 	}
 
-	time.Sleep(time.Second * 3)
-
-	newRow := map[string]string{"name": "Jim", "age": "10", "gender": "M"}
+	time.Sleep(time.Second * 1)
 
 	op0 := dbStructs.Operation{
-		Type:      dbStructs.Set,
-		TableName: "A",
-		Key:       "newRow",
-		Value:     dbStructs.Row{Key: "newRow", Data: newRow}}
-
-	op1 := dbStructs.Operation{
-		Type:      dbStructs.Delete,
-		TableName: "B",
-		Key:       "k0"}
-
-	op2 := dbStructs.Operation{
 		Type:      dbStructs.SelectAll,
 		TableName: "A"}
 
-	op3 := dbStructs.Operation{
+	op1 := dbStructs.Operation{
 		Type:      dbStructs.SelectAll,
 		TableName: "B"}
 
-	op4 := dbStructs.Operation{
+	op2 := dbStructs.Operation{
 		Type:              dbStructs.Join,
 		TableName:         "A",
 		SecondTableName:   "B",
 		FirstTableColumn:  "key",
 		SecondTableColumn: "emp_id"}
 
-	txn0 := dbStructs.Transaction{Operations: []dbStructs.Operation{op0, op1, op2, op3, op4}}
+
+	op3 := dbStructs.Operation{
+		Type:      dbStructs.Delete,
+		TableName: "A",
+		Key:       "test1"}
+
+	op4 := dbStructs.Operation{
+		Type:      dbStructs.Delete,
+		TableName: "B",
+		Key:       "k1"}
+
+
+	newRow0 := map[string]string{"name": "Jim", "age": "30", "gender": "M"}
+	newRow1 := map[string]string{"company": "Facebook", "emp_id": "test3"}
+
+
+	op5 := dbStructs.Operation{
+		Type:      dbStructs.Set,
+		TableName: "A",
+		Key:       "test3",
+		Value:     dbStructs.Row{Key: "test3", Data: newRow0}}
+
+
+	op6 := dbStructs.Operation{
+		Type:      dbStructs.Set,
+		TableName: "B",
+		Key:       "k3",
+		Value:     dbStructs.Row{Key: "k3", Data: newRow1}}
+
+
+	txn0 := dbStructs.Transaction{Operations: []dbStructs.Operation{op0, op1, op2, op3, op4, op5, op6}}
 	client.NewTransaction(txn0, shared.CrashPoint(crashPoint))
-	time.Sleep(time.Second * 3)
-	fmt.Println("Finished transactions")
+
+	fmt.Println("Finished Transaction 1")
 }

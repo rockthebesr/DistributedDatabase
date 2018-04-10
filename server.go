@@ -191,7 +191,7 @@ func main() {
 
 		}
 
-		fmt.Println("    peer Server has Table:OwnsLock=", serverTables[neighbour])
+		fmt.Println("    peer Server has Table to OwnsLock mapping=", serverTables[neighbour])
 
 		go serverAPI.MonitorPeers(neighbour, time.Duration(serverAPI.HeartbeatInterval)*time.Second*2)
 
