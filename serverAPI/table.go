@@ -274,7 +274,7 @@ func CopyTable(destinationTableName string, fromTable dbStructs.Table) error {
 
 func RollBackTable(name string) error {
 	//fmt.Printf("Server %s is rolling back table %s\n", SelfIP,name)
-	fmt.Printf("Table %s contents before rollback %v\n", SelfIP, Tables[name].Rows)
+	fmt.Printf("[RollBackTable] Table %s contents before rollback %v\n", name, Tables[name].Rows)
 
 	table := Tables[name].Rows
 	backup := Tables[name+"_BACKUP"].Rows
@@ -296,7 +296,7 @@ func RollBackTable(name string) error {
 	_, str := shared.TableToString(name, table)
 	GoLogger.LogLocalEvent("Roll back Table " + name + " TableContents: " + str)
 
-	fmt.Printf("Table %s contents after rollback %v\n", SelfIP, Tables[name].Rows)
+	fmt.Printf("[RollBackTable] Table %s contents after rollback %v\n", name, Tables[name].Rows)
 
 	return nil
 }

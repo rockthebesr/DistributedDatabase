@@ -37,6 +37,7 @@ var (
 	// TODO do we need this?
 	TxnManagerSession TransactionManagerSession = TransactionManagerSession{AcquiredLocks: make(map[string]bool)}
 	connectedIP                                 = map[string]*rpc.Client{}
+	tableToIP									= map[string]string{}
 	stop              int
 	reducePrintCount = shared.REDUCELOG
 )
@@ -123,6 +124,8 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 
 // a server has crashed
 func handleServerCrash(serverIP string) error {
+	tableToIP = map[string]string{}
+
 	if _, ok := connectedIP[serverIP]; !ok {
 		fmt.Println("server already closed, does not need to handle server crash")
 		return nil
@@ -232,8 +235,12 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		return false, err
 	}
 	Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
+	tableToIP = reply.TableNameToServers
+
 	//Keep trying to execute transaction until lbs doesn't give us any servers
 	for len(reply.TableNameToServers) > 0 {
+
+		fmt.Println("GetServers returns mappings", reply.TableNameToServers)
 
 		//Connect to needed servers
 		tablesToServerConns, err := ConnectToServers(reply.TableNameToServers)
@@ -260,6 +267,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 				return false, err
 			}
 			Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
+			tableToIP = reply.TableNameToServers
 			continue
 		}
 
@@ -287,6 +295,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 				return false, err
 			}
 			Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
+			tableToIP = reply.TableNameToServers
 			continue
 		}
 
@@ -316,6 +325,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 				return false, err
 			}
 			Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
+			tableToIP = reply.TableNameToServers
 			continue
 		}
 	}

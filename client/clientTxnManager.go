@@ -315,6 +315,15 @@ func PrepareTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tra
 }
 
 func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bool, error) {
+
+	for table, _ := range tableToServers {
+
+		if _, ok := tableToIP[table]; !ok {
+			fmt.Println("server already closed")
+			return false, nil
+		}
+	}
+
 	fmt.Println("COMMIT Servers for Transaction")
 	serverToTables := reverseMap(tableToServers)
 	var msg string
@@ -323,6 +332,12 @@ func CommitTransaction(tableToServers map[string]*rpc.Client, txn dbStructs.Tran
 	lenServers := len(shared.KeysToArray_2(tableToServers))
 	i := 0
 	for table, server := range tableToServers {
+
+		if _, ok := tableToIP[table]; !ok {
+			fmt.Println("server already closed")
+			return false, nil
+		}
+
 		i += 1
 		buf := Logger.PrepareSend("Send TransactionManager.CommitTransaction", &msg)
 		arg := shared.TransactionArg{UpdatedTables: serverToTables[server], IPAddress: localAddr, GoVector: buf, ServerCrashErr: crashPoint}

@@ -548,6 +548,7 @@ func HandleServerCrash(k string) {
 		GoVector:        buf,
 	}
 
+	fmt.Println("LBS.RemoveMappings for", k)
 	err := LBSConn.Call("LBS.RemoveMappings", &args, &reply)
 	shared.CheckError(err)
 	if err != nil {
