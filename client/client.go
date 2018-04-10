@@ -150,6 +150,11 @@ func handleServerCrash(serverIP string) error {
 			Logger.UnpackReceive("Received RollBackPrimaryServer success", reply.GoVector, &msg)
 		}
 	}
+
+	for _, sConn := range connectedIP {
+		err := sConn.Close()
+		shared.CheckError(err)
+	}
 	Logger.LogLocalEvent("HandleServerCrash finished, crashed Server=" + serverIP)
 	return nil
 }
