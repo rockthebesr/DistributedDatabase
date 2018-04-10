@@ -24,7 +24,6 @@ import (
 	"os"
 	"strconv"
 	"time"
-	"bufio"
 )
 
 func main() {

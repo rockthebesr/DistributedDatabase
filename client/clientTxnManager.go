@@ -88,6 +88,12 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 		}
 	}
 
+	if Breakpoint {
+		fmt.Println("Done all Operations")
+		fmt.Print("Press 'Enter' to continue... \n")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
+	}
+
 	//Tell servers to prepare commit
 	isPrepared, err := PrepareTransaction(tableToServers, txn, crashPoint)
 	if !isPrepared {
