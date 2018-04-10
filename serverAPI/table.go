@@ -273,7 +273,7 @@ func CopyTable(destinationTableName string, fromTable dbStructs.Table) error {
 }
 
 func RollBackTable(name string) error {
-	fmt.Printf("Server %s is rolling back table %s\n", SelfIP,name)
+	//fmt.Printf("Server %s is rolling back table %s\n", SelfIP,name)
 	fmt.Printf("Table %s contents before rollback %v\n", SelfIP, Tables[name].Rows)
 
 	table := Tables[name].Rows

@@ -213,7 +213,7 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesRep
 					break
 				}
 
-				if !serverAssigned(ip, servers) || (allServersForTableAssigned(listOfIps, servers)) {
+				if !serverAssigned(ip, servers) || (allServersForTableAssigned(mapOfIps, servers)) {
 					servers[tableName] = ip
 					break
 				}
