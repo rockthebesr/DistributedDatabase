@@ -44,13 +44,13 @@ func main() {
 
 	time.Sleep(time.Second * 1)
 
-	op0 := dbStructs.Operation{
-		Type:      dbStructs.SelectAll,
-		TableName: "A"}
-
-	op1 := dbStructs.Operation{
-		Type:      dbStructs.SelectAll,
-		TableName: "B"}
+	//op0 := dbStructs.Operation{
+	//	Type:      dbStructs.SelectAll,
+	//	TableName: "A"}
+	//
+	//op1 := dbStructs.Operation{
+	//	Type:      dbStructs.SelectAll,
+	//	TableName: "B"}
 
 	newRow := map[string]string{"tv_show": "The Office"}
 
@@ -64,7 +64,7 @@ func main() {
 		Type:      dbStructs.SelectAll,
 		TableName: "C"}
 
-	txn2 := dbStructs.Transaction{Operations: []dbStructs.Operation{op9, op10, op0, op1}}
+	txn2 := dbStructs.Transaction{Operations: []dbStructs.Operation{op9, op10}}
 	client.NewTransaction(txn2, shared.CrashPoint(crashPoint))
 
 	fmt.Println("Finished Transaction 3")
