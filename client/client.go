@@ -38,7 +38,7 @@ var (
 	TxnManagerSession TransactionManagerSession = TransactionManagerSession{AcquiredLocks: make(map[string]bool)}
 	connectedIP                                 = map[string]*rpc.Client{}
 	stop              int
-	reducePrintCount = 4
+	reducePrintCount = shared.REDUCELOG
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////

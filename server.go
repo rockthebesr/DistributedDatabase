@@ -225,11 +225,11 @@ func main() {
 		}
 	}
 
-	fmt.Printf("Server %s is now connected to peer Servers=")
+	fmt.Printf("Server is now connected to peer Servers=")
 	for _, connPeer := range serverAPI.AllServers.All {
 		fmt.Printf("%s", connPeer.Address)
 	}
-	fmt.Println("\n")
+	fmt.Println("")
 
 	// Listens for other connections
 	serverConn := new(serverAPI.ServerConn)

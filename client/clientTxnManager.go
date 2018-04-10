@@ -58,7 +58,7 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 	for j, op := range txn.Operations {
 
 		if Breakpoint {
-			fmt.Print("Execute Operation" + getOpType(op) +
+			fmt.Print("Will Execute Operation=" + getOpType(op) +
 				"\n Press 'Enter' to continue... \n")
 			bufio.NewReader(os.Stdin).ReadBytes('\n')
 		}

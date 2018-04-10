@@ -274,6 +274,7 @@ func (s *ServerConn) CrashServer(args *shared.Crash, reply *shared.Crash) error 
  @Param HeartbeatInterval -> time between heartbeats, before a peer is considered disconnected
 */
 func MonitorPeers(k string, HeartbeatInterval time.Duration) {
+	count := 0
 	for {
 		if Crash {
 			fmt.Println("MonitorPeers stopped for ", k)
@@ -288,9 +289,15 @@ func MonitorPeers(k string, HeartbeatInterval time.Duration) {
 			HandleServerCrash(k)
 			return
 		}
-		fmt.Printf("%s is alive\n", k)
+
+
+		if count % shared.REDUCELOG == 0 {
+			fmt.Printf("%s is alive\n", k)
+		}
+
 		AllServers.Unlock()
 		time.Sleep(HeartbeatInterval)
+		count += 1
 	}
 }
 
@@ -302,7 +309,8 @@ func MonitorPeers(k string, HeartbeatInterval time.Duration) {
  @Param HeartbeatInterval -> time between heartbeats, before a peer is considered disconnected
 */
 func MonitorClients(k string, HeartbeatInterval time.Duration, stop *int) {
-	fmt.Println("MonitorClients started for " + k)
+	count := 0
+	//fmt.Println("MonitorClients started for " + k)
 	for {
 		if Crash {
 			fmt.Println("MonitorClients stopped for ", k)
@@ -324,9 +332,15 @@ func MonitorClients(k string, HeartbeatInterval time.Duration, stop *int) {
 			AllClients.Unlock()
 			return
 		}
-		fmt.Printf("%s is alive\n", k)
+
+
+		if count % shared.REDUCELOG == 0 {
+			fmt.Printf("%s is alive\n", k)
+		}
+
 		AllClients.Unlock()
 		time.Sleep(HeartbeatInterval)
+		count += 1
 	}
 }
 
