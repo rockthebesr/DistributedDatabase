@@ -32,9 +32,9 @@ func (t *TableCommands) SetRow(args shared.TableAccessArgs, reply *shared.TableA
 	//	return shared.RowDoesNotExistError(args.Key)
 	//}
 
-	if len(args.TableRow.Data) != NumColumns {
-		return shared.InvalidNumberOfColumns{NumColumns, len(args.TableRow.Data)}
-	}
+	//if len(args.TableRow.Data) != NumColumns {
+	//	return shared.InvalidNumberOfColumns{NumColumns, len(args.TableRow.Data)}
+	//}
 
 	for _, column := range Columns {
 		if _, ok := args.TableRow.Data[column]; !ok {
