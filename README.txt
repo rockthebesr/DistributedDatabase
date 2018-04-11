@@ -23,15 +23,15 @@ To test on VM:
 
     VM6: client1
     ssh -i ~/.ssh/id_rsa haoran@52.175.252.217
-    go run app.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
+    go run appA.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
 
     VM7: client2
     ssh -i ~/.ssh/id_rsa haoran@52.151.8.223
-    go run app.go "40.125.70.162:54321" "10.0.0.10:12350" "0"
+    go run appA.go "40.125.70.162:54321" "10.0.0.10:12350" "0"
 
     Local macOs/linux:
     After appA:
-    sed -i '3,$d' report/demo/govectorLog_demo_A.txt
+    sed -i '' '3,$d' report/demo/govectorLog_demo_A.txt
     scp haoran@40.125.70.162:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsLBS-Log.txt report/demo/ddbsLBS-Log.txt
     scp haoran@52.151.36.31:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.5:12345-Log.txt report/demo/ddbsServer10.0.0.5:12345-Log.txt
     scp haoran@40.125.70.74:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.6:12346-Log.txt report/demo/ddbsServer10.0.0.6:12346-Log.txt
@@ -54,7 +54,7 @@ To test on VM:
     sed -i '' 's/10.0.0.10:12350/B/g' report/demo/govectorLog_demo_A.txt
 
     After appB:
-    sed -i '3,$d' report/demo/govectorLog_demo_B.txt
+    sed -i '' '3,$d' report/demo/govectorLog_demo_B.txt
     scp haoran@40.125.70.162:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsLBS-Log.txt report/demo/ddbsLBS-Log.txt
     scp haoran@52.151.36.31:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.5:12345-Log.txt report/demo/ddbsServer10.0.0.5:12345-Log.txt
     scp haoran@40.125.70.74:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.6:12346-Log.txt report/demo/ddbsServer10.0.0.6:12346-Log.txt
@@ -74,7 +74,7 @@ To test on VM:
     sed -i '' 's/10.0.0.9:12349/A/g' report/demo/govectorLog_demo_B.txt
 
     After appC:
-    sed -i '3,$d' report/demo/govectorLog_demo_C.txt
+    sed -i '' '3,$d' report/demo/govectorLog_demo_C.txt
     scp haoran@40.125.70.162:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsLBS-Log.txt report/demo/ddbsLBS-Log.txt
     scp haoran@52.151.36.31:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.5:12345-Log.txt report/demo/ddbsServer10.0.0.5:12345-Log.txt
     scp haoran@40.125.70.74:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.6:12346-Log.txt report/demo/ddbsServer10.0.0.6:12346-Log.txt
