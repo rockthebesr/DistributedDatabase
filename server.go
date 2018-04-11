@@ -216,12 +216,12 @@ func main() {
 				continue
 			}
 
-			fmt.Printf("    GetTableContents Table=%s from peer Server=%s, TableContents=%v\n", tableName, neighbour, reply.OneTableContents)
 
 			serverAPI.CopyTable(tableName, dbStructs.Table{tableName, reply.OneTableContents})
 
 			err, tableString := shared.TableToString(tableName, serverAPI.Tables[tableName].Rows)
 			serverAPI.GoLogger.UnpackReceive("TableCommands.GetTableContents succeeded "+tableString, reply.GoVector, &msg)
+			fmt.Printf("    GetTableContents Table=%s from peer Server=%s, TableContents=%v\n", tableName, neighbour, tableString)
 		}
 	}
 
