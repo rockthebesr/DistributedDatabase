@@ -1,12 +1,12 @@
 package client
 
 import (
+	"bufio"
 	"fmt"
 	"net"
 	"net/rpc"
 	"sync"
 	"time"
-	"bufio"
 	//"../serverAPI"
 	"../dbStructs"
 	"../shared"
@@ -37,9 +37,9 @@ var (
 	// TODO do we need this?
 	TxnManagerSession TransactionManagerSession = TransactionManagerSession{AcquiredLocks: make(map[string]bool)}
 	connectedIP                                 = map[string]*rpc.Client{}
-	tableToIP									= map[string]string{}
+	tableToIP                                   = map[string]string{}
 	stop              int
-	reducePrintCount = shared.REDUCELOG
+	reducePrintCount  = shared.REDUCELOG
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 	//fmt.Println("ServerConn", serverAPI.HeartbeatInterval)
 	// TODO do not connect to same server more than once
 	for t, sAddr := range tToServerIPs {
-		fmt.Println("Connect to Server=", sAddr + " for Table=", t)
+		fmt.Println("Connect to Server=", sAddr+" for Table=", t)
 		if _, ok := connectedIP[sAddr]; ok {
 			Logger.LogLocalEvent(sAddr + " is already connected")
 			result[t] = connectedIP[sAddr]
@@ -92,7 +92,7 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 			for s, sConn := range connectedIP {
 				err := sConn.Close()
 				shared.CheckError(err)
-				delete(connectedIP, s)		// TODO what's this? can't do this
+				delete(connectedIP, s) // TODO what's this? can't do this
 				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			return nil, err
@@ -176,11 +176,11 @@ func MonitorServers(k string, HeartbeatInterval time.Duration) {
 			fmt.Printf("%s timed out\n", k)
 			delete(AllServers.RecentHeartbeat, k)
 			AllServers.Unlock()
-			fmt.Printf("Handle Server crash, ROLLBACK Servers\n") 	// TODO for each connected server
+			fmt.Printf("Handle Server crash, ROLLBACK Servers\n") // TODO for each connected server
 			handleServerCrash(k)
 			return
 		}
-		if count % reducePrintCount == 0 {
+		if count%reducePrintCount == 0 {
 			fmt.Printf("%s is alive\n", k)
 		}
 
@@ -232,7 +232,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 
 	//Get needed servers
 	buf := Logger.PrepareSend("Send LBS.GetServers", "msg")
-	args := shared.TableNamesArg{TableNames: tableNames, GoVector: buf, ServerIpAddress:localAddr}
+	args := shared.TableNamesArg{TableNames: tableNames, GoVector: buf, ServerIpAddress: localAddr}
 	reply := shared.TableNamesReply{}
 	err := lbs.Call("LBS.GetServers", &args, &reply)
 	if err != nil {
@@ -266,6 +266,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
+			args.GoVector = buf
 			err = lbs.Call("LBS.GetServers", &args, &reply)
 			if err != nil {
 				Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")
@@ -294,6 +295,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
+			args.GoVector = buf
 			err = lbs.Call("LBS.GetServers", &args, &reply)
 			if err != nil {
 				Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")
@@ -324,6 +326,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 				Logger.LogLocalEvent("Close connection to " + s)
 			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
+			args.GoVector = buf
 			err = lbs.Call("LBS.GetServers", &args, &reply)
 			if err != nil {
 				Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")

@@ -23,7 +23,7 @@ To test on VM:
 
     VM6: client1
     ssh -i ~/.ssh/id_rsa haoran@52.175.252.217
-    go run appA.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
+    go run appB.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
 
     VM7: client2
     ssh -i ~/.ssh/id_rsa haoran@52.151.8.223
@@ -81,17 +81,20 @@ To test on VM:
     scp haoran@52.151.14.52:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.7:12347-Log.txt report/demo/ddbsServer10.0.0.7:12347-Log.txt
     scp haoran@52.158.234.124:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsServer10.0.0.8:12348-Log.txt report/demo/ddbsServer10.0.0.8:12348-Log.txt
     scp haoran@52.175.252.217:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsClient10.0.0.9:12349-Log.txt report/demo/ddbsClient10.0.0.9:12349-Log.txt
+    scp haoran@52.151.8.223:~/proj2_c4w9a_k0a9_k7y8/report/demo/ddbsClient10.0.0.10:12350-Log.txt report/demo/ddbsClient10.0.0.10:12350-Log.txt
     sed -i '' '$r report/demo/ddbsLBS-Log.txt' report/demo/govectorLog_demo_C.txt
     sed -i '' '$r report/demo/ddbsServer10.0.0.5:12345-Log.txt' report/demo/govectorLog_demo_C.txt
     sed -i '' '$r report/demo/ddbsServer10.0.0.6:12346-Log.txt' report/demo/govectorLog_demo_C.txt
     sed -i '' '$r report/demo/ddbsServer10.0.0.7:12347-Log.txt' report/demo/govectorLog_demo_C.txt
     sed -i '' '$r report/demo/ddbsServer10.0.0.8:12348-Log.txt' report/demo/govectorLog_demo_C.txt
     sed -i '' '$r report/demo/ddbsClient10.0.0.9:12349-Log.txt' report/demo/govectorLog_demo_C.txt
+    sed -i '' '$r report/demo/ddbsClient10.0.0.10:12350-Log.txt' report/demo/govectorLog_demo_C.txt
     sed -i '' 's/10.0.0.5:12345/W/g' report/demo/govectorLog_demo_C.txt
     sed -i '' 's/10.0.0.6:12346/X/g' report/demo/govectorLog_demo_C.txt
     sed -i '' 's/10.0.0.7:12347/Y/g' report/demo/govectorLog_demo_C.txt
     sed -i '' 's/10.0.0.8:12348/Z/g' report/demo/govectorLog_demo_C.txt
-    sed -i '' 's/10.0.0.9:12349/A/g' report/demo/govectorLog_demo_C.txt 
+    sed -i '' 's/10.0.0.9:12349/A/g' report/demo/govectorLog_demo_C.txt
+    sed -i '' 's/10.0.0.10:12350/B/g' report/demo/govectorLog_demo_C.txt
 
     Local:
     sed -i '3,$d' report/demo/govectorLog.txt
