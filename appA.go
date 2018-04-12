@@ -59,21 +59,8 @@ func main() {
 		FirstTableColumn:  "key",
 		SecondTableColumn: "emp_id"}
 
-
-	op3 := dbStructs.Operation{
-		Type:      dbStructs.Delete,
-		TableName: "A",
-		Key:       "test1"}
-
-	op4 := dbStructs.Operation{
-		Type:      dbStructs.Delete,
-		TableName: "B",
-		Key:       "k1"}
-
-
 	newRow0 := map[string]string{"name": "Jim", "age": "30", "gender": "M"}
 	newRow1 := map[string]string{"company": "Facebook", "emp_id": "test3"}
-
 
 	op5 := dbStructs.Operation{
 		Type:      dbStructs.Set,
@@ -81,15 +68,13 @@ func main() {
 		Key:       "test3",
 		Value:     dbStructs.Row{Key: "test3", Data: newRow0}}
 
-
 	op6 := dbStructs.Operation{
 		Type:      dbStructs.Set,
 		TableName: "B",
 		Key:       "k3",
 		Value:     dbStructs.Row{Key: "k3", Data: newRow1}}
 
-
-	txn0 := dbStructs.Transaction{Operations: []dbStructs.Operation{op0, op1, op2, op3, op4, op5, op6}}
+	txn0 := dbStructs.Transaction{Operations: []dbStructs.Operation{op0, op1, op2, op5, op6}}
 	client.NewTransaction(txn0, shared.CrashPoint(crashPoint))
 
 	fmt.Println("Finished Transaction 1")
