@@ -259,12 +259,12 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			}
 
 			Logger.LogLocalEvent("Cannot connect to servers, Retry txn")
-			//for s, sConn := range connectedIP {
-			//	err := sConn.Close()
-			//	shared.CheckError(err)
-			//	delete(connectedIP, s)
-			//	Logger.LogLocalEvent("Close connection to " + s)
-			//}
+			for s, _ := range connectedIP {
+				//err := sConn.Close()
+				shared.CheckError(err)
+				delete(connectedIP, s)
+				Logger.LogLocalEvent("Close connection to " + s)
+			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
 			args.GoVector = buf
 			err = lbs.Call("LBS.GetServers", &args, &reply)
@@ -288,12 +288,12 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			}
 
 			Logger.LogLocalEvent("ExecuteTransaction err: " + err.Error() + ", Retry txn")
-			//for s, sConn := range connectedIP {
-			//	err := sConn.Close()
-			//	shared.CheckError(err)
-			//	delete(connectedIP, s)
-			//	Logger.LogLocalEvent("Close connection to " + s)
-			//}
+			for s, _ := range connectedIP {
+				//err := sConn.Close()
+				shared.CheckError(err)
+				delete(connectedIP, s)
+				Logger.LogLocalEvent("Close connection to " + s)
+			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
 			args.GoVector = buf
 			err = lbs.Call("LBS.GetServers", &args, &reply)
@@ -319,12 +319,12 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		} else {
 			fmt.Println("Transaction failed, retry txn")
 			Logger.LogLocalEvent("Transaction failed, retry txn")
-			//for s, sConn := range connectedIP {
-			//	err := sConn.Close()
-			//	shared.CheckError(err)
-			//	delete(connectedIP, s)
-			//	Logger.LogLocalEvent("Close connection to " + s)
-			//}
+			for s, _ := range connectedIP {
+				//err := sConn.Close()
+				shared.CheckError(err)
+				delete(connectedIP, s)
+				Logger.LogLocalEvent("Close connection to " + s)
+			}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
 			args.GoVector = buf
 			err = lbs.Call("LBS.GetServers", &args, &reply)
