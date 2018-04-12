@@ -73,11 +73,11 @@ func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNamesRe
 }
 
 func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableNamesReply) error {
-	fmt.Println("RemoveMappings allMappings.Lock")
+	//fmt.Println("RemoveMappings allMappings.Lock")
 	//allMappings.Lock()
 	//defer allMappings.Unlock()
 
-	fmt.Println("RemoveMappings from LBS for Server=", args.ServerIpAddress)
+	succ := false
 	for tableName, listOfIps := range allMappings.all {
 		for ip, active := range listOfIps {
 			if ip != args.ServerIpAddress {
@@ -89,8 +89,11 @@ func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableName
 			}
 			//listOfIps[ip] = false
 			delete(listOfIps, ip)
-
+			succ = true
 		}
+	}
+	if succ == true {
+		fmt.Println("RemoveMappings from LBS for Server=", args.ServerIpAddress)
 	}
 
 	var buf []byte

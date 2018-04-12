@@ -105,6 +105,8 @@ func ExecuteTransaction(txn dbStructs.Transaction, tableToServers map[string]*rp
 		fmt.Println("Done PREPARE")
 		fmt.Print("Press 'Enter' to continue... \n")
 		bufio.NewReader(os.Stdin).ReadBytes('\n')
+		fmt.Print("Press 'Enter' to continue... \n")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
 	}
 
 	//Tell servers to commit transaction
