@@ -456,6 +456,26 @@ func RollBackTableAndPeers(clientIP string) error {
 	// Remove all the tables in lockedTables list
 	TransactionTables[clientIP] = []string{}
 
+	var buf []byte
+	var msg string
+	var reply shared.TableNamesReply
+	buf = GoLogger.PrepareSend("Removing server mappings from LBS", "msg")
+	args := shared.TableNamesArg{
+		ServerIpAddress: clientIP,
+		GoVector:        buf,
+	}
+
+	fmt.Println("LBS.RemoveMappings for", clientIP)
+	err := LBSConn.Call("LBS.RemoveMappings", &args, &reply)
+	shared.CheckError(err)
+	if err != nil {
+		fmt.Println("Error removing server mappings -> ", err)
+		GoLogger.UnpackReceive("Error removing server mappings ", reply.GoVector, &msg)
+	} else {
+		GoLogger.UnpackReceive("Received result from removing server mappings", reply.GoVector, &msg)
+	}
+	fmt.Println("Server " + clientIP + "'s mappings successfully removed")
+
 	fmt.Println("Finished RollBackTableAndPeers for crashed", clientIP, ", current LockedTables=", currentLockedTables, "rollback TableContents=", tablesContents)
 	fmt.Println("-------------------------------")
 
