@@ -185,6 +185,14 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 	toRegister := (*ip).IP
 	if _, exists := AllClients.All[toRegister]; exists {
 		//return errors.New("ClientConnect err: IP already registered")
+		var buf []byte
+		var msg string
+		GoLogger.UnpackReceive("Received ClientConnect from Client", ip.GoVector, &msg)
+		buf = GoLogger.PrepareSend("Sending ClientConnect back", "msg")
+
+		*success = shared.ConnectionReply{Success: true, GoVector: buf}
+
+		return nil
 	}
 
 	// TODO client should hold some locks at this point
