@@ -456,6 +456,11 @@ func RollBackTableAndPeers(clientIP string) error {
 	// Remove all the tables in lockedTables list
 	TransactionTables[clientIP] = []string{}
 
+	AllClients.Lock()
+	delete(AllClients.All, clientIP)
+	AllClients.Unlock()
+
+	// LBS remove mappings
 	var buf []byte
 	var msg string
 	var reply shared.TableNamesReply
