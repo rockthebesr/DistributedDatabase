@@ -319,6 +319,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			return result, err
 		} else {
 			fmt.Println("Transaction failed, retry txn")
+			time.Sleep(3 * time.Second)
 			Logger.LogLocalEvent("Transaction failed, retry txn")
 			for s, _ := range connectedIP {
 				//err := sConn.Close()

@@ -30,9 +30,12 @@ func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *s
 		panic("Server has crashed after receiving prepare to commit from client")
 	}
 
+	newTableContents := ""
 	//For each updated table, find peers who has it
 	for _, updatedTable := range updatedTables {
 		updatedTableContent := Tables[updatedTable]
+		_, resultTableString := shared.TableToString(updatedTable, Tables[updatedTable].Rows)
+		newTableContents = newTableContents + resultTableString
 
 		//For each peer who has the updated table
 		for ip, serverPeer := range AllServers.All {
@@ -58,6 +61,7 @@ func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *s
 	*reply = shared.TransactionReply{true, buf}
 
 	//fmt.Println("Server has finished preparing to commit")
+	fmt.Printf("[RPC PrepareCommit] Done. TableContents=", newTableContents)
 
 	return nil
 }
