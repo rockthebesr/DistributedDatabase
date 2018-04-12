@@ -67,11 +67,11 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 	// TODO do not connect to same server more than once
 	for t, sAddr := range tToServerIPs {
 		fmt.Println("Connect to Server=", sAddr+" for Table=", t)
-		if _, ok := connectedIP[sAddr]; ok {
-			Logger.LogLocalEvent(sAddr + " is already connected")
-			result[t] = connectedIP[sAddr]
-			continue
-		}
+		//if _, ok := connectedIP[sAddr]; ok {
+		//	Logger.LogLocalEvent(sAddr + " is already connected")
+		//	result[t] = connectedIP[sAddr]
+		//	continue
+		//}
 		buf := Logger.PrepareSend("Send ServerConn.ClientConnect"+sAddr, "msg")
 
 		conn, err := rpc.Dial("tcp", sAddr)
@@ -111,6 +111,7 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 			if _, ok := connectedIP[sAddr]; ok {
 				result[t] = connectedIP[sAddr]
 				Logger.UnpackReceive("Already established connection to server "+sAddr, succ.GoVector, &msg)
+				fmt.Println("!!! Already established connection to server ")
 			} else {
 				Logger.UnpackReceive("Cannot establish connection to server "+sAddr, succ.GoVector, &msg)
 			}
