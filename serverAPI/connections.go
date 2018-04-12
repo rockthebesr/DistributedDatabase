@@ -184,7 +184,7 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 
 	toRegister := (*ip).IP
 	if _, exists := AllClients.All[toRegister]; exists {
-		return errors.New("ClientConnect err: IP already registered")
+		//return errors.New("ClientConnect err: IP already registered")
 	}
 
 	// TODO client should hold some locks at this point

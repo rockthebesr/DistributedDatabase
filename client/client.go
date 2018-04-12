@@ -254,28 +254,28 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		if err != nil {
 			//fmt.Println("ConnectToServers failed. Error=", err, "\n Retry LBS.GetServers")
 			time.Sleep(3 * time.Second)
-			//if Breakpoint {
-			//	fmt.Print("Press 'Enter' to continue... \n")
-			//	bufio.NewReader(os.Stdin).ReadBytes('\n')
-			//}
-			//
-			//Logger.LogLocalEvent("Cannot connect to servers, Retry txn")
-			//for s, _ := range connectedIP {
-			//	//err := sConn.Close()
-			//	shared.CheckError(err)
-			//	delete(connectedIP, s)
-			//	Logger.LogLocalEvent("Close connection to " + s)
-			//}
-			//buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
-			//args.GoVector = buf
-			//err = lbs.Call("LBS.GetServers", &args, &reply)
-			//if err != nil {
-			//	Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")
-			//	return false, err
-			//}
-			//Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
-			//tableToIP = reply.TableNameToServers
-			//continue
+			if Breakpoint {
+				fmt.Print("Press 'Enter' to continue... \n")
+				bufio.NewReader(os.Stdin).ReadBytes('\n')
+			}
+
+			Logger.LogLocalEvent("Cannot connect to servers, Retry txn")
+			for s, _ := range connectedIP {
+				//err := sConn.Close()
+				shared.CheckError(err)
+				delete(connectedIP, s)
+				Logger.LogLocalEvent("Close connection to " + s)
+			}
+			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
+			args.GoVector = buf
+			err = lbs.Call("LBS.GetServers", &args, &reply)
+			if err != nil {
+				Logger.LogLocalEvent("Transaction aborted : LBS.GetServers err")
+				return false, err
+			}
+			Logger.UnpackReceive("Received LBS.GetServers", reply.GoVector, &msg)
+			tableToIP = reply.TableNameToServers
+			continue
 		}
 
 		//Execute the transaction
