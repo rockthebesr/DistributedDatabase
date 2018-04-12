@@ -11,7 +11,7 @@ import (
 	"net/rpc"
 	"os"
 	"strings"
-	"sync"
+	//"sync"
 	"time"
 	"sort"
 )
