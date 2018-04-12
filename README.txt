@@ -23,6 +23,7 @@ To test on VM:
 
     VM6: client1
     ssh -i ~/.ssh/id_rsa haoran@52.175.252.217
+    go run appA.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
     go run appB.go "40.125.70.162:54321" "10.0.0.9:12349" "0"
 
     VM7: client2

@@ -475,7 +475,6 @@ func HandleServerCrash(k string) {
 	tablesAndLocks := AllServers.All[k].TableMappings
 	for tableName, ownsLock := range tablesAndLocks {
 		if ownsLock {
-			var reply shared.TableLockingReply
 
 			if AllTblLocks.All[tableName] {
 				fmt.Println("    UnlockTable for self, Table=", tableName)
@@ -491,36 +490,37 @@ func HandleServerCrash(k string) {
 						if _, ok := peer.TableMappings[tableName]; ok {
 							conn := peer.Handle
 							if conn != nil {
+								//			var reply shared.TableLockingReply
 
-								buf = GoLogger.PrepareSend("Send TransactionManager.RollBackPeer table="+tableName, "msg")
-								args := shared.TableLockingArg{TableName: tableName, GoVector: buf}
-								reply = shared.TableLockingReply{Success: false}
-								err := conn.Call("TransactionManager.RollBackPeer", &args, &reply)
-								shared.CheckError(err)
-								if err != nil || !reply.Success {
-									fmt.Println("Error occurred at 1")
-								} else {
-									fmt.Printf("    RollBackTable for peer, Table=%s Server=%s", tableName, peer.Address)
-								}
-								GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
-								//fmt.Printf("Finished rolling back table %s for peer -> %s\n", tableName, peer.Address)
-
-								buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable "+tableName, "msg")
-								args = shared.TableLockingArg{
-									SelfIP,
-									tableName,
-									buf,
-								}
-								err = conn.Call("ServerConn.TableAvailable", &args, &reply)
-								shared.CheckErr(err)
-								if err != nil {
-									GoLogger.UnpackReceive("Error "+tableName, reply.GoVector, &msg)
-									fmt.Println("Error occurred at 2")
-								} else {
-									GoLogger.UnpackReceive("Received table available from server "+peer.Address, reply.GoVector, &msg)
-									fmt.Printf("    TableAvailable for Table=%s Server=%s\n", tableName, peer.Address)
-								}
-								//fmt.Println("Sent table available to ", peer.Address)
+								//buf = GoLogger.PrepareSend("Send TransactionManager.RollBackPeer table="+tableName, "msg")
+								//args := shared.TableLockingArg{TableName: tableName, GoVector: buf}
+								//reply = shared.TableLockingReply{Success: false}
+								//err := conn.Call("TransactionManager.RollBackPeer", &args, &reply)
+								//shared.CheckError(err)
+								//if err != nil || !reply.Success {
+								//	fmt.Println("Error occurred at 1")
+								//} else {
+								//	fmt.Printf("    RollBackTable for peer, Table=%s Server=%s", tableName, peer.Address)
+								//}
+								//GoLogger.UnpackReceive("Received result", reply.GoVector, &msg)
+								////fmt.Printf("Finished rolling back table %s for peer -> %s\n", tableName, peer.Address)
+								//
+								//buf = GoLogger.PrepareSend("Send ServerConn.TableAvailable "+tableName, "msg")
+								//args = shared.TableLockingArg{
+								//	SelfIP,
+								//	tableName,
+								//	buf,
+								//}
+								//err = conn.Call("ServerConn.TableAvailable", &args, &reply)
+								//shared.CheckErr(err)
+								//if err != nil {
+								//	GoLogger.UnpackReceive("Error "+tableName, reply.GoVector, &msg)
+								//	fmt.Println("Error occurred at 2")
+								//} else {
+								//	GoLogger.UnpackReceive("Received table available from server "+peer.Address, reply.GoVector, &msg)
+								//	fmt.Printf("    TableAvailable for Table=%s Server=%s\n", tableName, peer.Address)
+								//}
+								////fmt.Println("Sent table available to ", peer.Address)
 							}
 						}
 					}
@@ -560,13 +560,13 @@ func HandleServerCrash(k string) {
 	fmt.Println("Server " + k + "'s mappings successfully removed")
 
 	AllTblLocks.Lock()
-	defer AllTblLocks.Unlock()
 	currentLockedTables := []string{}
 	for table, locked := range AllTblLocks.All {
 		if locked == true {
 			currentLockedTables = append(currentLockedTables, table)
 		}
 	}
+	AllTblLocks.Unlock()
 
 	fmt.Println("Finished HandleCrashServer for", k, ", current LockedTables=", currentLockedTables, "rollback TableContents=", tablesContents)
 	fmt.Println("-------------------------------")

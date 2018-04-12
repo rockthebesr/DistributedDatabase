@@ -42,6 +42,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 		}
 
 		for tableName, ownLock := range serverPeer.TableMappings {
+
 			if tableName == args.TableName {
 				// at this point, all tables with tableName are available (must do: if a peer crashes, remove the server from AllServers)
 				if ownLock == false {
@@ -136,11 +137,11 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 
 	for ip, serverPeer := range AllServers.All {
 		//fmt.Println("TableUnlock", ip)
-		fmt.Printf("    [RPC TableUnlock] Call TableAvailable(%s) to peer Server=%s \n", args.TableName, ip)
-
 		if ip == SelfIP {
 			continue
 		}
+
+		fmt.Printf("    [RPC TableUnlock] Call TableAvailable(%s) to peer Server=%s \n", args.TableName, ip)
 
 		for tableName, ownLock := range serverPeer.TableMappings {
 			if tableName == args.TableName {

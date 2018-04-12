@@ -17,15 +17,15 @@ import (
 )
 
 type AllMappings struct {
-	sync.RWMutex
+	//sync.RWMutex
 	all map[string]map[string]bool
 }
 
 type LBS int
 
 func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNamesReply) error {
-	allMappings.Lock()
-	defer allMappings.Unlock()
+	//allMappings.Lock()
+	//defer allMappings.Unlock()
 
 	fmt.Println("AddMappings to LBS for Server=", args.ServerIpAddress)
 	for z := 0; z < len(args.TableNames); z++ {
@@ -74,8 +74,8 @@ func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNamesRe
 
 func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableNamesReply) error {
 	fmt.Println("RemoveMappings allMappings.Lock")
-	allMappings.Lock()
-	defer allMappings.Unlock()
+	//allMappings.Lock()
+	//defer allMappings.Unlock()
 
 	fmt.Println("RemoveMappings from LBS for Server=", args.ServerIpAddress)
 	for tableName, listOfIps := range allMappings.all {
@@ -119,8 +119,8 @@ func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableName
 }
 
 func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) error {
-	allMappings.Lock()
-	defer allMappings.Unlock()
+	//allMappings.Lock()
+	//defer allMappings.Unlock()
 
 	tables := make(map[string]bool)
 	for _, tableName := range args.TableNames {
@@ -179,9 +179,9 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 }
 
 func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesReply) error {
-	fmt.Println("GetServers allMappings.Lock")
-	allMappings.Lock()
-	defer allMappings.Unlock()
+	//fmt.Println("GetServers allMappings.Lock")
+	//allMappings.Lock()
+	//defer allMappings.Unlock()
 
 	// randomly select a server containing the table
 	servers := make(map[string]string)
@@ -305,9 +305,9 @@ func allServersForTableAssigned(listOfIps map[string]bool, servers map[string]st
 }
 
 func CrashLBS() {
-	allMappings.Lock()
+	//allMappings.Lock()
 	allMappings.all = make(map[string]map[string]bool)
-	defer allMappings.Unlock()
+	//defer allMappings.Unlock()
 	return
 }
 
@@ -317,8 +317,8 @@ func RecoverLBS() {
 	servers := strings.Split(string(dat), ",")
 	//fmt.Println(dat, servers, len(servers))
 
-	allMappings.Lock()
-	defer allMappings.Unlock()
+	//allMappings.Lock()
+	//defer allMappings.Unlock()
 
 	var buf []byte
 	var msg string
