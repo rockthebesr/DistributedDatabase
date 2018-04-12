@@ -61,7 +61,7 @@ func (t *TransactionManager) PrepareCommit(args *shared.TransactionArg, reply *s
 	*reply = shared.TransactionReply{true, buf}
 
 	//fmt.Println("Server has finished preparing to commit")
-	fmt.Printf("[RPC PrepareCommit] Done. TableContents=", newTableContents)
+	fmt.Printf("[RPC PrepareCommit] Done. TableContents=", newTableContents, "\n\n")
 
 	return nil
 }
@@ -106,6 +106,7 @@ func (t *TransactionManager) CommitTransaction(args *shared.TransactionArg, repl
 	*reply = shared.TransactionReply{true, buf}
 
 	//fmt.Println("Server has finished committing a transaction")
+	fmt.Println("");
 
 	return nil
 }
@@ -127,7 +128,7 @@ func (t *TransactionManager) RollBackPeer(arg *shared.TableLockingArg, reply *sh
 	buf = GoLogger.PrepareSend("Reply RollBackPeer table="+arg.TableName+" TableContents: "+str, "msg")
 	(*reply).GoVector = buf
 
-	fmt.Printf("[RPC RollBackPeer] Request from Primary Server=%s to RollBack Table=%s, After RollBack TableContents=%s\n", arg.IpAddress, arg.TableName, str)
+	fmt.Printf("[RPC RollBackPeer] Request from Primary Server=%s to RollBack Table=%s, After RollBack TableContents=%s\n\n", arg.IpAddress, arg.TableName, str)
 
 	return nil
 }
@@ -140,6 +141,7 @@ func (t *TransactionManager) RollBackPrimaryServer(args *shared.TableLockingArg,
 
 	fmt.Printf("[RPC RollBackPrimaryServer] Request from Client for crashed Server=%s\n", args.IpAddress)
 	RollBackTableAndPeers(args.IpAddress)
+	fmt.Printf("")
 
 	buf := GoLogger.PrepareSend("Successfully rolled backed on this table and peers", "msg")
 	(*reply).Success = true

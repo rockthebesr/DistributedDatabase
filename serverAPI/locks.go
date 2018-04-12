@@ -100,7 +100,7 @@ func (s *ServerConn) TableLock(args *shared.TableLockingArg, reply *shared.Table
 	//fmt.Println("Table locked: " + args.TableName)
 
 	fmt.Printf("[RPC TableLock] After TableLock(%s): locks owned by self are: %v\n", args.TableName, AllServers.All[SelfIP].TableMappings)
-	fmt.Printf("[RPC TableLock] After TableLock(%s): all locked tables are: %v\n", args.TableName, AllTblLocks.All)
+	fmt.Printf("[RPC TableLock] After TableLock(%s): all locked tables are: %v\n\n", args.TableName, AllTblLocks.All)
 
 	return nil
 }
@@ -200,7 +200,7 @@ func (s *ServerConn) TableUnlock(args *shared.TableLockingArg, reply *shared.Tab
 	//fmt.Printf("Lock ownership for server %s after unlocking table %s -> %v\n", SelfIP, args.TableName, AllServers.All[SelfIP].TableMappings)
 	//fmt.Printf("Locking states for all locks after unlocking table %s -> %v\n", args.TableName, AllTblLocks.All)
 	fmt.Printf("[RPC TableUnlock] After TableUnlock(%s): locks owned by self are: %v\n", args.TableName, AllServers.All[SelfIP].TableMappings)
-	fmt.Printf("[RPC TableUnlock] After TableUnlock(%s): all locked tables are: %v\n", args.TableName, AllTblLocks.All)
+	fmt.Printf("[RPC TableUnlock] After TableUnlock(%s): all locked tables are: %v\n\n", args.TableName, AllTblLocks.All)
 
 	return nil
 }
@@ -241,7 +241,7 @@ func (s *ServerConn) TableAvailable(args *shared.TableLockingArg, reply *shared.
 
 	//fmt.Printf("Lock ownership for server %s after being notified of table %s's availability  -> %v\n", SelfIP, args.TableName, AllServers.All[SelfIP].TableMappings)
 	//fmt.Printf("Locking states for all locks after ubeing notified of table %s's availability -> %v\n", args.TableName, AllTblLocks.All)
-	fmt.Printf("[RPC TableAvailable] After TableAvailable(%s): all locked tables are: %v\n", args.TableName, AllTblLocks.All)
+	fmt.Printf("[RPC TableAvailable] After TableAvailable(%s): all locked tables are: %v\n\n", args.TableName, AllTblLocks.All)
 
 	return nil
 }
@@ -277,7 +277,7 @@ func (s *ServerConn) TableUnavailable(args *shared.TableLockingArg, reply *share
 	err := BackupTable(args.TableName)
 	shared.CheckError(err)
 
-	fmt.Printf("[RPC TableUnavailable] After TableUnavailable(%s): all locked tables are: %v\n", args.TableName, AllTblLocks.All)
+	fmt.Printf("[RPC TableUnavailable] After TableUnavailable(%s): all locked tables are: %v\n\n", args.TableName, AllTblLocks.All)
 
 	return nil
 }

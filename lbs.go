@@ -27,7 +27,7 @@ func (t *LBS) AddMappings(args *shared.TableNamesArg, reply *shared.TableNamesRe
 	//allMappings.Lock()
 	//defer allMappings.Unlock()
 
-	fmt.Println("AddMappings to LBS for Server=", args.ServerIpAddress)
+	fmt.Println("[AddMappings] to LBS for Server=", args.ServerIpAddress)
 	for z := 0; z < len(args.TableNames); z++ {
 		tableName := args.TableNames[z]
 
@@ -93,7 +93,7 @@ func (t *LBS) RemoveMappings(args *shared.TableNamesArg, reply *shared.TableName
 		}
 	}
 	if succ == true {
-		fmt.Println("RemoveMappings from LBS for Server=", args.ServerIpAddress)
+		fmt.Println("[RemoveMappings] from LBS for Server=", args.ServerIpAddress)
 	}
 
 	var buf []byte
@@ -174,7 +174,7 @@ func (t *LBS) GetPeers(args *shared.TableNamesArg, reply *shared.ServerPeers) er
 	Logger.UnpackReceive("Received GetPeers()", args.GoVector, &msg)
 	buf = Logger.PrepareSend("Sending GetPeers()", "msg")
 
-	fmt.Println("GetPeers Servers=", peers, "for", args.ServerIpAddress)
+	fmt.Println("[GetPeers] Servers=", peers, "for", args.ServerIpAddress)
 
 	*reply = shared.ServerPeers{Servers: peers, GoVector: buf}
 
@@ -243,7 +243,7 @@ func (t *LBS) GetServers(args *shared.TableNamesArg, reply *shared.TableNamesRep
 
 	}
 
-	fmt.Println("GetServers Servers=", servers, "for", args.ServerIpAddress)
+	fmt.Println("[GetServers] Servers=", servers, "for", args.ServerIpAddress)
 
 	buf = Logger.PrepareSend("Sending GetServers()", "msg")
 

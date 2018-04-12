@@ -165,6 +165,7 @@ func (s *ServerConn) ConnectToPeer(args *shared.ConnectionArgs, success *shared.
 	*success = shared.ConnectionReply{Success: true, GoVector: buf, TableOwners: ownsLocks}
 
 	//fmt.Println("ConnectToPeer RPC",  AllServers.All)
+	fmt.Println("")
 
 	return nil
 }
@@ -227,6 +228,7 @@ func (s *ServerConn) ClientConnect(ip *shared.ConnectionArgs, success *shared.Co
 	buf = GoLogger.PrepareSend("Sending ClientConnect back", "msg")
 
 	*success = shared.ConnectionReply{Success: true, GoVector: buf}
+	fmt.Println("")
 
 	return nil
 }
@@ -490,7 +492,7 @@ func RollBackTableAndPeers(clientIP string) error {
 	fmt.Println("Server " + clientIP + "'s mappings successfully removed")
 
 	fmt.Println("Finished RollBackTableAndPeers for crashed", clientIP, ", current LockedTables=", currentLockedTables, "rollback TableContents=", tablesContents)
-	fmt.Println("-------------------------------")
+	fmt.Println("-------------------------------\n")
 
 	return nil
 }
@@ -602,6 +604,6 @@ func HandleServerCrash(k string) {
 	AllTblLocks.Unlock()
 
 	fmt.Println("Finished HandleCrashServer for", k, ", current LockedTables=", currentLockedTables, "rollback TableContents=", tablesContents)
-	fmt.Println("-------------------------------")
+	fmt.Println("-------------------------------\n")
 }
 

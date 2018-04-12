@@ -62,7 +62,7 @@ func (t *TableCommands) SetRow(args shared.TableAccessArgs, reply *shared.TableA
 	rows := make(map[string]dbStructs.Row)
 	rows[args.Key] = args.TableRow
 	_, value := shared.TableToString(args.TableName, rows)
-	fmt.Printf("[RPC GetRow] Operation: WRITE to " + args.TableName + " where Key=" + args.Key + " Value=" + value + "\n")
+	fmt.Printf("[RPC GetRow] Operation: WRITE to " + args.TableName + " where Key=" + args.Key + " Value=" + value + "\n\n")
 
 	return err
 }
@@ -98,7 +98,7 @@ func (t *TableCommands) GetRow(args shared.TableAccessArgs, reply *shared.TableA
 	(*reply).GoVector = buf
 
 	//fmt.Printf("Table contents after GetRow are %v\n", Tables[args.TableName].Rows)
-	fmt.Printf("[RPC GetRow] Operation: READ from " + args.TableName + " where Key=" + args.Key + "\n")
+	fmt.Printf("[RPC GetRow] Operation: READ from " + args.TableName + " where Key=" + args.Key + "\n\n")
 
 	return err
 }
@@ -126,7 +126,7 @@ func (t *TableCommands) DeleteRow(args shared.TableAccessArgs, reply *shared.Tab
 	buf = GoLogger.PrepareSend("Sending DeleteRow from table="+args.TableName+" key="+args.Key, "msg")
 	(*reply).GoVector = buf
 
-	fmt.Printf("[RPC DeleteRow] Operation: DELETE from " + args.TableName + " where Key=" + args.Key + "\n")
+	fmt.Printf("[RPC DeleteRow] Operation: DELETE from " + args.TableName + " where Key=" + args.Key + "\n\n")
 	//fmt.Printf("Table contents after DeleteRow are %v\n", Tables[args.TableName].Rows)
 
 	return err
@@ -206,7 +206,7 @@ func (t *TableCommands) PrepareTableForCommit(args shared.TableAccessArgs, reply
 
 	*reply = shared.TableAccessReply{Success: true, GoVector: buf}
 
-	fmt.Printf("[RPC PrepareTable] Table(%s): new TableContents=%v\n", args.TableName, resultTableString + "\n")
+	fmt.Printf("[RPC PrepareTable] Table(%s): new TableContents=%v\n", args.TableName, resultTableString + "\n\n")
 
 	return err
 }
@@ -225,7 +225,7 @@ func (t *TableCommands) CommitTable(args shared.TableAccessArgs, reply *shared.T
 	buf := GoLogger.PrepareSend("Sending CommitTable result table = "+resultTableString, &msg)
 	*reply = shared.TableAccessReply{Success: true, GoVector: buf}
 
-	fmt.Printf("[RPC CommitTable] Commited Table=%s\n", args.TableName + "\n")
+	fmt.Printf("[RPC CommitTable] Commited Table=%s\n", args.TableName + "\n\n")
 
 	return nil
 }
@@ -296,7 +296,7 @@ func RollBackTable(name string) error {
 	_, str := shared.TableToString(name, table)
 	GoLogger.LogLocalEvent("Roll back Table " + name + " TableContents: " + str)
 
-	fmt.Printf("[RollBackTable] Table %s contents after rollback %v\n", name, Tables[name].Rows)
+	fmt.Printf("[RollBackTable] Table %s contents after rollback %v\n\n", name, Tables[name].Rows)
 
 	return nil
 }

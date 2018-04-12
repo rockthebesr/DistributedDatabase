@@ -128,16 +128,17 @@ func handleServerCrash(serverIP string) error {
 	tableToIP = map[string]string{}
 
 	if _, ok := connectedIP[serverIP]; !ok {
-		fmt.Println("server already closed, does not need to handle server crash")
+		fmt.Println(serverIP, "already closed, does not need to handle server crash")
 		return nil
 	}
+
 	Logger.LogLocalEvent(serverIP + " has crashed")
 	var msg string
 	AllServers.Lock()
 	defer AllServers.Unlock()
 	delete(connectedIP, serverIP)
 
-	fmt.Println("ROLLBACK Primary Servers: roll back transaction, Servers=", connectedIP)
+	fmt.Println("ROLLBACK Primary Servers for transaction, Servers=", connectedIP)
 	for sAddr, sConn := range connectedIP {
 		buf := Logger.PrepareSend("Send RollBackPrimaryServer to server "+sAddr, &msg)
 		args := shared.TableLockingArg{IpAddress: localAddr, GoVector: buf}
@@ -177,8 +178,9 @@ func MonitorServers(k string, HeartbeatInterval time.Duration) {
 			fmt.Printf("%s timed out\n", k)
 			delete(AllServers.RecentHeartbeat, k)
 			AllServers.Unlock()
-			fmt.Printf("Handle Server crash, ROLLBACK Servers\n") // TODO for each connected server
+			fmt.Printf("-----HandleServerCrash-----\n") // TODO for each connected server
 			handleServerCrash(k)
+			fmt.Println("--------------------\n")
 			return
 		}
 		if count%reducePrintCount == 0 {
@@ -318,8 +320,12 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			Logger.LogLocalEvent("Transaction succeeded")
 			return result, err
 		} else {
-			fmt.Println("Transaction failed, retry txn")
+			fmt.Println("\n !!! Transaction failed, Retry txn !!! \n")
 			time.Sleep(3 * time.Second)
+			if Breakpoint {
+				fmt.Print("Press 'Enter' to RETRY... \n")
+				bufio.NewReader(os.Stdin).ReadBytes('\n')
+			}
 			Logger.LogLocalEvent("Transaction failed, retry txn")
 			for s, _ := range connectedIP {
 				//err := sConn.Close()
