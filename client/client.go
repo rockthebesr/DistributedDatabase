@@ -253,7 +253,7 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		//if connection successful
 		if err != nil {
 			//fmt.Println("ConnectToServers failed. Error=", err, "\n Retry LBS.GetServers")
-			//time.Sleep(3 * time.Second)
+			time.Sleep(3 * time.Second)
 			//if Breakpoint {
 			//	fmt.Print("Press 'Enter' to continue... \n")
 			//	bufio.NewReader(os.Stdin).ReadBytes('\n')
