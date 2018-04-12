@@ -76,8 +76,8 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 
 		conn, err := rpc.Dial("tcp", sAddr)
 		if err != nil {
-			for s, sConn := range connectedIP {
-				err := sConn.Close()
+			for s, _ := range connectedIP {
+				//err := sConn.Close()
 				shared.CheckError(err)
 				delete(connectedIP, s)
 				Logger.LogLocalEvent("Close connection to " + s)
@@ -89,8 +89,8 @@ func ConnectToServers(tToServerIPs map[string]string) (map[string]*rpc.Client, e
 		err = conn.Call("ServerConn.ClientConnect", &args, &succ)
 
 		if err != nil {
-			for s, sConn := range connectedIP {
-				err := sConn.Close()
+			for s, _ := range connectedIP {
+				//err := sConn.Close()
 				shared.CheckError(err)
 				delete(connectedIP, s) // TODO what's this? can't do this
 				Logger.LogLocalEvent("Close connection to " + s)
@@ -259,12 +259,12 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			}
 
 			Logger.LogLocalEvent("Cannot connect to servers, Retry txn")
-			for s, sConn := range connectedIP {
-				err := sConn.Close()
-				shared.CheckError(err)
-				delete(connectedIP, s)
-				Logger.LogLocalEvent("Close connection to " + s)
-			}
+			//for s, sConn := range connectedIP {
+			//	err := sConn.Close()
+			//	shared.CheckError(err)
+			//	delete(connectedIP, s)
+			//	Logger.LogLocalEvent("Close connection to " + s)
+			//}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
 			args.GoVector = buf
 			err = lbs.Call("LBS.GetServers", &args, &reply)
@@ -288,12 +288,12 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 			}
 
 			Logger.LogLocalEvent("ExecuteTransaction err: " + err.Error() + ", Retry txn")
-			for s, sConn := range connectedIP {
-				err := sConn.Close()
-				shared.CheckError(err)
-				delete(connectedIP, s)
-				Logger.LogLocalEvent("Close connection to " + s)
-			}
+			//for s, sConn := range connectedIP {
+			//	err := sConn.Close()
+			//	shared.CheckError(err)
+			//	delete(connectedIP, s)
+			//	Logger.LogLocalEvent("Close connection to " + s)
+			//}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
 			args.GoVector = buf
 			err = lbs.Call("LBS.GetServers", &args, &reply)
@@ -319,12 +319,12 @@ func NewTransaction(txn dbStructs.Transaction, crashPoint shared.CrashPoint) (bo
 		} else {
 			fmt.Println("Transaction failed, retry txn")
 			Logger.LogLocalEvent("Transaction failed, retry txn")
-			for s, sConn := range connectedIP {
-				err := sConn.Close()
-				shared.CheckError(err)
-				delete(connectedIP, s)
-				Logger.LogLocalEvent("Close connection to " + s)
-			}
+			//for s, sConn := range connectedIP {
+			//	err := sConn.Close()
+			//	shared.CheckError(err)
+			//	delete(connectedIP, s)
+			//	Logger.LogLocalEvent("Close connection to " + s)
+			//}
 			buf = Logger.PrepareSend("Send LBS.GetServers", "msg")
 			args.GoVector = buf
 			err = lbs.Call("LBS.GetServers", &args, &reply)
